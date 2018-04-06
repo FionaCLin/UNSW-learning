@@ -2,40 +2,41 @@ module Art where
 
 import ShapeGraphics
 import Codec.Picture
+import Data.Complex
 
+r = 10
 art :: Picture
-art = fracTree 15 100 10 -- replace with something else
+art = fracTree 15 100 10 10 -- replace with something else
 
-fracTree :: Float -> Float -> Int -> Picture
-fracTree width height n
-  = fTree (Point  (400 - width / 2) 800) (Vector 0 (-height))
+fracTree :: Float -> Float -> Float -> Int -> Picture
+fracTree width height r n
+  = fTree (Point  (400 - width / 2) 500) r (Vector 0 (-height))
                   (Vector width 0) red n
   where
     
     toBlue :: Colour -> Colour
     toBlue (Colour r g b o) = 
       Colour (max 0 (r - 15)) g (min 255 (b + 15)) o
-    angle = pi/8
-    fTree :: Point -> Vector -> Vector -> Colour -> Int -> Picture
-    fTree pos vec1 vec2 col n
-      | n <= 1 = [Polygon [pos, movePoint vec1 pos, 
-                                movePoint vec2 $ movePoint vec1 pos, 
-                                movePoint vec2 pos]
+    angle = pi/4
+    fTree :: Point -> Float -> Vector -> Vector -> Colour -> Int -> Picture
+    fTree pos r vec1 vec2 col n
+      | n <= 1 = [Circle  (movePoint vec1 pos)
+                          r
                           col
                           Solid
                           SolidFill]
                           
-      | otherwise = fTree pos vec1 vec2 col (n - 1) ++
-                    fTree (movePoint vec1 pos) 
-                          (scaleVector 0.8 $ rotateVector (0.5 * angle) vec1)
-                          (scaleVector 0.8 $ rotateVector (0.5 * angle) vec2) 
+      | otherwise = fTree pos r vec1 vec2 col (n - 1) ++
+                    fTree (movePoint vec1 pos) r
+                          (scaleVector 0.8 $ rotateVector (- angle) vec1)
+                          (scaleVector 0.8 $ rotateVector (- angle) vec2) 
                           (toBlue col) (n - 1) ++
-                    fTree (movePoint vec1 pos) 
-                          (scaleVector 0.8 $ rotateVector (-angle) vec1)
-                          (scaleVector 0.8 $ rotateVector (-angle) vec2) 
+                    fTree (movePoint vec1 pos) r
+                          (scaleVector 0.8 $ rotateVector (angle) vec1)
+                          (scaleVector 0.8 $ rotateVector (angle) vec2) 
                           (toBlue col) (n - 1) 
 
-      
+
 scaleVector :: Float -> Vector -> Vector
 scaleVector fac (Vector x y)
   = Vector (fac * x) (fac * y)                           
