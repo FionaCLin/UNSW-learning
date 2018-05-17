@@ -1,0 +1,36 @@
+php members 8533
+php members 2249
+php members 1490
+php members 1480
+php members 1946
+php members 1007
+php members 3958
+php members 4029
+php members 4063
+php members 1013
+php members 20996
+php members 115028
+php members 112066
+
+
+
+# Group 1058 is "COMP2###"
+php ingroup COMP2041 1058
+php ingroup COMP1911 1058
+php ingroup COMPA1 1058
+php ingroup 3648 1058
+# Group 4063 is the Comp Sci streams (see above)
+php ingroup COMPA1 4063
+php ingroup SENGA1 4063
+php ingroup COMP3311 4063
+# Group 4029 is "####3###"
+php ingroup COMP3311 4029
+php ingroup SENG3020 4029
+php ingroup COMP2041 4029
+# Group 3958 is "GENG####"
+# without any enrolment context, we include any GenEd subject
+php ingroup GENL1061 3958
+php ingroup GENM0202 3958
+php ingroup MATH1081 3958
+php ingroup COMP3311 3958
+php ingroup 3978 3958
