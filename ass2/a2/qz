@@ -1,0 +1,36 @@
+<?php
+// members - print members of an academic object group
+
+require("lib/defs.php");
+$db = dbConnect(DB_CONNECTION);
+
+
+$q = "select * from enrolments order by student";
+$r = dbQuery($db, mkSQL($q));
+$x = array();
+while ($t = dbNext($r)) {
+    $stu = $t["student"];
+    $mark = $t["mark"];
+    if (!isset($x[$stu]))
+        $x[$stu] = $mark;
+    elseif ($x[$stu] < $mark)
+        $x[$stu] = $mark;
+}
+foreach($x as $s => $m) {
+    printf("%-10s %2d\n",$s,$m);
+}
+
+$q1 = "select distinct student from Enrolments order by student";
+$q2 = "select count(*) from Enrolments where student = %s";
+$r1 = dbQuery($db, mkSQL($q1));
+$c = 1;
+
+while ($t1 = dbNext($r1)&& $c++) {
+    $s = $t1["student"];
+    $r2 = dbQuery($db, mkSQL($q2, $s));
+    while ($t2 = dbNext($r2)&& $c++) $m = $t2[0];
+    printf("%-10s %2d\n",$s,$m);
+}
+    echo "$c\n";
+
+?>
