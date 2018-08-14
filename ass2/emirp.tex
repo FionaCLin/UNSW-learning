@@ -1,0 +1,533 @@
+\documentclass[headings=small,a4paper,12pt]{scrartcl}
+% sometimes it's useful to have smaller fractions
+\usepackage{nicefrac}
+% COMP2111-specific macros. See
+% http://www.cse.unsw.edu.au/~cs2111/17s1/LaTeX/primer.html
+\usepackage{2111defs2}
+\usepackage{listings}
+\lstset{frame=single,framerule=0pt,language={C},showstringspaces=false,numbers=left,columns=fullflexible}
+
+\newcommand{\mylist}[1]{\langle #1\rangle}
+\newcommand{\myfloor}[1]{\lfloor #1\rfloor}
+\newcommand{\sorted}[3]{\mathit{s'ed}(#1[#2..#3])}
+\newcommand{\sort}[3]{\mathit{sort}(#1[#2..#3])}
+\newcommand{\pre}{\mathit{pre}}
+\newcommand{\post}{\mathit{post}}
+\newcommand{\emirp}{\textsc{emirp}\xspace}
+\newcommand{\isPrime}{\textsc{isPrime}\xspace}
+\newcommand{\nextPrime}{\textsc{nextPrime}\xspace}
+\newcommand{\reversen}{\textsc{reversen}\xspace}
+
+\title{Assignment 2}
+\author{z5019338\\z5131048}
+% that one align* may not fit onto a single page
+\allowdisplaybreaks
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+Given a positive integer number n, return the n'th emirp. An emirp is a prime whose (base 10) reversal is also prime, but which is not a palindromic prime.\\
+Firstly, let the set of all prime numbers be as $prime$, where $prime$ denote as:
+\begin{gather*}
+	prime = \{p\in \mathbb{N^+}\mid p>1\And \neg\exists k\in \mathbb{N^+}. \{1,n\}:\frac{p}{k}\in \mathbb{N^+}\}
+\end{gather*}
+Let the sequence of all the prime numbers be as $P_n$, where $P_n$ is denoted as \\
+\begin{gather*}
+  P_n = \mylist{2,3,5,7,11,...}_{n \in \mathbb{N^+}} 
+\end{gather*}
+Given proc $reversen$ as defined in the specification, it is going to be denoted as the mathematical function $res:\mathbb{N} \rightarrow \mathbb{N}$ as following:
+\begin{gather*}
+  res(n) = \sum_{i=0}^{\myfloor{\log n}} S_i10^i 
+\end{gather*}
+where $n =\sum_{i=0}^{\myfloor{\log n}} S_i10^{\myfloor{\log n}-i}$
+\section{The Derivation}
+\label{sec:derivation}
+Before deriving $\PROC~\emirp(\VALUE~n:\mathbb{N^+}, \RESULT~r:\mathbb{N^+})$, it needs to develop 2 procedure that help with proc \emirp\\
+$\PROC~\isPrime(\VALUE~n:\mathbb{N^+}, \RESULT~b:\mathbb{B})\\
+ \PROC~\nextPrime(\VALUE~p:\mathbb{N^+}, \RESULT~q:\mathbb{N^+}) $.
+\begin{align*}
+	  & \PROC~\nextPrime(\VALUE~p, \RESULT~q)\cdot{} \\
+	  & \qquad  \nt{p,q:\left[                       
+	\begin{array}{l}
+	p\in P_i, i\Ass i_0+1 \And q\Ass p_i
+	\end{array}
+	\right]}{(A)}\\ 
+	%
+	\lrefstep{(A)}
+	{\textbf{i-con}}
+	{
+	\nt{var\: con\: b\cdot p, q:\left[
+	\begin{array}{l}
+	p\in P_i \And i=b, q\Ass p_i\And i\Ass i_0+1 
+	\end{array}
+	\right]}{(B)}}\\
+	%
+	\lrefstep{(B)}
+	{\textbf{s-post}} 
+	p,q:[
+	\begin{array}{l}
+	p\in P_i \And i=b, q\Ass P_i\And i=b+1 
+	\end{array}
+	]\\
+	\lrefstep{}
+	{\textbf{seq2}} 
+	i\Ass i+1; \: q\Ass P_i
+	\\
+\end{align*}
+\begin{align*}
+  &\PROC~\isPrime(\VALUE~n, \RESULT~r)\cdot{}\\
+  &\qquad  \nt{n,r:\left[
+		\begin{array}{l}
+			n>0, b \Leftrightarrow n \in prime
+		\end{array}
+  \right]}{(I)}\\ 
+%
+\lrefstep{(I)}
+{\textbf{i-loc}}
+{
+	\nt{var\: k\cdot n, b, k:\left[
+			\begin{array}{l}
+				n>0, b \Leftrightarrow n \in prime                       
+			\end{array}
+    \right]}{(II)}}\\
+    \lrefstep{(II)}
+{\textbf{c-frame,seq}, split into initialisation and loop}
+{  
+	\nt{b:\left[
+			\begin{array}{l}
+				n>0,Inv 
+			\end{array}
+		\right]}{(III)}}\\
+%
+&{\nt{n,b,k:\left[
+		\begin{array}{l}
+			Inv,b \Leftrightarrow n \in prime                       
+		\end{array}
+  \right]}{(IV)}}\\  
+\end{align*}
+Where the loop invariant is defined as:
+\begin{align*}
+Inv =	\left(
+  \begin{array}{l}
+    (n = 1 \Rightarrow b = False ) \OR\\
+    2< k \leq n \And (\neg\Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = True)\\
+     \OR (\Exi{k \in 2..(n-1)} {p \mid k}\Leftrightarrow n \notin prime\AND b = False)\\
+	\end{array}
+	\right)\enskip
+\end{align*}
+%
+\begin{align*}
+\lrefstep{(III)}
+{\textbf{seq,ass}}
+{\nt{b,k:\left[
+		\begin{array}{l}
+			n > 0 , Inv\subst{2, True}{k,b} 
+		\end{array}
+	\right]}{\spadesuit}}&\\
+&\IF ~ n = 1~\THEN\\
+%
+&\qquad{\nt{n,b,k:\left[
+		\begin{array}{l}
+			n > 0 \And n =1, Inv\subst{1,False}{n,b} 
+		\end{array}
+	\right]}{\heartsuit}}&\\
+&\ELSE;&\\
+&\qquad {\nt{n,b,k:\left[
+		\begin{array}{l}
+			n > 0 \And n \neq 1, Inv\subst{1,False}{n,b} 
+		\end{array}
+	\right]}{\diamondsuit}}&\\
+&\FI\\
+\lrefstep{\spadesuit}
+{\textbf{ass}, justified below in Sect.~\ref{sec:proofspadeAss}}
+  b \Ass True;\\
+  &k \Ass 2;\\
+\lrefstep{\heartsuit}
+{\textbf{ass}, justified below in Sect.~\ref{sec:proofheartAss}}
+  b \Ass False\\
+\lrefstep{\diamondsuit}
+{\textbf{skip}}
+  skip\\
+%
+\lrefstep{(IV)}
+{\textbf{s-post}, justified below in Sect.~\ref{sec:proofIVs-post}} 
+n,b,k:[
+	\begin{array}{l}
+		Inv, Inv\And k = n 
+	\end{array}
+]\\
+\lrefstep{}
+{\textbf{c-frame,while}}
+\WHILE~k < n~\DO\\
+%
+&\qquad{\nt{n,b,k:\left[
+		\begin{array}{l}
+			Inv\And k < n, Inv\subst{k+1}k  
+		\end{array}
+	\right]}{(V)}}&\\
+&\OD;&\\
+% 
+\lrefstep{(V)}
+{\textbf{seq,c-frame}}
+%
+{\nt{n,b,k:\left[
+		\begin{array}{l}
+			Inv\And k < n, Inv\subst{k+1}k 
+		\end{array}
+	\right]}{(VI)}}&\\
+&\nt{k:\left[
+		\begin{array}{l}
+			Inv\And k < n, Inv\subst{k+1}k 
+		\end{array}
+	\right]}{(VII)}&\\
+\lrefstep{(VI)}
+{\textbf{if}}
+\IF ~ n | k~\THEN\\
+%
+&\qquad{\nt{n,b,k:\left[
+		\begin{array}{l}
+			n|k\And Inv\And k<n, Inv\subst{k+1}k 
+		\end{array}
+	\right]}{(VIII)}}&\\
+&\ELSE;&\\
+&\qquad{\nt{n,k:\left[
+		\begin{array}{l}
+      n\nmid k\And Inv\And k<n,Inv\subst{k+1}k 
+    \end{array}
+	\right]}{(IX)}}&\\
+&\FI\\
+\lrefstep{(VIII)}
+{\textbf{ass}}
+{b\Ass False;}&\\
+%
+\lrefstep{(IX)}
+{\textbf{skip}}
+{skip;}&\\
+%
+\lrefstep{(VII)}
+{\textbf{ass}}
+{k \Ass k+1;}&\\
+%
+\end{align*}
+
+\subsection{Proof of $\spadesuit \isrefinedby {b \Ass True}; k\Ass 2; $}
+\label{sec:proofspadeAss}
+
+We need to prove validity
+\begin{gather*}
+	n>0 \Implies Inv\subst{2,True}{k,b}
+\end{gather*}
+i.e., the prerequisite of the relevant instance of \textbf{ass}.Expanding the definitions and performing the substitution yields
+\begin{gather*}
+	n>0\Implies{}\\
+	\left(
+  \begin{array}{l}
+    (n = 1 \Rightarrow b = False ) \OR\\
+		{\color{blue}2< 2 \leq n \And (\neg\Exi{2 \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And True = True)}\\
+    \OR (\Exi{k \in 2..(n-1)} {p \mid k}\Leftrightarrow n \notin prime\AND b = False)\\
+	\end{array}
+	\right)\enskip
+\end{gather*}
+Clearly, we have established validity of the {\color{blue}second conjunct} of the RHS. It's obviously true. As long as any disjunct is true, the rest is true
+
+\subsection{Proof of $\heartsuit \isrefinedby {b \Ass False}; $}
+\label{sec:proofheartAss}
+
+We need to prove validity
+\begin{gather*}
+  n > 0 \And n =1 \Rightarrow Inv\subst{1,False}{n,b} 
+\end{gather*}
+i.e., the prerequisite of the relevant instance of \textbf{ass}.Expanding the definitions and performing the substitution yields
+\begin{gather*}
+	n>0 \AND n = 1\Implies{}\\
+	\left(
+  \begin{array}{l}
+  {\color{blue}(n = 1 \Rightarrow False = False )} \OR\\
+2< k \leq n \And (\neg\Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = True)\\
+\OR (\Exi{k \in 2..(n-1)} {p \mid k}\Leftrightarrow n \notin prime\AND b = False)\\
+ 	\end{array}
+	\right)\enskip
+\end{gather*}
+Clearly, we have established validity of the {\color{blue}first conjunct} of the RHS. It's obviously true. As long as any disjunct is true, the rest is true
+
+
+\subsection{Proof of $(IV)\isrefinedby Inv\Implies Inv\And k = n$}
+\label{sec:proofIVs-post}
+
+Expanding the definitions and performing the substitution yields
+\begin{gather*}
+	\left(
+  \begin{array}{l}
+ (n = 1 \Rightarrow b = False ) \OR\\
+2< k \leq n \And (\neg\Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = True)\\
+\OR (\Exi{k \in 2..(n-1)} {p \mid k}\Leftrightarrow n \notin prime\AND b = False)\\
+  \end{array}
+	\right)
+  \Implies{}\\
+  \left(
+\begin{array}{l}
+ (n = 1 \Rightarrow b = False ) \OR\\
+2< k \leq n \And (\neg\Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = True)\\
+\OR (\Exi{k \in 2..(n-1)} {p \mid k}\Leftrightarrow n \notin prime\AND b = False) \And k = n
+\end{array}
+\right)
+\end{gather*}
+According there is 3 disconjuction of the LHS, there are 3 cases to consider:
+\begin{enumerate}
+	\item $n>0 \AND n = 1 \Rightarrow Inv\subst{1,2,False}{n,2,b} $: as prove above, the fist disjunct of the RHS follows immediately.
+  \item $2\leq k \leq n-1 \And p \nmid k \Rightarrow Inv \subst{k+1, True}{k,b}$: we prove the second disjunct of the RHS. As $2\leq k \leq n-1 \And p \nmid k \Rightarrow \neg\Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = True$
+  \item $2\leq k \leq n-1 \And p \mid k \Rightarrow Inv \subst{k+1, False}{k}$: similarly, $2\leq k \leq n-1 \And p \mid k \Rightarrow \Exi{k \in 2..(n-1)} { p \mid k}\Leftrightarrow n \in prime\And b = False$
+\end{enumerate}
+Clearly, we have established validity of the RHS. It's obviously true.\\
+
+We gather the code for the procedure body of $\isPrime$:
+\begin{align*}
+&\quad b \Ass True;\\
+&\quad \IF~ n = 1 ~ \THEN\\
+&\qquad b \Ass False;\\
+&\quad \ELSE\\
+&\qquad skip\\
+&\quad \FI\\
+&\quad k \Ass 2\\
+&\quad \WHILE~ k < n ~ \DO\\
+&\qquad \IF~ n = 1 ~ \THEN\\
+&\quad\qquad b \Ass False;\\
+&\qquad \ELSE\\
+&\quad\qquad skip\\
+&\qquad \FI\\
+&\quad \OD;\\
+\end{align*}
+\begin{align*}
+  &\PROC~\emirp(\VALUE~n, \RESULT~r)\cdot{}\\
+  &\qquad  \nt{n,r:\left[
+    \begin{array}{l}
+      n>0,\\
+      n=0\And r\in prime\And rev(r)\in prime\And r\neq rev(r)\\
+    \end{array}
+  \right]}{(1)}\\
+% 
+  \lrefstep{(1)}
+  {\textbf{i-loc}}
+  {
+  \nt{var\: s\cdot n,r,s:\left[
+  \begin{array}{l}
+      n>0,\\
+      n=0\And r\in prime\And rev(r)\in prime\And r\neq rev(r)\\
+    \end{array}
+  \right]}{(2)}}\\
+%
+  \lrefstep{(2)}
+  {\textbf{seq}, split into initialisation and loop}
+	{  
+  \nt{s:\left[
+  \begin{array}{l}
+  	n>0,Inv
+  \end{array}
+  \right]}{(3)}}\\
+%
+  &{\nt{n,r,s:\left[
+  \begin{array}{l}
+  Inv,n=0\And r\in prime\And rev(r)\in prime\And r\neq rev(r)
+  \end{array}
+  \right]}{(4)}}
+\end{align*}
+Where the loop invariant is defined as:
+\begin{align*}
+	Inv =	\left(
+  \begin{array}{l}
+    0\leq i\leq n\And s=P_i\And rev(s)\in prime \And s\neq rev(s)\And r=P_{(n-i)}
+	\end{array}
+  \right)\enskip
+\end{align*}
+where $P$ is the prime numbers sequence.
+\begin{align*}
+%
+\lrefstep{(3)}
+{\textbf{ass}}
+s:[
+  \begin{array}{l}
+    n>0,Inv\subst{13,n}s,n
+  \end{array}
+  ] \\
+  \lrefstep{}
+  {\textbf{ass}, justified below in Sect.~\ref{sec:proof3ass}}
+{s\Ass 13}\\
+%
+  \lrefstep{(4)}
+  {\textbf{s-post}, justified below in Sect.~\ref{sec:proof4s-post}} 
+  n,r,s:[
+  \begin{array}{l}
+  	Inv\subst{n-1}n, Inv\And n=0
+  \end{array}
+  ]\\
+% 
+  \lrefstep{}
+  {\textbf{while,seq,c-frame}}
+  \WHILE~n\neq 0~\DO\\
+  %
+  &\qquad{\nt{var\: k,b\cdot n,r,s:\left[
+  \begin{array}{l}
+  Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(A)}}&\\
+  &\OD;&\\
+%
+  &{\nt
+  {r:\left[
+  \begin{array}{l}
+  	Inv\And n=0, Inv\subst{0}n
+  \end{array}
+  \right]}{(B)}}&\\
+%
+  \lrefstep{A}
+   {\textbf {c-frame,seq}}
+  {\nt{k,b:\left[
+  \begin{array}{l}
+  Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(A1)}}\\
+%
+&{\nt{n,k,b,s:\left[
+  \begin{array}{l}
+  Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(A2)}}&\\
+%
+  &{\nt{s:\left[
+  \begin{array}{l}
+  Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(A3)}}&\\
+%
+  \lrefstep{A1}
+  {\textbf ..., proc,seq}
+  \reversen(s,k);\isPrime(k,b);\\
+%
+  \lrefstep{A2}
+  {\textbf{if}, where $g=(n\neq 0\And k=rev(s)\And b \And k\neq s\OR n=0)$}
+  \IF~g~\THEN\\
+  &\qquad{\nt{n,k,s:\left[
+  \begin{array}{l}
+  g\And Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(i)}}&\\
+  &\ELSE&\\
+  &\qquad{\nt{n,k,s:\left[
+  \begin{array}{l}
+  \neg g\And Inv\And n\neq 0, Inv\subst{n-1}n
+  \end{array}
+  \right]}{(ii)}}&\\
+  &\FI&\\
+%
+  \lrefstep{i}
+  {\textbf ass}
+  n\Ass{n-1};\\
+%
+  \lrefstep{ii}
+  {\textbf skip}
+  skip\\
+%
+  \lrefstep{A3}
+  {\textbf ..., proc}
+  \nextPrime(s,s)\\
+% 
+  \lrefstep{B}
+  {\textbf {ass}, justified below in Sect.~\ref{sec:proofBass}}
+  r\Ass{s};\\
+\end{align*}\\
+
+\subsection{Proof of $(3)\isrefinedby s\Ass 13$}
+\label{sec:proof3ass}
+
+We need to prove validity
+\begin{gather*}
+	n>0 \Implies Inv\subst{13,n}{s,n}
+\end{gather*}
+i.e., the prerequisite of the relevant instance of \textbf{ass}.Expanding the definitions and performing the substitution yields
+\begin{gather*}
+	n>0\Implies{}\\
+	\left(
+	\begin{array}{l}
+	0\leq n\leq n\And {\color{blue}s=13\And rev(13)\in prime \And s\neq rev(13)\And r=P_{n-n}}
+	\end{array}
+	\right)\enskip
+\end{gather*}
+%justify the above implication
+Clearly, we have established the validity of those conjunct of the RHS with $s \Ass 13 and n \Ass n$. This whole conjuncts are obviously true when s initialises with 13 . 
+
+\subsection{Proof of $(B)\isrefinedby r \Ass {s}$}
+\label{sec:proofBass}
+We need to prove validity
+\begin{gather*}
+	Inv \And n=0 \Implies Inv\subst{0}{n}
+\end{gather*}
+i.e., the prerequisite of the relevant instance of \textbf{ass}.Expanding the definitions and performing the substitution yields
+\begin{gather*}
+	\left(
+	\begin{array}{l}
+		0\leq i\leq n\And s=P_i\And rev(s)\in prime \And s\neq rev(s)\And r=P_{(n-i)} \And n=0 
+	\end{array}
+	\right)\enskip
+	\Implies{}\\
+	\left(
+	\begin{array}{l}
+		0\leq i\leq 0 \And s=P_0\And rev(s)\in prime \And s\neq rev(s)\And r=P_n 
+	\end{array}
+	\right)\enskip
+\end{gather*}
+Clearly, we should establish the validity of first, second and fifith conjunct of the RHS by replace n as 0 in the LHS. After substit n by 0 in the LHS, RHS is given with $n = 0$ implication.
+
+\subsection{Proof of $(4)\isrefinedby Inv\subst{n-1}n\Implies Inv\And n=0$}
+\label{sec:proof4s-post}
+
+Expanding the definitions and performing the substitution yields
+\begin{gather*}
+\left(
+\begin{array}{l}
+	0\leq i\leq n-1\And s=P_i\And rev(s)\in prime \And s\neq rev(s)\And r=P_{(n-1-i)}
+\end{array}
+\right)
+	\Implies{}\\
+\left(
+\begin{array}{l}
+	{\color{blue}n=0} \And 0\leq i\leq n\And s=P_i\And rev(s)\in prime \And s\neq rev(s)\And r=P_{(n-i)} 
+\end{array}
+\right)
+\end{gather*}
+According the conjuncts of LHS, there are 2 cases to consider:
+\begin{enumerate}
+	\item $n = 0 \AND Inv\subst{0}n$: its validity as the previour proof.
+	\item $n \neq 0 \AND Inv\subst{n-1}n$: while $n \neq 0$, the {\color{blue}first conjunct} can remove in the RHS and replace the rest n with n-1. This become indentical with LHS, therefore, it is valid and true.
+\end{enumerate}
+\newpage
+We gather the code for the procedure body of $\emirp$:
+\begin{align*}
+&\quad s \Ass 2;\\
+&\quad \WHILE~ n\neq 0 ~ \DO\\
+&\qquad reversen(s,k)\\
+&\qquad \IF~k \in prime \AND k \neq s ~ \THEN\\
+&\quad\qquad n = n-1\\
+&\qquad \ELSE\\
+&\quad\qquad skip\\
+&\qquad \FI\\
+&\qquad nextPrime(s,s)\\
+&\quad \OD;\\
+&\end{align*}
+\section{The C Code}
+\label{sec:code}
+\lstinputlisting{emirp.c}
+In our C implementation, we used the GMP library, allowing us to replace functions in our toy language: \\
+$isPrime$ is replaced with the function $mpz\_probab\_prime_p$,\\
+$nextPrime$ is replaced with $mpz\_nextprime$,\\
+and $reversen$ is given to us in the spec.\\
+Other functions are also used such as:\\
+$mpz\_set\_ui$ is a function which assigns a variable (instead of s=13)\\
+$mpz\_init$ is an initialising function.\\
+$mpz\_sub\_ui$ is a function which allows us to subtract.\\
+$mpz\_cmp$ is a function which allows us to compare (instead of r == s)\\
+We use these functions as we are dealing with the type $mpz\_t$ instead of a regular long or int.
+We use these functions under the assumption that they work correctly as they are library functions.
+\end{document}

@@ -1,0 +1,19 @@
+Visit <https://gmplib.org> for all things gmp.
+
+==linux==
+
+Typically, linux already comes with gmp installed. This true for CSE
+servers and should also hold for lab machines.
+
+==Mac OS X==
+gmp should build on Mac OS X when the following is installed:
+
+- Xcode + cmd line tools
+- gmp <https://gmplib.org>, which in turn needs lzip <http://lzip.nongnu.org/lzip.html>
+
+Last tested 2018/04 on Mac OS X 10.13.3, Xcode 9.3, gmp-6.1.2
+
+==Windows==
+
+I have no idea but would be happy to point to relevant web pages if
+someone told me about them.
