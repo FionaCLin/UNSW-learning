@@ -1,6 +1,7 @@
 package com.fiona.gpslocator;
 
 import android.Manifest;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Main extends AppCompatActivity implements LocationListener {
 
     LocationManager locationManager;
@@ -24,7 +28,7 @@ public class Main extends AppCompatActivity implements LocationListener {
     private Location location;
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    private static final long MIN_TIME_BW_UPDATES = 100 * 60 * 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +74,20 @@ public class Main extends AppCompatActivity implements LocationListener {
             return;
         } else {
 
+
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
             location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
-            Toast.makeText(getBaseContext(), location.toString(), Toast.LENGTH_LONG).show();
+//            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
+//            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+            if (location != null){
+
+                Date date = new Date(location.getTime());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dis = String.format("Date/Time: %s\nProvider: %s\nAccuracy: %f\nAltitude: %f\nLatitude: %f\nSpeed: %f",
+                        sdf.format(date),location.getProvider() , location.getAccuracy() , location.getAltitude(), location.getLatitude(),location.getSpeed());
+                status.setText(dis);
+            }
         }
     }
 
@@ -112,6 +126,21 @@ public class Main extends AppCompatActivity implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         this.location = location;
+        final TextView status = (TextView) findViewById(R.id.status);
+        if (location != null){
+
+            Date date = new Date(location.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dis = "My current location at Date/Time= "+ sdf.format(date)+" is:\n";
+            dis += "Longtitud: " + location.getLongitude() + "\n";
+            dis += "Latitude: " + location.getLatitude()+"\n";
+            dis += "My Speed: "+location.getSpeed() + "\n";
+            dis += "GPS Accuracy: " + location.getAccuracy() + "\n";
+
+            Toast.makeText(getBaseContext(), dis, Toast.LENGTH_LONG).show();
+
+        }
+
     }
 
     @Override
