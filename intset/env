@@ -1,0 +1,7 @@
+PGHOME=/home/fiona/Documents/comp9315/18s2/comp9315-ass1/postgresql-10.4/psql
+export PGDATA=./pgsql.$USER
+export PGDATA=$PGHOME/data
+export PGHOST=$PGDATA
+export PGPORT=5432
+export LD_LIBRARY_PATH=$PGHOME/lib
+export PATH=$PGHOME/bin:$PATH
