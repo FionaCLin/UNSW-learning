@@ -3,7 +3,10 @@
 *lab 1-6
 
 compile the source code
-```make TARGET=srf06-cc26xx BOARD=sensortag/cc2650```
+
+```
+make TARGET=srf06-cc26xx BOARD=sensortag/cc2650
+```
 
 flash the chips
 ```
