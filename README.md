@@ -8,16 +8,9 @@ compile the source code
 make TARGET=srf06-cc26xx BOARD=sensortag/cc2650
 ```
 
-flash the chips
-```
-./uniflash_3.4/eclipse/uniflash 
-```
+flash the chip	--	```./uniflash_3.4/eclipse/uniflash```
 
-load the hex files to device
-
-```
-make prog
-```
+load the hex files to device	--	```make prog```
 
 *start rph-board-router at specific serial port
 ```
