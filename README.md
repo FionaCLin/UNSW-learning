@@ -15,7 +15,9 @@ flash the chips
 
 load the hex files to device
 
-```make prog```
+```
+make prog
+```
 
 *start rph-board-router at specific serial port
 ```
