@@ -64,15 +64,18 @@ tcpip_handler(void)
         char a [4];
 	sprintf(a, "%02x%02x%02x%02x", ((char *)uip_appdata)[3],
 ((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
-	printf("a-%s\n\r", a);        
+	printf("a-%s\n\r", a);
 	unsigned int x = strtol(a,NULL,16);
         printf("%u\n\r",x);
 
-        clock_time_t sys_time = clock_time();//local time??
-	
-        printf("sys time %lu \n\r", sys_time);
+        clock_time_t sys_time1 = clock_time();//local time??
+
+        clock_set_seconds(x);
+        clock_time_t sys_time2 = clock_time();//local time??
+        printf("sys time1 %lu \n\r", sys_time1);
+        printf("sys time2 %lu \n\r", sys_time2);
         PRINTF("Responding with message: ");
-        sprintf(buf, "Hello from the server! (%d) %lu", ++seq_id, sys_time);
+        sprintf(buf, "Hello from the server! (%d) %lu %lu", ++seq_id, sys_time1, sys_time2);
         PRINTF("%s\n\r", buf);
 
         uip_udp_packet_sendto(server_conn, buf, strlen(buf),&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
