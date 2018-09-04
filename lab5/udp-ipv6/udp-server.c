@@ -31,7 +31,8 @@
 #include "contiki-lib.h"
 #include "contiki-net.h"
 #include "sys/clock.h"
-
+#include "dev/leds.h"
+#include "sys/ctimer.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -44,6 +45,50 @@
 #define MAX_PAYLOAD_LEN 120
 
 static struct uip_udp_conn *server_conn;
+// declare a struct to store the UTC time
+// because the sensor tag platform does not provide api to update system clock
+struct UTC {
+    uint32_t utc;
+    unsigned long seconds;
+    clock_time_t local;
+};
+// a global variable
+static struct UTC utc_time;
+
+
+//task 1
+uint32_t getUtcTimeFromLocalTime(){
+    return (utc_time.utc + (clock_seconds() - utc_time.seconds));
+}
+
+void updateUtcTime(uint32_t x) {
+    utc_time.utc = x;
+    // debug print
+    // printf("%lu utc: %lu \n\r",x, utc_time.utc);
+    utc_time.seconds = clock_seconds();
+    utc_time.local = clock_time();
+}
+
+//task 2
+// make a callback timer update UTC time and led every second
+static struct ctimer timer;
+
+static void update_led(void * ptr){
+    // led sync pattern
+    int t = getUtcTimeFromLocalTime() % 4;
+    if(t == 0) {
+        leds_off(LEDS_ALL);
+    } else if (t == 1) {
+        leds_on(LEDS_RED);
+        leds_off(LEDS_GREEN);
+    } else if (t == 2) {
+        leds_off(LEDS_RED);
+        leds_on(LEDS_GREEN);
+    } else {
+        leds_on(LEDS_ALL);
+    }
+    ctimer_reset(&timer);
+}
 
 PROCESS(udp_server_process, "UDP server process");
 AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
@@ -51,34 +96,29 @@ AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
     static void
 tcpip_handler(void)
 {
-    static int seq_id;
-    char buf[MAX_PAYLOAD_LEN];
 
     if(uip_newdata()) {
-        ((char *)uip_appdata)[uip_datalen()] = 0;
+        // python udp server has packed the uint so use int pointer instead char *
+        ((int *)uip_appdata)[uip_datalen()] = 0;
+        // debug print
+        // printf("Server received: '%d' from ", *(int *)uip_appdata);
 
-        printf("Server received: '%s' from ", (char *)uip_appdata);
+        // update the response address
         PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
-        PRINTF("\n\r");
+        // PRINTF("\n\r");
 
-        char a [4];
-	sprintf(a, "%02x%02x%02x%02x", ((char *)uip_appdata)[3],
-((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
-	printf("a-%s\n\r", a);
-	unsigned int x = strtol(a,NULL,16);
-        printf("%u\n\r",x);
+        // get the value from int pointer
+        uint32_t x = *(int*) uip_appdata;
 
-        clock_time_t sys_time1 = clock_time();//local time??
+        // update the UTC time python server
+        updateUtcTime(x);
 
-        clock_set_seconds(x);
-        clock_time_t sys_time2 = clock_time();//local time??
-        printf("sys time1 %lu \n\r", sys_time1);
-        printf("sys time2 %lu \n\r", sys_time2);
+        uint32_t utc_new = getUtcTimeFromLocalTime();
+        // debug print
+        printf("updated UTC time %lx \n\r", utc_new);
         PRINTF("Responding with message: ");
-        sprintf(buf, "Hello from the server! (%d) %lu %lu", ++seq_id, sys_time1, sys_time2);
-        PRINTF("%s\n\r", buf);
 
-        uip_udp_packet_sendto(server_conn, buf, strlen(buf),&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
+        uip_udp_packet_sendto(server_conn, &utc_new, 4 ,&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
         /* Restore server connection to allow data from any node */
         memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
     }
@@ -106,7 +146,7 @@ PROCESS_THREAD(udp_server_process, ev, data)
 #if UIP_CONF_ROUTER
     uip_ipaddr_t ipaddr;
 #endif /* UIP_CONF_ROUTER */
-
+    ctimer_set(&timer, CLOCK_SECOND/2,update_led,NULL);
     PROCESS_BEGIN();
     PRINTF("UDP server started\n\r");
 
