@@ -45,28 +45,36 @@
 #define MAX_PAYLOAD_LEN 120
 
 static struct uip_udp_conn *server_conn;
-
+// declare a struct to store the UTC time
+// because the sensor tag platform does not provide api to update system clock
 struct UTC {
     uint32_t utc;
     unsigned long seconds;
     clock_time_t local;
 };
-
+// a global variable
 static struct UTC utc_time;
 
+
+//task 1
 uint32_t getUtcTimeFromLocalTime(){
     return (utc_time.utc + (clock_seconds() - utc_time.seconds));
 }
+
 void updateUtcTime(uint32_t x) {
     utc_time.utc = x;
-    printf("%lu utc: %lu \n\r",x, utc_time.utc);
+    // debug print
+    // printf("%lu utc: %lu \n\r",x, utc_time.utc);
     utc_time.seconds = clock_seconds();
     utc_time.local = clock_time();
 }
 
+//task 2
+// make a callback timer update UTC time and led every second
 static struct ctimer timer;
 
 static void update_led(void * ptr){
+    // led sync pattern
     int t = getUtcTimeFromLocalTime() % 4;
     if(t == 0) {
         leds_off(LEDS_ALL);
@@ -90,19 +98,27 @@ tcpip_handler(void)
 {
 
     if(uip_newdata()) {
+        // python udp server has packed the uint so use int pointer instead char *
         ((int *)uip_appdata)[uip_datalen()] = 0;
+        // debug print
+        // printf("Server received: '%d' from ", *(int *)uip_appdata);
 
-        printf("Server received: '%d' from ", *(int *)uip_appdata);
+        // update the response address
         PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
-        PRINTF("\n\r");
+        // PRINTF("\n\r");
 
+        // get the value from int pointer
         uint32_t x = *(int*) uip_appdata;
+
+        // update the UTC time python server
         updateUtcTime(x);
+
         uint32_t utc_new = getUtcTimeFromLocalTime();
+        // debug print
         printf("updated UTC time %lx \n\r", utc_new);
         PRINTF("Responding with message: ");
 
-        uip_udp_packet_sendto(server_conn, &utc_new, 4,&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
+        uip_udp_packet_sendto(server_conn, &utc_new, 4 ,&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
         /* Restore server connection to allow data from any node */
         memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
     }
