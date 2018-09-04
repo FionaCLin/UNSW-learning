@@ -13,6 +13,7 @@ UDP_TIMESYNC_PORT = 3000 # node listens for timesync packets on port 4003
 
 isRunning = True
 
+# create sockets at server start up
 sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, 0)
 # listen on UDP socket port UDP_TIMESYNC_PORT
 recvSocket = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
@@ -25,10 +26,9 @@ def udpListenThread():
 
     try:
       data, addr = recvSocket.recvfrom( 1024 )
-#      timestamp = (struct.unpack("I", data[0:4]))[0]
-#      utc = datetime.datetime.fromtimestamp(timestamp)
-#      print "Reply from:", addr[0], "UTC[s]:", timestamp, "Localtime:", utc.strftime("%Y-%m-%d %H:%M:%S")
-      print "Reply from:", addr[0], "data", data
+      timestamp = (struct.unpack("I", data[0:4]))[0]
+      utc = datetime.datetime.fromtimestamp(timestamp)
+      print "Reply from:", addr[0], "UTC[s]:", timestamp, "Localtime:", utc.strftime("%Y-%m-%d %H:%M:%S")
     except socket.timeout:
       pass
 
@@ -40,10 +40,12 @@ def udpSendThread():
     print "Sending timesync packet with UTC[s]:", timestamp, "Localtime:", time.strftime("%Y-%m-%d %H:%M:%S")
 
     # send UDP packet to nodes
-    # change the IP Address with your sensorTag accordingly.
+    # change the IP Address with your sensorTag accordingly. (Addresses are shown on browser
+    # from the border router)
     # you may start with one sensortag.
+
     sock.sendto(struct.pack("I", timestamp), ("aaaa::212:4b00:b00:6403", UDP_TIMESYNC_PORT))
-    sock.sendto(struct.pack("I", timestamp), ("aaaa::1", UDP_TIMESYNC_PORT))
+    sock.sendto(struct.pack("I", timestamp), ("aaaa::212:4b00:1204:e8f5", UDP_TIMESYNC_PORT))
 
     # sleep for some seconds
     # the frequency of sending the sych timestamps packet is very important
