@@ -90,17 +90,13 @@ tcpip_handler(void)
 {
 
     if(uip_newdata()) {
-        ((char *)uip_appdata)[uip_datalen()] = 0;
+        ((int *)uip_appdata)[uip_datalen()] = 0;
 
-        printf("Server received: '%s' from ", (char *)uip_appdata);
+        printf("Server received: '%d' from ", *(int *)uip_appdata);
         PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
         PRINTF("\n\r");
 
-        char a [4];
-        sprintf(a, "%02x%02x%02x%02x", ((char *)uip_appdata)[3],
-                ((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
-        printf("a-%s\n\r", a);
-        uint32_t x = strtol(a,NULL,16);
+        uint32_t x = *(int*) uip_appdata;
         updateUtcTime(x);
         uint32_t utc_new = getUtcTimeFromLocalTime();
         printf("updated UTC time %lx \n\r", utc_new);
