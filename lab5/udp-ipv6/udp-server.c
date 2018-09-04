@@ -31,7 +31,8 @@
 #include "contiki-lib.h"
 #include "contiki-net.h"
 #include "sys/clock.h"
-
+#include "dev/leds.h"
+#include "sys/ctimer.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -46,12 +47,40 @@
 static struct uip_udp_conn *server_conn;
 
 struct UTC {
-  uint32_t utc;
-  unsigned long seconds;
-  clock_time_t local;
+    uint32_t utc;
+    unsigned long seconds;
+    clock_time_t local;
 };
 
 static struct UTC utc_time;
+
+uint32_t getUtcTimeFromLocalTime(){
+    return (utc_time.utc + (clock_seconds() - utc_time.seconds));
+}
+void updateUtcTime(uint32_t x) {
+    utc_time.utc = x;
+    printf("%lu utc: %lu \n\r",x, utc_time.utc);
+    utc_time.seconds = clock_seconds();
+    utc_time.local = clock_time();
+}
+
+static struct ctimer timer;
+
+static void update_led(void * ptr){
+    int t = getUtcTimeFromLocalTime() % 4;
+    if(t == 0) {
+        leds_off(LEDS_ALL);
+    } else if (t == 1) {
+        leds_on(LEDS_RED);
+        leds_off(LEDS_GREEN);
+    } else if (t == 2) {
+        leds_off(LEDS_RED);
+        leds_on(LEDS_GREEN);
+    } else {
+        leds_on(LEDS_ALL);
+    }
+    ctimer_reset(&timer);
+}
 
 PROCESS(udp_server_process, "UDP server process");
 AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
@@ -59,7 +88,6 @@ AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
     static void
 tcpip_handler(void)
 {
-    char buf[MAX_PAYLOAD_LEN];
 
     if(uip_newdata()) {
         ((char *)uip_appdata)[uip_datalen()] = 0;
@@ -69,20 +97,14 @@ tcpip_handler(void)
         PRINTF("\n\r");
 
         char a [4];
-	sprintf(a, "%02x%02x%02x%02x", ((char *)uip_appdata)[3],
-((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
-	printf("a-%s\n\r", a);
-	unsigned int x = strtol(a,NULL,16);
-        utc_time.utc = x;
-        printf("%u utc: %lu \n\r",x, utc_time.utc);
-        utc_time.seconds = clock_seconds();
-        utc_time.local = clock_time();
-        printf("sys time %lu \n\r", utc_time.local);
-        printf("sys seconds %lu \n\r", utc_time.seconds);
-        uint32_t utc_new = utc_time.utc + (clock_seconds() - utc_time.seconds);
+        sprintf(a, "%02x%02x%02x%02x", ((char *)uip_appdata)[3],
+                ((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
+        printf("a-%s\n\r", a);
+        uint32_t x = strtol(a,NULL,16);
+        updateUtcTime(x);
+        uint32_t utc_new = getUtcTimeFromLocalTime();
         printf("updated UTC time %lx \n\r", utc_new);
         PRINTF("Responding with message: ");
-//        sprintf(buf, "%lx", utc_new);
 
         uip_udp_packet_sendto(server_conn, &utc_new, 4,&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
         /* Restore server connection to allow data from any node */
@@ -112,7 +134,7 @@ PROCESS_THREAD(udp_server_process, ev, data)
 #if UIP_CONF_ROUTER
     uip_ipaddr_t ipaddr;
 #endif /* UIP_CONF_ROUTER */
-
+    ctimer_set(&timer, CLOCK_SECOND/2,update_led,NULL);
     PROCESS_BEGIN();
     PRINTF("UDP server started\n\r");
 
