@@ -45,13 +45,20 @@
 
 static struct uip_udp_conn *server_conn;
 
+struct UTC {
+  uint32_t utc;
+  unsigned long seconds;
+  clock_time_t local;
+};
+
+static struct UTC utc_time;
+
 PROCESS(udp_server_process, "UDP server process");
 AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
 /*---------------------------------------------------------------------------*/
     static void
 tcpip_handler(void)
 {
-    static int seq_id;
     char buf[MAX_PAYLOAD_LEN];
 
     if(uip_newdata()) {
@@ -66,19 +73,18 @@ tcpip_handler(void)
 ((char *)uip_appdata)[2],((char *)uip_appdata)[1],((char *)uip_appdata)[0]);
 	printf("a-%s\n\r", a);
 	unsigned int x = strtol(a,NULL,16);
-        printf("%u\n\r",x);
-
-        clock_time_t sys_time1 = clock_time();//local time??
-
-        clock_set_seconds(x);
-        clock_time_t sys_time2 = clock_time();//local time??
-        printf("sys time1 %lu \n\r", sys_time1);
-        printf("sys time2 %lu \n\r", sys_time2);
+        utc_time.utc = x;
+        printf("%u utc: %lu \n\r",x, utc_time.utc);
+        utc_time.seconds = clock_seconds();
+        utc_time.local = clock_time();
+        printf("sys time %lu \n\r", utc_time.local);
+        printf("sys seconds %lu \n\r", utc_time.seconds);
+        uint32_t utc_new = utc_time.utc + (clock_seconds() - utc_time.seconds);
+        printf("updated UTC time %lx \n\r", utc_new);
         PRINTF("Responding with message: ");
-        sprintf(buf, "Hello from the server! (%d) %lu %lu", ++seq_id, sys_time1, sys_time2);
-        PRINTF("%s\n\r", buf);
+//        sprintf(buf, "%lx", utc_new);
 
-        uip_udp_packet_sendto(server_conn, buf, strlen(buf),&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
+        uip_udp_packet_sendto(server_conn, &utc_new, 4,&UIP_IP_BUF->srcipaddr, UIP_HTONS(47371));
         /* Restore server connection to allow data from any node */
         memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
     }
