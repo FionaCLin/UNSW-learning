@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fiona.sensor2">
-    <uses-feature
-        android:name="android.hardware.sensor.gyroscope"
-        android:required="true" />
+    package="com.fiona.assignment1">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

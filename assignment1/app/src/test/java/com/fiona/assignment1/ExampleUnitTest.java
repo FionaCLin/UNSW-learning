@@ -1,4 +1,4 @@
-package com.fiona.senors2;
+package com.fiona.assignment1;
 
 import org.junit.Test;
 
