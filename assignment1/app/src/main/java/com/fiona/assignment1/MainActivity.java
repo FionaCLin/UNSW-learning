@@ -15,10 +15,12 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private Handler mHandler = new Handler();
+    private Handler mHandler2 = new Handler();
     private double lastXPoint = 0;
 
     // Sensor
@@ -28,18 +30,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private LineGraphSeries<DataPoint> series;
     private GraphView graph;
-    private Viewport viewport;
 
-    private LineGraphSeries<DataPoint> series2r;
-    private LineGraphSeries<DataPoint> series2g;
-    private LineGraphSeries<DataPoint> series2b;
-    private GraphView graph2;
-    private Viewport viewport2;
-    private Random rnd = new Random();
-    private float val = 0;
+    private LineGraphSeries<DataPoint> fliteredSeries;
+    private GraphView fliteredGraph;
+    private double val = 0;
     private int troungCount = 0;
-
-    private double [] rgb = {0,0,0};
+    private boolean troug = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +44,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         graph = (GraphView) findViewById(R.id.graph);
         series = new LineGraphSeries<>(new DataPoint[]{});
+        initGraphView(series, graph);
+
+
+//        fliteredGraph = (GraphView) findViewById(R.id.graph2);
+//        fliteredSeries = new LineGraphSeries<>(new DataPoint[]{});
+//        initGraphView(fliteredSeries, fliteredGraph);
+
+
+        mSensorManager = (SensorManager) getApplicationContext().getSystemService(SENSOR_SERVICE);
+        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+
+        // TODO assignment spec required plot the data of last 5 sec no spec for the frequence
+        // should this be 10000 microsecond ??
+        mSensorManager.registerListener(this, mLight, 10000);
+
+
+        updateGraph();
+        updateTroungCount();
+    }
+
+    private void initGraphView(LineGraphSeries series, GraphView graph) {
         graph.addSeries(series);
 
-        viewport = graph.getViewport();
+        Viewport viewport = graph.getViewport();
         graph.onDataChanged(false, false);
 
         viewport.setXAxisBoundsManual(true);
@@ -63,71 +81,66 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewport.setScrollable(true);
         viewport.setScalable(true);
         viewport.setScalableY(true);
-
-
-        mSensorManager = (SensorManager) getApplicationContext().getSystemService(SENSOR_SERVICE);
-        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-
-
-        // TODO UPDATE the frequence as assignment spec required
-        mSensorManager.registerListener(this, mLight, 10000);
-
-        graph2 = (GraphView) findViewById(R.id.graph2);
-        series2r = new LineGraphSeries<>(new DataPoint[]{});
-        series2r.setColor(Color.RED);
-        graph .addSeries(series2r);
-
-        series2g = new LineGraphSeries<>(new DataPoint[]{});
-        series2g.setColor(Color.GREEN);
-        graph2.addSeries(series2g);
-
-        series2b = new LineGraphSeries<>(new DataPoint[]{});
-        series2b.setColor(Color.BLUE);
-        graph2.addSeries(series2b);
-
-        viewport2 = graph2.getViewport();
-        graph2.onDataChanged(false, false);
-
-        viewport2.setXAxisBoundsManual(true);
-        viewport2.setMinX(lastXPoint - 5);
-        viewport2.setMaxX(lastXPoint + 5);
-
-        viewport2.setYAxisBoundsStatus(Viewport.AxisBoundsStatus.AUTO_ADJUSTED);
-        viewport2.setMinY(0);
-        viewport2.setMaxY(40000);
-
-        viewport2.setScrollable(true);
-        viewport2.setScalable(true);
-        viewport2.setScalableY(true);
-
-        updateGraph();
     }
 
     private void updateGraph() {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                lastXPoint += 0.01;
+                lastXPoint += 0.1;
+
 
                 System.out.println(lastXPoint + "--" + val);
 
-                series.appendData(new DataPoint(lastXPoint, val), false, 1000);
-                series2r.appendData(new DataPoint(lastXPoint, rgb[2]), false, 1000);
+                series.appendData(new DataPoint(lastXPoint, val), false, 550);
 
-                viewport.setMinX(lastXPoint - 5);
-                viewport.setMaxX(lastXPoint + 0.25);
+                graph.getViewport().setMinX(lastXPoint - 5);
+                graph.getViewport().setMaxX(lastXPoint + 0.15);
 
-
-                series2b.appendData(new DataPoint(lastXPoint, rgb[0]), false, 1000);
-                series2g.appendData(new DataPoint(lastXPoint, rgb[1]), false, 1000);
-
-                viewport2.setMinX(lastXPoint - 5);
-                viewport2.setMaxX(lastXPoint + .25);
 
                 updateGraph();
             }
-        }, 10);
+        }, 100);
         // 0.1 second, sensor sample data period 0.01
+    }
+
+    private void updateTroungCount() {
+        mHandler2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateTroungCount();
+                if (lastXPoint < 5) {
+                    return;
+                }
+                Iterator<DataPoint> d = series.getValues(lastXPoint - 1, lastXPoint);
+                double [] stats = StatisticUtinity.getStats(d);
+
+
+                if (Math.abs(val - stats[3]) > stats[4]) {
+                    if (val >= stats[1]) {
+                        if (troug) troug = false;
+//                        fliteredSeries.appendData(new DataPoint(lastXPoint, 1), false, 550);
+                    } else if(val <= stats[0]) {
+//                        fliteredSeries.appendData(new DataPoint(lastXPoint, -1), false, 550);
+                        if (troug == false) {
+                            troungCount++;
+                            troug = true;
+                        }
+                    } else {
+                        if(troug) troug = false;
+//                        fliteredSeries.appendData(new DataPoint(lastXPoint, 0), false, 550);
+                    }
+                } else {
+                    if(troug) troug = false;
+//                    fliteredSeries.appendData(new DataPoint(lastXPoint, 0), false, 550);
+                }
+
+//                fliteredGraph.getViewport().setMinX(lastXPoint - 5);
+//                fliteredGraph.getViewport().setMaxX(lastXPoint + 0.15);
+
+            }
+        }, 100);
+        // 1 second, sensor sample data period 0.01
     }
 
     @Override
@@ -140,16 +153,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             String dis = "Light Sensor: " + this.val + " lux on " + lastXPoint;
             TextView sensorVal = findViewById(R.id.sensorVal);
             sensorVal.setText(dis);
+            String tCount = " Troung Count: " + troungCount + " on " + lastXPoint + "\n" + sensorEvent.values[0]
+                    + " " + sensorEvent.values[1] + " " + sensorEvent.values[2];
 
-            int len =  sensorEvent.values.length;
-            this.troungCount = len;
-            String tCount = "Troung Count: " + len + " on " + lastXPoint + "\n"+sensorEvent.values[0]
-                    +" "+sensorEvent.values[1] + " "+sensorEvent.values[2];
-
-
-            this.rgb[0] = sensorEvent.values[0];
-            this.rgb[1] = sensorEvent.values[1];
-            this.rgb[2] = sensorEvent.values[2];
 
             TextView troungCount = findViewById(R.id.troungCount);
             troungCount.setText(tCount);
