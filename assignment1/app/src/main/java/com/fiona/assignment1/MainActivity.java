@@ -1,6 +1,5 @@
 package com.fiona.assignment1;
 
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,7 +14,7 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -31,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private LineGraphSeries<DataPoint> series;
     private GraphView graph;
 
-    private LineGraphSeries<DataPoint> fliteredSeries;
-    private GraphView fliteredGraph;
     private double val = 0;
     private int troungCount = 0;
     private boolean troug = false;
@@ -45,11 +42,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         graph = (GraphView) findViewById(R.id.graph);
         series = new LineGraphSeries<>(new DataPoint[]{});
         initGraphView(series, graph);
-
-
-//        fliteredGraph = (GraphView) findViewById(R.id.graph2);
-//        fliteredSeries = new LineGraphSeries<>(new DataPoint[]{});
-//        initGraphView(fliteredSeries, fliteredGraph);
 
 
         mSensorManager = (SensorManager) getApplicationContext().getSystemService(SENSOR_SERVICE);
@@ -113,34 +105,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     return;
                 }
                 Iterator<DataPoint> d = series.getValues(lastXPoint - 1, lastXPoint);
-                double [] stats = StatisticUtinity.getStats(d);
+                double [] stats = getStats(d);
 
 
                 if (Math.abs(val - stats[3]) > stats[4]) {
                     if (val >= stats[1]) {
                         if (troug) troug = false;
-//                        fliteredSeries.appendData(new DataPoint(lastXPoint, 1), false, 550);
                     } else if(val <= stats[0]) {
-//                        fliteredSeries.appendData(new DataPoint(lastXPoint, -1), false, 550);
                         if (troug == false) {
                             troungCount++;
                             troug = true;
                         }
                     } else {
                         if(troug) troug = false;
-//                        fliteredSeries.appendData(new DataPoint(lastXPoint, 0), false, 550);
                     }
                 } else {
                     if(troug) troug = false;
-//                    fliteredSeries.appendData(new DataPoint(lastXPoint, 0), false, 550);
                 }
-
-//                fliteredGraph.getViewport().setMinX(lastXPoint - 5);
-//                fliteredGraph.getViewport().setMaxX(lastXPoint + 0.15);
 
             }
         }, 100);
-        // 1 second, sensor sample data period 0.01
+        // 0.1 second, sensor sample data period 0.01
     }
 
     @Override
@@ -167,5 +152,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    public static double[] getStats(Iterator<DataPoint> it) {
+        double sum = 0.0, standardDeviation = 0.0;
+        double[] stats = new double[5];
+        ArrayList<Double> numArray = new ArrayList<>();
 
+        while (it.hasNext()) {
+            numArray.add(it.next().getY());
+        }
+        double min = numArray.get(0);
+        double max = min;
+        for (double num : numArray) {
+            if (min > num) min = num;
+            if (max < num) max = num;
+            sum += num;
+            System.out.println(num + "  " + numArray.size() + " " + sum);
+        }
+
+        double mean = sum / numArray.size();
+
+        for (double num : numArray) {
+            standardDeviation += Math.pow(num - mean, 2);
+            System.out.println(num + "  " + numArray.size() + " sd " + standardDeviation);
+        }
+        stats[0] = min;
+        stats[1] = max;
+        stats[2] = sum;
+        stats[3] = mean;
+        stats[4] = Math.sqrt(standardDeviation / numArray.size());
+        return stats;
+    }
 }
