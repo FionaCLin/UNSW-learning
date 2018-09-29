@@ -8,46 +8,45 @@
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
-        android:layout_width="349dp"
-        android:layout_height="135dp"
-        app:layout_constraintBottom_toTopOf="@+id/graph2"
+        android:layout_width="319dp"
+        android:layout_height="203dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph2"
-        android:layout_width="match_parent"
-        android:layout_height="155dp"
-        android:layout_marginTop="196dp"
+        android:layout_width="330dp"
+        android:layout_height="143dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/graph" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/sensorVal"
-        android:layout_width="180dp"
-        android:layout_height="84dp"
+        android:layout_width="287dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/graph2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/troungCount" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/troungCount"
-        android:layout_width="180dp"
-        android:layout_height="79dp"
+        android:layout_width="288dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/graph2"
-        app:layout_constraintEnd_toEndOf="@+id/sensorVal"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/sensorVal"
-        app:layout_constraintTop_toBottomOf="@+id/graph"
-        app:layout_constraintVertical_bias="0.159" />
+        app:layout_constraintBottom_toTopOf="@+id/sensorVal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
 
 </android.support.constraint.ConstraintLayout>
