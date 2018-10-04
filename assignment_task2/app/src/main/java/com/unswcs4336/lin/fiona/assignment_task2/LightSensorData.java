@@ -40,27 +40,22 @@ public class LightSensorData {
     }
 
     public int getTroungCount(double end, double rate) {
-        double sum = 0.0, standardDeviation = 0.0;
 
         int troungCount = 0;
         ArrayList<Map.Entry<Double, Double>> dset = new ArrayList<>();
         for (Map.Entry<Double, Double> e : data.entrySet()) {
             if (e.getKey() > end - 5 && e.getKey() <= end) {
-                sum += e.getValue();
                 dset.add(e);
             }
         }
 
 
-        stats[SUM] = sum;
-        stats[MEAN] = sum / dset.size();
 
         double[] sort = new double[dset.size()];
         // get SD
         int i = 0;
         for (Map.Entry<Double, Double> num : dset) {
             sort[i++] = num.getValue();
-            standardDeviation += Math.pow(num.getValue() - stats[MEAN], 2);
         }
 
         Arrays.sort(sort);
@@ -80,12 +75,8 @@ public class LightSensorData {
         // filter signal
         i = 0;
         for (Map.Entry<Double, Double> num : dset) {
-//            Log.d(TAG, "x: " + num.getKey() + " y: " + num.getValue() + " " + dset.size() +
-//                    " threshold " + threshold + " median " + stats[MEDIAN] + " mean " +
-//                    stats[MEAN] + " rate*median " + stats[MEDIAN] * rate + " rate*mean " + stats[MEAN] * rate);
             if (num.getValue() < threshold) {
                 filter[i] = -1;
-                Log.d(TAG, "filter y " + filter[i]);
             } else {
                 filter[i] = 0;
             }
@@ -96,7 +87,6 @@ public class LightSensorData {
         for (int j = 1, ii = dset.size(); j < ii; j++) {
             if (filter[j - 1] > filter[j]) {
                 troungCount++;
-                Log.d(TAG, "filter j" + j + " filter[j] " + filter[j] + "dset[j]" + dset.get(j).toString() + " count: " + troungCount);
             }
         }
 
