@@ -7,15 +7,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Predicate;
-
-import static android.content.ContentValues.TAG;
 
 public class LightSensorData {
-    final static int SUM = 0, MEAN = 1, SD = 2, MEDIAN = 3;
 
     private TreeMap<Double, Double> data;
-    double[] stats = new double[4];
+    private double median;
 
     //constructors
     public LightSensorData() {
@@ -49,10 +45,8 @@ public class LightSensorData {
             }
         }
 
-
-
         double[] sort = new double[dset.size()];
-        // get SD
+        //sort the data and find the median
         int i = 0;
         for (Map.Entry<Double, Double> num : dset) {
             sort[i++] = num.getValue();
@@ -61,16 +55,16 @@ public class LightSensorData {
         Arrays.sort(sort);
         int median = dset.size() / 2;
 
-        stats[MEDIAN] = sort[median--];
+        this.median = sort[median--];
 
         if (dset.size() % 2 == 0) {
-            stats[MEDIAN] += sort[median];
-            stats[MEDIAN] /= 2;
+            this.median += sort[median];
+            this.median /= 2;
         }
 
 
         // calculate threshold
-        double threshold = rate * stats[MEDIAN];
+        double threshold = rate * this.median;
         double[] filter = new double[dset.size()];
         // filter signal
         i = 0;
