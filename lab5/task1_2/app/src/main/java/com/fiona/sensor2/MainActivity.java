@@ -105,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 char label = 'x';
                 for (int i = 0; i < 3; i++) {
-                    angelResult += "\nangle" + label + ": " + angle[i] + "\n-Degree->" + angleD[i];
+                    angelResult += String.format("\nAngle along the %s-axis: %f\nTo Degree: %f", label , angle[i], angleD[i]);
                     label++;
                 }
 
-                angelResult += "\nangela-->" + a + "\n-Degree->" + angela + "(" + angela % 360 + ")";
+                angelResult += String.format("\nangela: %f \nTo Degree->: %f (%f)", a, angela, (angela % 360));
                 display.setText(angelResult);
             }
 
