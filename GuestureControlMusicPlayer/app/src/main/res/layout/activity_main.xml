@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Music Palyer"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="325dp"
+        android:layout_height="275dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textview" />
+
+    <TextView
+        android:id="@+id/troungCount"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/timing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
+
+    <TextView
+        android:id="@+id/timing"
+        android:layout_width="115dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignEnd="@+id/backward"
+        android:layout_alignRight="@+id/backward"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Small Text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toStartOf="@+id/duration"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/songname"
+        app:layout_constraintTop_toBottomOf="@+id/troungCount"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/songname"
+        android:layout_width="115dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/seekBar"
+        android:text="Small Text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/timing"
+        app:layout_constraintEnd_toStartOf="@+id/timing"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timing"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="115dp"
+        android:layout_height="25dp"
+        android:layout_alignBaseline="@+id/songname"
+        android:layout_alignBottom="@+id/songname"
+        android:layout_centerHorizontal="true"
+        android:text="Medium Text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/timing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/timing"
+        app:layout_constraintTop_toTopOf="@+id/timing"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="300dp"
+        android:layout_height="16dp"
+        android:layout_above="@+id/forward"
+        android:layout_alignStart="@+id/textview"
+        android:layout_alignLeft="@+id/textview"
+        android:layout_alignEnd="@+id/textview"
+        android:layout_alignRight="@+id/textview"
+        app:layout_constraintBottom_toTopOf="@+id/play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timing" />
+
+    <Button
+        android:id="@+id/forward"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/forward"
+        app:layout_constraintBottom_toBottomOf="@+id/pause"
+        app:layout_constraintEnd_toStartOf="@+id/pause"
+        app:layout_constraintStart_toEndOf="@+id/pause"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <!--<Button-->
+    <!--android:id="@+id/stop"-->
+    <!--android:layout_width="60dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignTop="@+id/pause"-->
+    <!--android:layout_toEndOf="@+id/pause"-->
+    <!--android:layout_toRightOf="@+id/pause"-->
+    <!--android:text="@string/stop"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/backward"-->
+    <!--app:layout_constraintEnd_toStartOf="@+id/guideline4"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/backward"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/backward"-->
+    <!--app:layout_constraintVertical_bias="0.0" />-->
+
+
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/pause"
+        app:layout_constraintBottom_toBottomOf="@+id/forward"
+        app:layout_constraintEnd_toStartOf="@+id/play"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/forward"
+        app:layout_constraintTop_toTopOf="@+id/forward"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/pause"
+        android:layout_toEndOf="@+id/pause"
+        android:layout_toRightOf="@+id/pause"
+        android:text="@string/play"
+        app:layout_constraintBottom_toBottomOf="@+id/pause"
+        app:layout_constraintEnd_toStartOf="@+id/backward"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pause"
+        app:layout_constraintTop_toTopOf="@+id/pause"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <Button
+        android:id="@+id/backward"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/play"
+        android:layout_toEndOf="@+id/play"
+        android:layout_toRightOf="@+id/play"
+        android:text="@string/rewind"
+        app:layout_constraintBottom_toBottomOf="@+id/play"
+        app:layout_constraintEnd_toStartOf="@+id/stop"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/play"
+        app:layout_constraintTop_toTopOf="@+id/play"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/pause"
+        android:layout_toEndOf="@+id/pause"
+        android:layout_toRightOf="@+id/pause"
+        android:text="@string/stop"
+        app:layout_constraintBottom_toBottomOf="@+id/backward"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/backward"
+        app:layout_constraintTop_toTopOf="@+id/backward"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+
+</android.support.constraint.ConstraintLayout>

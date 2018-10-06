@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">assignment_task3</string>
+    <string name="play"><![CDATA[>]]></string>
+    <string name="stop"><![CDATA[x]]></string>
+    <string name="rewind"><![CDATA[<<]]></string>
+    <string name="forward"><![CDATA[>>]]></string>
+    <string name="pause">||</string>
+</resources>
