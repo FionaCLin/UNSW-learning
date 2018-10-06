@@ -1,6 +1,5 @@
 package com.unswcs4336.lin.fiona.assignment_task2;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;

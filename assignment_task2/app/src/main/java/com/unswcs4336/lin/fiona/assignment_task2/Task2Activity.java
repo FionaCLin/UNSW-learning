@@ -1,6 +1,5 @@
 package com.unswcs4336.lin.fiona.assignment_task2;
 
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.widget.TextView;
 
 
@@ -19,7 +17,6 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.NumberFormat;
-import java.util.Iterator;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;

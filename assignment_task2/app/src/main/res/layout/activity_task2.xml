@@ -8,9 +8,10 @@
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
-        android:layout_width="319dp"
-        android:layout_height="376dp"
+        android:layout_width="325dp"
+        android:layout_height="350dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/troungCount"
         app:layout_constraintEnd_toEndOf="parent"
