@@ -78,7 +78,7 @@ public class ConnectingThread extends Thread {
 //            manageMyConnectedSocket(mmSocket);
     }
 //    // Call this from the main activity to send data to the remote device.
-//    public void write(byte[] bytes) {
+    public void write(byte[] bytes) {
 //        try {
 //            mmOutStream.write(bytes);
 //
@@ -98,7 +98,7 @@ public class ConnectingThread extends Thread {
 //            writeErrorMsg.setData(bundle);
 //            mHandler.sendMessage(writeErrorMsg);
 //        }
-//    }
+    }
 
     // Closes the client socket and causes the thread to finish.
     public void cancel() {

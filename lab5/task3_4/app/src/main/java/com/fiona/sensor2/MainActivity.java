@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView display = (TextView) findViewById(R.id.rotation);
+                TextView display = (TextView) findViewById(R.id.heading);
                 String dis = "Rotation: \n" + angela % 360;
                 display.setText(dis);
             }
@@ -127,14 +126,39 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
         TextView display = (TextView) findViewById(R.id.display);
+        TextView heading = (TextView) findViewById(R.id.heading);
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             //axies on magnetic field，unit micro-Tesla(AKA uT or Gauss), 1Tesla=10000Gauss
 
+            String result = "Sensor value  on this phones: ";
 
-            // 磁场感应器的最大量程
-            System.out.println("event.sensor.getMaximumRange()----------->"
-                    + event.sensor.getMaximumRange());
+            char label = 'x';
+            for (int i = 0; i < 3; i++) {
+                result += String.format("\nMagnetic field along the %s-axis: %f", label, event.values[i]);
+                label++;
+            }
 
+            display.setText(result);
+
+    // lab5 spec Question: you can obtain true heading by adding declination angle to it (see lecture notes).??
+            double direction = getHeading(event.values[0], event.values[1], event.values[2]);
+            String dis = String.format("Exact\nHeading: %f\nRound Value\n%d", direction, Math.round(direction));
+            heading.setText(dis);
+        }
+    }
+
+    // does this calculation right based on the part from spec?
+    private double getHeading(double x, double y, double z) {
+        if (x > 0) {
+            return Math.atan(y / x) * 180 / Math.PI + 270;
+        } else if (x < 0) {
+            return Math.atan(y / x) * 180 / Math.PI + 90;
+        } else if (x - 0 < 0.1 && y > 0) {
+            return 0;
+        } else if (x - 0 < 0.1 && y > 0) {
+            return 180;
+        } else {
+            return Double.NaN;
         }
     }
 

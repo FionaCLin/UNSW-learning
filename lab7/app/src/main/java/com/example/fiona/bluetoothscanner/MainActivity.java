@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.send = (Button) findViewById(R.id.send);
-        this.editMsg = (EditText) findViewById(R.id.editText);
+//        this.send = (Button) findViewById(R.id.send);
+//        this.editMsg = (EditText) findViewById(R.id.editText);
 
         editMsg.setInputType(EditorInfo.TYPE_NULL);
         send.setEnabled(false);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String msg = editMsg.getText().toString();
 
-//                sendMessage(msg, ); /* my method to call new intent or activity */
+                sendMessage(msg); /* my method to call new intent or activity */
             }
         });
 
@@ -159,13 +159,15 @@ public class MainActivity extends AppCompatActivity {
 
         BluetoothDevice pairDevice = btAdapter.getRemoteDevice(macaddr);
         pairDevice.createBond();
-        // Initiate a connection request in a separate thread
-//        thread = new ConnectingThread(macaddr, MY_UUID, btAdapter);
-//        thread.run();
+        thread = new ConnectingThread(macaddr, MY_UUID, btAdapter);
     }
 
-    private void sendMessage(String msg, String macaddr) {
-        Toast.makeText(this, msg + "\n" + macaddr, Toast.LENGTH_SHORT).show();
+    private void sendMessage(String msg) {
+
+        Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
+        // Initiate a connection request in a separate thread
+        // need to exchange the UUID and establish the socket connection with the same uuid
+//        thread.run();
     }
 
     private void discover() {
