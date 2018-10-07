@@ -93,9 +93,9 @@ public class Activity extends AppCompatActivity {
                 results = wifi.getScanResults();
                 size = results.size();
                 unregisterReceiver(this);
-
             }
         }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+
     }
 
     public void inputCredential(final ScanResult accesspoint) {
@@ -168,9 +168,10 @@ public class Activity extends AppCompatActivity {
 
     public void myClick() {
         arrayList.clear();
-//        wifi.startScan();
+        wifi.startScan();
         wifi_res.clear();
         results = wifi.getScanResults();
+
         int count = 0;
         int size = 5;
         try
