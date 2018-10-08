@@ -73,13 +73,13 @@ public class Main extends AppCompatActivity implements LocationListener {
 
             return;
         } else {
+//
+//
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
+//            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
-            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-
-//            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
-//            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
+            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
             if (location != null){
 
                 Date date = new Date(location.getTime());

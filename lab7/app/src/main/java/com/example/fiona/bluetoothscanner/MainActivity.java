@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final UUID MY_UUID = UUID.randomUUID();
 
-    private Button send = null;
-    private EditText editMsg = null;
+    private Button send ;
+    private EditText editMsg ;
     private ArrayList<String> devices = new ArrayList<>();
     private ConnectingThread thread;
 
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        this.send = (Button) findViewById(R.id.send);
-//        this.editMsg = (EditText) findViewById(R.id.editText);
+        send = (Button) findViewById(R.id.send);
+        editMsg = (EditText) findViewById(R.id.editText);
 
         editMsg.setInputType(EditorInfo.TYPE_NULL);
         send.setEnabled(false);
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
         BluetoothDevice pairDevice = btAdapter.getRemoteDevice(macaddr);
         pairDevice.createBond();
-        thread = new ConnectingThread(macaddr, MY_UUID, btAdapter);
+//        thread = new ConnectingThread(macaddr, MY_UUID, btAdapter);
     }
 
     private void sendMessage(String msg) {
@@ -171,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void discover() {
+        editMsg.setInputType(EditorInfo.TYPE_NULL);
+        send.setEnabled(false);
         if (btAdapter.isDiscovering()) {
             btAdapter.cancelDiscovery();
             Log.d(TAG, "btnDiscover: canceling discovery");

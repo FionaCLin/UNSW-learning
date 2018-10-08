@@ -76,15 +76,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.registerListener(this, this.mMagneticSensor,
                 SensorManager.SENSOR_DELAY_NORMAL);
 
-        getLoc();
-        if (loc != null) {
-            geoField = new GeomagneticField(
-                    Double.valueOf(loc.getLatitude()).floatValue(),
-                    Double.valueOf(loc.getLongitude()).floatValue(),
-                    Double.valueOf(loc.getAltitude()).floatValue(),
-                    System.currentTimeMillis()
-            );
-        }
+
     }
 
 
@@ -105,13 +97,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //            loc = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+            loc = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+
             if (loc != null) {
 
                 Date date = new Date(loc.getTime());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dis = String.format("Date/Time: %s\nProvider: %s\nAccuracy: %f\nAltitude: %f\nLatitude: %f\nSpeed: %f",
                         sdf.format(date), loc.getProvider(), loc.getAccuracy(), loc.getAltitude(), loc.getLatitude(), loc.getSpeed());
-                Toast.makeText(getBaseContext(), dis, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(), dis, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -123,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public final void onSensorChanged(SensorEvent event) {
+
+        getGeoField();
+
         // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
         TextView display = (TextView) findViewById(R.id.display);
@@ -140,10 +137,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             display.setText(result);
 
-    // lab5 spec Question: you can obtain true heading by adding declination angle to it (see lecture notes).??
+            // lab5 spec Question: you can obtain true heading by adding declination angle to it (see lecture notes).??
             double direction = getHeading(event.values[0], event.values[1], event.values[2]);
-            String dis = String.format("Exact\nHeading: %f\nRound Value\n%d", direction, Math.round(direction));
+            double declination = 0;
+            if (direction != Double.NaN && geoField != null) {
+                declination = geoField.getDeclination();
+                direction += declination;
+
+            }
+            String dis = String.format("Declination: %f\nHeading: %f\nExact\nHeading: %f\nRound Value\n%d", declination, direction, direction += declination, Math.round(direction));
             heading.setText(dis);
+        }
+    }
+
+    private void getGeoField() {
+        getLoc();
+        if (loc != null) {
+            geoField = new GeomagneticField(
+                    Double.valueOf(loc.getLatitude()).floatValue(),
+                    Double.valueOf(loc.getLongitude()).floatValue(),
+                    Double.valueOf(loc.getAltitude()).floatValue(),
+                    System.currentTimeMillis()
+            );
         }
     }
 
@@ -193,20 +208,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onLocationChanged(Location location) {
         this.loc = location;
-        final TextView status = (TextView) findViewById(R.id.display);
-        if (location != null) {
-
-            Date date = new Date(location.getTime());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dis = "My current location at Date/Time= " + sdf.format(date) + " is:\n";
-            dis += "Longtitud: " + location.getLongitude() + "\n";
-            dis += "Latitude: " + location.getLatitude() + "\n";
-            dis += "My Speed: " + location.getSpeed() + "\n";
-            dis += "GPS Accuracy: " + location.getAccuracy() + "\n";
-
-            Toast.makeText(getBaseContext(), dis, Toast.LENGTH_LONG).show();
-
-        }
     }
 
 }
