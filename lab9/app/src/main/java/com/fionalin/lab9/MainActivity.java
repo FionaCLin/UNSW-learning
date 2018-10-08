@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements  LocationListener {
+public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
     private static final long MIN_TIME_BW_UPDATES = 100 * 60 * 1;
 
@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements  LocationListener
                     }
                 }
             }
+            fw.write("Date\t\t\tLat\tLoc\tSSID\t\t\tSignal Strength\n");
             size = wifi_res.size();
             for (String k : wifi_res.keySet()) {
                 ScanResult ap = wifi_res.get(k);
@@ -206,8 +207,14 @@ public class MainActivity extends AppCompatActivity implements  LocationListener
                     arrayList.add(dis);
                     SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 
-                    String writeEntry = ap.SSID + " " + ap.level;
-                    dis += f.format(new Date()) + " " + ap.capabilities.replace("[", "").split("-")[0] + '\n';
+                    String writeEntry = f.format(new Date(ap.timestamp));
+
+                    getLoc();
+                    if (loc != null) {
+                        writeEntry += String.format(" %.2f %.2f ", loc.getLatitude(), loc.getLongitude());
+                    }
+
+                    writeEntry += String.format("%1$-30s %2$10d\n", ap.SSID, ap.level);
 
                     fw.write(writeEntry);
                 }
