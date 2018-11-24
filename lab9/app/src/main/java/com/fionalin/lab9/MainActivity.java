@@ -41,6 +41,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static final long MIN_TIME_BW_UPDATES = 100 * 60 * 1;
 
 
+//    Based on the Android documents, there are five data storage options:
+//    1. Shared Preferences, for store private primitive data in key-value pairs.
+//    2. Internal Storage, for store private data on the device memory.
+//    3. External Storage, for store public data on the shared external storage.
+//    4. SQLite Databases, for store structured data in a private database.
+//    5. Network Connection, for store data on the web with your own network
+//    server.
+//    We will learn about first three in this lab and the last two in the next lab.
+//
+
     private EditText editText;
     private Button save;
     private SharedPreferences sharedPref;

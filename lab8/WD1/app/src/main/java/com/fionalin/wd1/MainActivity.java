@@ -74,6 +74,25 @@ public class MainActivity extends AppCompatActivity {
                 String device_name = ((TextView) view).getText().toString().split("\n")[0].split(": ")[1];
                 addr = ((TextView) view).getText().toString().split("\n")[1].split(": ")[1];
                 String dis = "Connect with "+device_name+" in 26 secs";
+                //ESSID
+//The ESSID is the identifying name of an 802.11b wireless network. By specifying the ESSID in your client setup is
+// how you make sure that you connect to your wireless network instead of your neighbors network by mistake.
+
+    //association
+//An access point acts as hub between station(client device) and other devices on the network. Before the station can send traffic through an access point, it must have established a connection state.
+//
+//There are three 802.11 connection states:
+//
+//State 1: Unauthenticated and Unassociated
+//
+//State 2: Authenticated, Unassociated
+//
+//State 3: Authenticated, Associated
+//
+//The station must be in an authenticated and associated state before connection is established.
+//
+
+
 //// Is that ok A confirmation dialog showing?
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 //                alertDialogBuilder

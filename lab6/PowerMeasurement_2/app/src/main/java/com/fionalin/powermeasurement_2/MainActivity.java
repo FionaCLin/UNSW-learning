@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private double finalLevel;
     private double consume;
     private String state;
-    private int mins = 10;
+    private int mins = 5;
     private boolean[] tests = {true, true, true};
     private int test = -1;
     private String result = "";
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             TextView status = (TextView) findViewById(R.id.status);
-            finalLevel = calBatteryLevel();
-            consume = finalLevel - initLevel;
+
+            consume = calBatteryLevel()- initLevel;
             String dis = String.format("%s for %d minutes:\n\nInitial level of battery: %f %%\n\nFinal level: %f %%\n\nConsumed battery: %f%%", state, mins, initLevel, finalLevel, consume);
             result += ('\n' + dis);
             status.setText(result);

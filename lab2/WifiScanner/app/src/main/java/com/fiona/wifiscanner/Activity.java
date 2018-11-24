@@ -149,21 +149,22 @@ public class Activity extends AppCompatActivity {
         config.SSID= "\""+accesspoint.SSID+"\"";
 
         config.preSharedKey = "\""+pwd+"\"";
-//                        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-//                        config.status = WifiConfiguration.Status.ENABLED;
-//                        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
-//                        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X);
-//                        enterpriseConfig.setIdentity(username.getText().toString());
-//                        enterpriseConfig.setPassword(password.getText().toString());
-//                        enterpriseConfig.setEapMethod(WifiEnterpriseConfig.Eap.PEAP);
-//                        config.enterpriseConfig = enterpriseConfig;
+
+        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        config.status = WifiConfiguration.Status.ENABLED;
+        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
+        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X);
+        enterpriseConfig.setIdentity(user);
+        enterpriseConfig.setPassword(pwd);
+        enterpriseConfig.setEapMethod(WifiEnterpriseConfig.Eap.PEAP);
+        config.enterpriseConfig = enterpriseConfig;
 
         int netId = wifi.addNetwork(config);
         wifi.disconnect();
         wifi.enableNetwork(netId,true);
         wifi.reconnect();
         wifi.saveConfiguration();
-    }
+}
 
 
     public void myClick() {
