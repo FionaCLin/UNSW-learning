@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block body_contents %}
+
+<div class="jumbotron text-center">
+  <h1>Welcome To UNSWtalk</h1>
+  <p class="lead">This application is built on the Python Flask framework and is the focus for COMP2041 Assignment2
+  </p>
+  {% if session.logged_in == NULL %}
+  <a href="/register" class="btn btn-primary btn-lg">Register</a>
+  <a href="/login" class="btn btn-success btn-lg">Login</a>
+  {% endif %}
+</div>
+{% endblock %}

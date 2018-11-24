@@ -1,0 +1,138 @@
+{% extends "base.html" %} {% block body_contents %} {% if ff_list is defined and ff_list|length > 0 %}
+<h1>People You May Know
+</h1>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner " role="listbox ">
+    {% for f in ff_list%}
+    <!-- Wrapper for slides -->
+
+    {% if f == ff_list[0] %}
+    <div class="item active">
+      {% else %}
+      <div class="item">
+        {% endif %}
+        <div class="col-sm-5 col-md-4">
+          <dl class="dl-horizontal">
+            <dd>
+            </dd>
+            <dt>Full Name</dt>
+            <dd> {{f['full_name']}}
+            </dd>
+            <dt>DOB</dt>
+            <dd> {{f['birthday']}}
+            </dd>
+            <dt>Email</dt>
+            <dd> {{f['email']}}
+            </dd>
+            <dt>Home Suburb</dt>
+            <dd> {{f['home_suburb']}}
+            </dd>
+            <dt>ZID</dt>
+            <dd> {{f['zid']}}
+            </dd>
+            <dt>Program</dt>
+            <dd> {{f['program']}}
+            </dd>
+          </dl>
+          <a class="btn btn-success col-sm-10 col-md-10" aria-label="Right Align" href="#">Friend Request</a>
+        </div>
+        <div class="col-sm-5 col-md-4">
+          <a href="{{url_for( 'index')}}profile/{{f[ 'zid']}}" class="col-sm-3 col-md-3">
+            <img src="{{url_for('img',id=f[ 'zid'])}}" alt="{{f[ 'full_name']}}_avatar">
+
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+  {%endif%}
+  <h2>Friends
+    <div id="pagingControls"></div>
+  </h2>
+  <div class="list-group">
+    {% for friend in friends %}
+    <div class="list-group-item">
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <a href="{{url_for( 'index')}}profile/{{friend[ 'zid']}}">
+            <img src="{{url_for('img',id=friend[ 'zid'])}}" alt="{{friend[ 'full_name']}}_avatar">
+          </a>
+          <dl>
+            <dt>Full Name</dt>
+            <dd> {{friend['full_name']}}
+            </dd>
+            <dt>DOB</dt>
+            <dd> {{friend['birthday']}}
+            </dd>
+            <dt>Email</dt>
+            <dd> {{friend['email']}}
+            </dd>
+            <dt>Home Suburb</dt>
+            <dd> {{friend['home_suburb']}}
+            </dd>
+            <dt>ZID</dt>
+            <dd> {{friend['zid']}}
+            </dd>
+            <dt>Program</dt>
+            <dd> {{friend['program']}}
+            </dd>
+
+          </dl>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+
+
+    var Imtech = {};
+    Imtech.Pager = function () {
+      this.paragraphsPerPage = 3;
+      this.currentPage = 1;
+      this.pagingControlsContainer = '#pagingControls';
+      this.pagingContainerPath = '.list-group';
+      this.numPages = function () {
+        var numPages = 0;
+        if (this.paragraphs != null && this.paragraphsPerPage != null) {
+          numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+        }
+        return numPages;
+      };
+      this.showPage = function (page) {
+        this.currentPage = page;
+        var html = '';
+        this.paragraphs.slice((page - 1) * this.paragraphsPerPage,
+          ((page - 1) * this.paragraphsPerPage) + this.paragraphsPerPage).each(function () {
+            html += '<div>' + $(this).html() + '</div>';
+          });
+        $(this.pagingContainerPath).html(html);
+        renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
+      }
+      var renderControls = function (container, currentPage, numPages) {
+        var pagingControls = '<ul class="pagination pagination-lg">';
+        for (var i = 1; i <= numPages; i++) {
+          if (i != currentPage) {
+            pagingControls += '<li><a href="#" onclick="pager.showPage(' + i + '); return false;">' + i + '</a></li>';
+          } else {
+            pagingControls += '<li class="active"><a href="#">' + i + '</a></li>';
+          }
+        }
+        pagingControls += '</ul>';
+        $(container).html(pagingControls);
+      }
+    }
+
+    var pager = new Imtech.Pager();
+    $(document).ready(function () {
+      pager.paragraphsPerPage = 3; // set amount elements per page
+      pager.pagingContainer = $('.list-group'); // set of main container
+      pager.paragraphs = $('.list-group-item', pager.pagingContainer); // set of required containers
+      console.log(pager.paragraphs)
+      pager.showPage(1);
+    });
+
+  </script> {% endblock %}

@@ -1,0 +1,124 @@
+ {% extends 'base.html' %} {% block body_contents %}
+
+
+
+
+<div class="row">
+  <div class="col-ms-8 col-md-8 ml-4">
+    <h2>My Posts</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-ms-8 col-md-8 ml-8">
+    <a class="btn btn-success" href="{{url_for('add_post')}}">Create Post</a>
+  </div>
+  <form class="navbar-form navbar-left form-inline my-6 my-lg-0" action="{{url_for('findposts')}}" method="post">
+    <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Enter keyword to search post" aria-label="Search">
+    <button class="btn btn-outline-success my-6 my-sm-0" type="submit">Search</button>
+  </form>
+</div>
+<br>
+<div class="container">
+  <div class="panel-group" id="accordion">
+    {% for post in posts%}
+    <div class="page-control">
+
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <p>
+              {% for m in post['message'] %} {% if m == "<br>" %}
+            </p>
+            <p>
+              {% elif m in post['user']%}
+              <a href="{{url_for('index')}}profile/{{m}}">@{{post['user'][m]}}</a>
+              {% else %} {{m}} {% endif %} {% endfor%}
+            </p>
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-1">
+            {% if 'latitude' in post %}
+            <a href="https://www.google.com.au/maps/@{{post['latitude'][1:]}},{{post['longitude'][1:]}},17z" target="_blank" class="pull-right">
+              <span class="glyphicon glyphicon-map-marker" data-toggle="tooltip" title="Click to find the location:{{post['latitude']}}, {{post['longitude']}}"
+                aria-hidden="true"></span>
+            </a>
+            {% endif %}
+          </div>
+          <div class="col-sm-1">
+            <a data-toggle="tooltip" title="view detail" href="{{url_for('post', id=post['id'])}}">
+              <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+            </a>
+          </div>
+          <div class="col-sm-4">
+            <span>Date: {{post['time'][0:10]}} Time: {{post['time'][11:16]}}</span>
+          </div>
+          <div class="col-sm-4">
+            <p class="pull-right">From:
+              <a href="{{url_for('profile', zid = post['from'][1:])}}">{{post['user'][post['from'][1:]]}}</a>
+            </p>
+          </div>
+          <div class="col-sm-1">
+            <a href="{{url_for('dlt_post', id=post['id'])}}" data="{{post['id']}}">
+              <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete this post" aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+    </div>
+    {% endfor%}
+  </div>
+  <h2><div id="pagingControls"></div> </h2>
+
+</div>
+<script type="text/javascript">
+
+
+var Imtech = {};
+Imtech.Pager = function() {
+    this.paragraphsPerPage = 3;
+    this.currentPage = 1;
+    this.pagingControlsContainer = '#pagingControls';
+    this.pagingContainerPath = '#accordion';
+    this.numPages = function() {
+        var numPages = 0;
+        if (this.paragraphs != null && this.paragraphsPerPage != null) {
+            numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+        }
+        return numPages;
+    };
+    this.showPage = function(page) {
+        this.currentPage = page;
+        var html = '';
+        this.paragraphs.slice((page-1) * this.paragraphsPerPage,
+            ((page-1)*this.paragraphsPerPage) + this.paragraphsPerPage).each(function() {
+            html += '<div>' + $(this).html() + '</div>';
+        });
+        $(this.pagingContainerPath).html(html);
+        renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
+    }
+    var renderControls = function(container, currentPage, numPages) {
+        var pagingControls = '<ul class="pagination pagination-lg">';
+        for (var i = 1; i <= numPages; i++) {
+            if (i != currentPage) {
+                pagingControls += '<li><a href="#" onclick="pager.showPage(' + i + '); return false;">' + i + '</a></li>';
+            } else {
+                pagingControls += '<li class="active"><a href="#">' + i + '</a></li>';
+            }
+        }
+        pagingControls += '</ul>';
+        $(container).html(pagingControls);
+    }
+}
+
+var pager = new Imtech.Pager();
+$(document).ready(function() {
+   pager.paragraphsPerPage = 5; // set amount elements per page
+   pager.pagingContainer = $('#accordion'); // set of main container
+   pager.paragraphs = $('.page-control', pager.pagingContainer); // set of required containers
+   console.log(pager.paragraphs)
+   pager.showPage(1);
+});
+
+</script>
+{% endblock %}

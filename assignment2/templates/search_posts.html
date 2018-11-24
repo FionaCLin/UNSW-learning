@@ -1,0 +1,216 @@
+ {% extends 'base.html' %} {% block body_contents %}
+
+
+
+
+<div class="row">
+  <div class="col-ms-8 col-md-8 ml-4">
+    <h2>My Posts</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-ms-2 col-md-2 ml-2">
+    <a class="btn btn-success" href="{{url_for('add_post')}}">Create Post</a>
+  </div>
+  <div class="col-ms-6 col-md-6 ml-6">
+    <h3>Total {{total}} Posts contain keyword -->{{keyword}}<--</h3>
+  </div>
+  <form class="navbar-form navbar-left form-inline my-6 my-lg-0" action="{{url_for('findposts')}}" method="post">
+    <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Enter keyword to search post" aria-label="Search">
+    <button class="btn btn-outline-success my-6 my-sm-0" type="submit">Search</button>
+  </form>
+</div>
+<br> 
+<h2><div id="pagingControls"></div> </h2>  
+  <div class="container">
+    <div class="panel-group" id="accordion2">
+      {% set i = 0 %}
+    
+      {% for post in posts%}
+      <div class="page-control">
+      <div class="panel panel-default row">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <p>
+              {% for m in post['message'] %} {% if m == "<br>" %}
+            </p>
+            <p>
+              {% elif m in post['user']%}
+              <a href="{{url_for('index')}}profile/{{m}}">@{{post['user'][m]}}</a>
+              {% else %} 
+                {% if m == keyword %} 
+                  <span class="alert-danger">
+                {% endif%}
+                {{m}} 
+                {% if m == keyword %} 
+                  </span>
+                {% endif%}
+              {% endif %} {% endfor%}
+            </p>
+          </h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            
+            <div class="col-sm-4">
+              <span>Date: {{post['time'][0:10]}} Time: {{post['time'][11:16]}}</span>
+            </div>
+            <div class="col-sm-4">
+              From:
+              <a href="{{url_for('profile', zid = post['from'][1:])}}">{{post['user'][post['from'][1:]]}}</a>
+            </div>
+            <div class="col-sm-1">
+              {% if 'latitude' in post %}
+              <a href="https://www.google.com.au/maps/@{{post['latitude'][1:]}},{{post['longitude'][1:]}},17z" target="_blank">
+                <span class="glyphicon glyphicon-map-marker" data-toggle="tooltip" title="Click to find the location:{{post['latitude']}}, {{post['longitude']}}"
+                  aria-hidden="true"></span>
+              </a>
+              {% endif %}
+            </div>
+            {% if post['from'][1:] == session['user']['zid'] %}
+            <div class="col-sm-1">
+              <a href="{{url_for('dlt_post', id=post['id'])}}" data="{{post['id']}}">
+                <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Delete this post" aria-hidden="true"></span>
+              </a>
+            </div>
+            {%endif%}
+          </div>
+        
+        <!-- post detail from here -->
+        
+      <div class="panel-body" id="accordion">
+        {% for comment in post['comments'] %}
+          <div class="list-group">
+            <div class="list-group-item">
+              <div class="row">
+                  <div class="col-sm-1">
+                      <a class="pull-right glyphicon glyphicon-expand"  title="Click to view the replies" data-toggle="collapse" href="#collapse{{i}}"></a>
+                  </div>
+                  <h4 class="panel-title col-sm-5">
+                        <p>
+                          {% for m in comment['message'] %} {% if m in comment['user']%}
+                          <a href="{{url_for('profile', zid = m)}}">@{{comment['user'][m]}}</a>
+                          {% elif m == "<br>" %}
+                        </p><p>
+                        {% else %}
+                        {% if m == keyword %} 
+                            <span class="alert-danger">
+                              {% endif%}
+                              {{m}} 
+                              {% if m == keyword %} 
+                            </span>
+                        {% endif%}
+                        {% endif %} {% endfor%}
+                      </p>
+                      
+                  </h4>
+                  <div class="col-sm-3">
+                    <span>Date: {{comment['time'][0:10]}} Time: {{comment['time'][11:16]}}</span>
+                  </div>
+
+                <div class="col-sm-3">
+                  <a href="{{url_for('add_reply', pid = post['id'], cid = comment['id'])}}">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>
+                  
+                  From:
+                  <a href="{{url_for('profile', zid = comment['from'][1:])}}">{{comment['user'][comment['from'][1:]]}}</a>
+                </div>
+              </div>
+              <div id="collapse{{i}}" class="panel-collapse collapse in">
+                {% set i= i+1%}
+                <div class="panel-body">
+                  {% for reply in comment['replies'] %}
+                    <hr>
+                    <div class="row">
+                      <h5 class="panel-title col-sm-5">
+                        <p>
+                          {% for m in reply['message'] %} {% if m in reply['user']%}
+                          <a href="{{url_for('profile', zid = m)}}">@{{reply['user'][m]}}</a>
+                          {% elif m == "<br>" %}
+                        </p><p>
+                          {% else %} 
+                            {% if m == keyword %} 
+                            <span class="alert-danger">
+                            {% endif%}
+                              {{m}} 
+                            {% if m == keyword %} 
+                              </span>
+                            {% endif%}
+                          {% endif %} {% endfor%}
+                        </p>
+                        </h5>
+                        <div class="col-sm-4">
+                          <span>Date: {{reply['time'][0:10]}} Time: {{reply['time'][11:-8]}}</span>
+                        </div>
+                        <div class="col-sm-3">
+                          From:   <a href="{{url_for('profile', zid = reply['from'][1:])}}">{{reply['user'][reply['from'][1:]]}}</a>
+                        </div>
+                    </div>
+                  {% endfor%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor%}
+      </div>
+      
+      </div>
+      </div>
+      {% endfor%}
+  </div>
+   
+  </div>
+
+
+  <script type="text/javascript">
+ 
+var Imtech = {};
+Imtech.Pager = function() {
+    this.paragraphsPerPage = 1;
+    this.currentPage = 1;
+    this.pagingControlsContainer = '#pagingControls';
+    this.pagingContainerPath = '#accordion2';
+    this.numPages = function() {
+        var numPages = 0;
+        if (this.paragraphs != null && this.paragraphsPerPage != null) {
+            numPages = Math.ceil(this.paragraphs.length / this.paragraphsPerPage);
+        }
+        return numPages;
+    };
+    this.showPage = function(page) {
+        this.currentPage = page;
+        var html = '';
+        this.paragraphs.slice((page-1) * this.paragraphsPerPage,
+            ((page-1)*this.paragraphsPerPage) + this.paragraphsPerPage).each(function() {
+            html += '<div>' + $(this).html() + '</div>';
+        });
+        $(this.pagingContainerPath).html(html);
+        renderControls(this.pagingControlsContainer, this.currentPage, this.numPages());
+    }
+    var renderControls = function(container, currentPage, numPages) {
+        var pagingControls = '<ul class="pagination pagination-lg">';
+        for (var i = 1; i <= numPages; i++) {
+            if (i != currentPage) {
+                pagingControls += '<li><a href="#" onclick="pager.showPage(' + i + '); return false;">' + i + '</a></li>';
+            } else {
+                pagingControls += '<li class="active"><a href="#">' + i + '</a></li>';
+            }
+        }
+        pagingControls += '</ul>';
+        $(container).html(pagingControls);
+    }
+}
+
+var pager = new Imtech.Pager();
+$(document).ready(function() {
+   pager.paragraphsPerPage = 1; // set amount elements per page
+   pager.pagingContainer = $('#accordion2'); // set of main container
+   pager.paragraphs = $('.page-control', pager.pagingContainer); // set of required containers
+   console.log(pager.paragraphs)
+   pager.showPage(1);
+});
+
+
+</script>
+
+  </script> {% endblock %}

@@ -1,0 +1,59 @@
+/*
+ * written by andrewt@cse.unsw.edu.au October 2017
+ * as a starting point for COMP[29]041 assignment 2
+ * https://cgi.cse.unsw.edu.au/~cs2041/assignments/UNSWtalk/
+ *
+ * Change (or replace) the CSS below to create you own look-and-feel
+ *
+ * You will probably want to add  CSS to this file too
+ */
+.unswtalk_heading {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.unswtalk_user_details {
+  background-color: #abcdef;
+  color: #204142;
+  white-space: pre;
+  border: thin solid #204142;
+  border-radius: 1em;
+  padding-left: 0.42em;
+}
+.unswtalk_button {
+  background-color: #fedbca;
+  border: thin solid #904142;
+  border-radius: 0.42em;
+  color: #904142;
+}
+
+/*
+in profile and friend page for carousel slide
+*/
+.carousel_profile {
+  width: 150px;
+  height: 150px;
+}
+
+/* Smaller than standard 960 (devices and browsers) */
+@media only screen and (max-width: 959px) {
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+}
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+}

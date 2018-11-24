@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block body_contents %}
+
+
+
+<h1>{{student_details['full_name']}}</h1>
+<a class="btn btn-success pull-right" aria-label="Right Align" href="{{url_for('account')}}">Edit Account</a>
+<hr>
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <a href="{{url_for('profile', zid=student_details[ 'zid'])}}">
+                <img src="{{url_for('img', id=student_details[ 'zid'])}}" alt="{{student_details['full_name']}}_avatar ">
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+        <dl class="dl-horizontal">
+            <dt>Full Name</dt>
+            <dd> {{student_details['full_name']}}
+            </dd>
+            <dt>DOB</dt>
+            <dd> {{student_details['birthday']}}
+            </dd>
+            <dt>Email</dt>
+            <dd> {{student_details['email']}}
+            </dd>
+            <dt>Home Suburb</dt>
+            <dd> {{student_details['home_suburb']}}
+            </dd>
+            <dt>ZID</dt>
+            <dd> {{student_details['zid']}}
+            </dd>
+            <dt>Program</dt>
+            <dd> {{student_details['program']}}
+            </dd>
+            <dt>Friends with</dt>
+            <dd>
+                <div id="carousel-example-generic" class="carousel slide carousel_profile" data-ride="carousel">
+                    <div class="carousel-inner " role="listbox ">
+                        {% for friend in student_details['friends']%}
+                        <!-- Wrapper for slides -->
+
+                        {% if friend == student_details['friends'][0] %}
+                        <div class="item active">
+                            {% else %}
+                            <div class="item">
+                                {% endif %}
+                                <a href="{{url_for('profile', zid=friend)}}">
+                                    <img src="{{url_for('img', id=friend)}} " alt="{{friend}}_avatar
+                                    " width="100% " height="100%">
+                                </a>
+                                <!-- <p>{{friend}}</p> -->
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </div>
+
+</div>
+
+
+{% endblock %}

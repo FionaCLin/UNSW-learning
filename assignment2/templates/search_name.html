@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block body_contents %} 
+  <h1>Students Full Name with Keyword <srtong>-->{{keyword}}<--</srtong></h1>
+  <hr>
+  <div class="row">
+    {% for friend in friends %}
+
+    <div class="col-sm-6 col-md-4">
+      <div class="list-group">
+        <a href="{{url_for( 'index')}}profile/{{friend[ 'zid']}}">
+          <img src="{{url_for('img',id=friend[ 'zid'])}}" alt="{{friend[ 'full_name']}}_avatar">
+        </a>
+        <dl>
+          <dt>Full Name</dt>
+          <dd> {{friend['full_name']}}
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    {% endfor %} {% endblock %}
