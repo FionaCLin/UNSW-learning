@@ -1,0 +1,137 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
+
+\usepackage{listings, enumitem}
+\usepackage{amsmath,tabu}
+\usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
+\usepackage{fixltx2e}
+\usepackage[strict=true]{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{2111defs,2111theorems}
+\title{COMP3121 Assignment1}
+\author{Fiona Lin z5131048}
+
+\newcommand{\ah}{\mathsf{a}}
+\newcommand{\be}{\mathsf{b}}
+\newcommand{\assn}[1]{{\color{red}\left\{#1\right\}}}
+\newcommand{\length}[1]{\left|#1\right|}
+\newcommand{\noof}[2]{\left\|#1\right\|_{#2}}
+\newcommand{\VAR}{\pPkey{var}}
+\def\L{\mathcal{L}}
+
+\begin{document}
+\maketitle
+
+\paragraph{1. [20 marks]}
+\label{sec:Question 1}
+You're given an array $A$ of $n$ integers, and must answer a series of $n$ queries, each of the form: “How many elements $a$ of the array $A$ satisfy $L_k \leq a \leq R_k$ ?”, where $L_k$ and $R_k (1 \leq k \leq n)$ are some integers such that $L_k \leq R_k$ . Design an $O(n \log{n})$ algorithm that answers all of these queries.
+\paragraph{Solution}
+The $O(n\log{n})$ algorithm is as following:\\
+Given an array $A$ of $n$ integers, and sort them in to ascending order. Therefore, perform binary search on Array $A$ for the indexes of $L_k$ and $R_k$; the binary search is a divide and conquor algorithm, it will achieve the $O(n\log{n})$ performance.\\
+Since there is no operation required when $ n = 0$, there is always zero elements $a$ of the Array satisfy that condition.\\
+Let's assuming $n > 0$;
+
+\begin{itemize}
+  \item {\bfseries Case a)} When $L_k$ and $R_k$ are elements in Array $A$, $L_k$ and $R_k$ are retrived by the binary search on Array $A$.
+  The number of elements $a$ of Array $A$ satisfy $L_k \leq a \leq R_k$ is one plus the difference on the indexes of $L_k$ and $R_k$'.
+  \item {\bfseries Case b)} When either of $L_k$ and $R_k$ are elements in Array $A$, $L_k$ and $R_k$ are never retrived by the binary search. Hence the $R_k$ should be terminate on the last index binary search on Array $A$, which is less than $R_k$. Similarly, the $L_k$ should be terminate on the last index binary search on Array $A$, which is greater than $L_k$
+  The number of elements $a$ of Array $A$ satisfy $L_k \leq a \leq R_k$ is still one plus the difference on the indexes of $L_k$ and $R_k$.
+\end{itemize}
+
+\lstinputlisting[language=Python, firstline=1, lastline=26]{q1.py}
+\paragraph{2. [20 marks, both (a) and (b) 10 marks each]}
+
+\label{sec:Question 2}
+You are given an array $S$ of $n$ integers and
+another integer $x$.\\
+(a) Describe an $O(n \log{n})$ algorithm (in the sense of the worst case performance) that determines whether or not there exist two elements in $S$ whose sum is exactly $x$.\\
+(b) Describe an algorithm that accomplishes the same task, but runs in $O(n)$ expected (i.e., average) time.
+Note that brute force does not work here, because it runs in $O(n^2)$ time.
+
+\paragraph{Solution}
+{\bfseries(a)}
+\begin{enumerate}
+  \item Take a element $k$ in the array and let $j$ be the difference of sum $x$ and element $k$
+  \item Then binary sort Array $S$ is $O(n\log{n})$ and binary search $j$ in Array $S$. It is ideal to skip those $j$ outside the range of Array $S$. Performing this binary search is $O(n\log{n})$
+  \item If $j$ is in Array $S$, then there exist the sum of two element exactly equal to $x$ in $S$, versa vice.
+\end{enumerate}
+\lstinputlisting[language=Python, firstline=1, lastline=30]{q2a.py}
+{\bfseries(b)}
+\begin{enumerate}
+ \item Put every element $k$ of Array $S$ into Set $A$, this performs $O(n)$
+ \item Take every element $k$ in the array and let $j$ be the difference of sum $x$ and element $k$. Since it is for every element $k$, this also takes $O(n)$
+ \item Checking $j$ in Set $A$ takes $O(1)$. If $j$ is in Array $S$, then there exist the sum of two element exactly equal to $x$ in $S$, verse vice.
+\end{enumerate}
+
+\paragraph{The algorithm python}
+\label{sec:code}
+\lstinputlisting[language=Python, firstline=1, lastline=16]{q2b.py}
+
+
+\paragraph{3. [20 marks, both (a) and (b) 10 marks each; if you solve (b) you do not have to
+solve (a)]}
+\label{sec:Question 3}
+You are at a party attended by $n$ people (not including yourself), and you suspect that there might be a celebrity present. A celebrity is someone known by everyone, but does not know anyone except themselves. You may assume everyone knows themselves. Your task is to work out if there is a celebrity present, and if so, which of the n people present is a celebrity. To do so, you can ask a person $X$ if they know another person $Y$ (where you choose $X$ and $Y$ when asking the question).\\
+\\*
+(a) Show that your task can always be accomplished by asking no more than $3n-3$ such questions, even in the worst case.\\
+\\*
+(b) Show that your task can always be accomplished by asking no more than $3n-\floor{\log_2{n}}-2$ such questions, even in the worst case.
+
+\paragraph{4. [20 marks, each pair 4 marks]}
+\label{sec:Question 4}
+Read the review material from the class website on asymptotic notation and basic properties of logarithms, pages 38-44 and then determine if $f(n) = Ω(g(n))$, $f(n) = O(g(n))$ or $f (n) = Θ(g(n))$ for the following pairs. Justify your answers. You might find the following inequality useful: \\
+\\*
+if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$ + log$g(n)$.
+\begin{align*}
+\begin{tabular}{|c | c |}
+  \hline
+  $f(n)$ & $g(n)$ \\
+  \hline
+  $\left(\log_2n\right)^2$ & $log_2\left(n^{log_2 n}\right) + 2 log_2n$ \\
+  \hline
+  $n^{100}$ & $2^{n/100}$ \\
+  \hline
+  $\sqrt{n}$ & $2^{\sqrt{log_2 n}}$\\
+    \hline
+  $n^{1.001}$ & $n log_2 n$\\
+  \hline
+  $n^{(1+sin(\pi n/2))/2n}$ &  $\sqrt{n}$\\
+  \hline
+\end{tabular}
+\end{align*}
+\paragraph{Solution}
+
+
+\paragraph{5. [20 marks, each recurrence 5 marks]}
+\label{sec:Question 5}
+Determine the asymptotic growth rate of the solutions to the following recurrences. If possible, you can use the Master Theorem, if not, find another way of solving it.
+\begin{enumerate}[label=(\alph*)]
+  \item $T (n) = 2T (n/2) + n(2 + \sin{n})$
+  \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
+  \item $T (n) = 8T (n/2) + n^{\log{n}}$
+  \item $T (n) = T (n − 1) + n$
+\end{enumerate}
+\paragraph{Solution}
+\begin{enumerate}[label=(\alph*)]
+  \item $T (n) = 2T (n/2) + n(2 + \sin{n})$\\
+  Since a = 2 and b = 2, then
+  \begin{align}
+  n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  f(n) = n(2 + \sin{n}) = O()
+  \end{align}
+
+  \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$\\
+  Since $f(n) = \sqrt{n} + \log{n}$ is not a non-decreasing function. Master Theorem is not applicable to determine asymptotic growth rate of this recurrences.
+
+  \item $T (n) = 8T (n/2) + n^{\log{n}}$\\
+  Since a = 8 and b = 2, then
+  \begin{align}
+  n^{\log_b{a}} = n^{\log_2{8}} = n^4\\
+  f(n) = n^{\log{n}} = O()
+  \end{align}
+  \item $T (n) = T (n - 1) + n$\\
+  To apply Master Theorem, $a \geq 1$ and $b > 1$. Since b = 1, is not applicable to determine asymptotic growth rate of this recurrences.
+\end{enumerate}
+\end{document}

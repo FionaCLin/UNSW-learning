@@ -1,0 +1,89 @@
+\ProvidesPackage{2111defs}[2014/03/24 v1.1]
+%% $Revision: 1.1 $
+%% $Date: 2014/03/05 01:11:47 $ UTC
+\RequirePackage{graphicx,xspace,amsmath,amssymb}
+
+% Booleans
+\newcommand{\bool}{\mathbb{B}}
+% natural numbers
+\newcommand{\nat}{\mathbb{N}}
+% positive numbers
+\newcommand{\posnat}{\nat_{{}>0}}
+% integers
+\newcommand{\ints}{\mathbb{Z}}
+% rationals
+\newcommand{\rats}{\mathbb{Q}}
+% reals
+\newcommand{\real}{\mathbb{R}}
+% non-negative reals
+\newcommand{\nnreal}{\real_{{}\geq 0}}
+% power set; usage: $\Pow{S}$
+\newcommand{\Pow}[1]{{\cal P}(#1)}
+% function types; usage f:D\functo R for a total function
+\newcommand{\functo}{\longrightarrow}
+% usage f:D\partfuncto R for a partial function
+\newcommand{\partfuncto}{\nrightarrow}
+% floor and ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceiling}[1]{\left\lceil #1 \right\rceil}
+
+%% set comprehension
+% \setcpr{x}{p(x)}        delivers {x|p(x)}, the set of all x such
+%                                            that p(x) holds
+\newcommand{\setcpr}[2]{\left\{\thickspace #1 \medspace\left|\thickspace\medspace #2 \thinspace\right.\right\}}
+
+
+%% first order logic (meta level)
+\newcommand{\NOT}{\neg}
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\IMPLIES}{\Rightarrow}
+\newcommand{\ISIMPLIED}{\Leftarrow}
+\newcommand{\EQUIV}{\Leftrightarrow}
+\newcommand{\ALL}[2]{\forall #1\left(#2\right)}
+\newcommand{\EXI}[2]{\exists #1\left(#2\right)}
+\newcommand{\TT}{\text{\bfseries 1}}
+\newcommand{\FF}{\text{\bfseries 0}}
+
+%% first order logic (syntax level)
+\newcommand{\Prop}{\text{\itshape Prop}}
+\newcommand{\Not}{\neg}
+\renewcommand{\And}{\wedge}
+\newcommand{\Or}{\vee}
+\newcommand{\Implies}{\Rightarrow}
+\newcommand{\Isimplied}{\Leftarrow}
+\newcommand{\Equiv}{\Leftrightarrow}
+\newcommand{\All}[2]{\forall #1\left(#2\right)}
+\newcommand{\Exi}[2]{\exists #1\left(#2\right)}
+\newcommand{\True}{\text{\textsc{true}}}
+\newcommand{\False}{\text{\textsc{false}}}
+\newcommand{\bigAnd}{\bigwedge}
+\newcommand{\bigOr}{\bigvee}
+
+%% toy language
+% assignment symbol :=
+\newcommand{\Ass}{\mathrel{:=}}
+% keywords
+%  need extra spacing in math mode
+%  example: $\WHILE~b~\DO~x\Ass x+5~\OD$
+\newcommand{\pPkey}[1]{\text{\normalfont\bfseries #1}}
+\newcommand{\IF}{\pPkey{if}}
+\newcommand{\THEN}{\pPkey{then}}
+\newcommand{\ELSE}{\pPkey{else}}
+\newcommand{\FI}{\pPkey{fi}}
+\newcommand{\WHILE}{\pPkey{while}}
+\newcommand{\DO}{\pPkey{do}}
+\newcommand{\OD}{\pPkey{od}}
+
+% substitution; usage \phi\subst{e}{x} yields \phi[e/x]
+\newcommand{\subst}[2]{[^{#1}/_{#2}]}
+
+%% Hoare triples
+% usage \Htri{\phi}{P}{\psi} yields \{\phi\}P\{\psi\}
+\newbox\htribox
+\def\Htri#1#2#3{%
+  \setbox\htribox=\hbox{$#1 #2 #3$}%
+  \left\{#1\vrule width0pt height\ht\htribox depth\dp\htribox\right\}%
+    {#2}%
+  \left\{#3\vrule width0pt height\ht\htribox depth\dp\htribox\right\}%
+  }
