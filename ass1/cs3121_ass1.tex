@@ -115,23 +115,30 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
 \end{enumerate}
 \paragraph{Solution}
 \begin{enumerate}[label=(\alph*)]
-  \item $T (n) = 2T (n/2) + n(2 + \sin{n})$\\
-  Since a = 2 and b = 2, then
-  \begin{align}
-  n^{\log_b{a}} = n^{\log_2{2}} = n\\
-  f(n) = n(2 + \sin{n}) = O()
-  \end{align}
-
-  \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$\\
-  Since $f(n) = \sqrt{n} + \log{n}$ is not a non-decreasing function. Master Theorem is not applicable to determine asymptotic growth rate of this recurrences.
-
-  \item $T (n) = 8T (n/2) + n^{\log{n}}$\\
+  \item $T (n) = 2T (n/2) + n(2 + \sin{n})$
+\begin{align*}
+  &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  &\ And\ f(n) = n(2 + \sin{n}),\quad then\\ &\
+  \qquad \sin{n} \in \left[-1, 1\right]\ \Rightarrow n\sin{n} \in \left[-n, n\right] \Rightarrow f(n) = n\left(2 + \sin{n}\right) \in \left[n,\ 3n\right]\\ &\
+  Since\quad n^{\log_b{a}} = n \quad and \quad f(n) \in \left[n,3n\right],\\ &\
+  Condition\ of\ case\ 2\ is\ satisfed;\ and\ so:\\
+  &\ \qquad T(n)=\Theta\left({n^{\log_2{2}}\log{n}}\right) =\Theta\left({n\log{n}}\right)
+\end{align*}
+\item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
+\begin{align*}
+  &\ When\ n \in \left(-\infty,\ 0\right], \\ &\
+  % Since\ f(n) = \sqrt{n} + \log{n}\ is not a non-decreasing function. Master Theorem is not applicable to determine asymptotic growth rate of this recurrences.
+\end{align*}
+\item $T (n) = 8T (n/2) + n^{\log{n}}$
+\begin{align*}
   Since a = 8 and b = 2, then
-  \begin{align}
-  n^{\log_b{a}} = n^{\log_2{8}} = n^4\\
+  n^{\log_b{a}} = n^{\log_2{8}} = n^4
   f(n) = n^{\log{n}} = O()
-  \end{align}
-  \item $T (n) = T (n - 1) + n$\\
-  To apply Master Theorem, $a \geq 1$ and $b > 1$. Since b = 1, is not applicable to determine asymptotic growth rate of this recurrences.
+\end{align*}
+\item $T (n) = T (n - 1) + n$
+\begin{align*}
+  &\ To\ apply\ Master\ Theorem,\ a \geq 1\ and\ b > 1\ .\\
+  &\ Since\ b = 1,\ it\ is\ not\ applicable\ to\ determine\ asymptotic\ growth\ rate\ of\ this\ recurrences.
+\end{align*}
 \end{enumerate}
 \end{document}
