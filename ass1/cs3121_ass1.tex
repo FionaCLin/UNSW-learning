@@ -81,7 +81,7 @@ You are at a party attended by $n$ people (not including yourself), and you susp
 
 \paragraph{4. [20 marks, each pair 4 marks]}
 \label{sec:Question 4}
-Read the review material from the class website on asymptotic notation and basic properties of logarithms, pages 38-44 and then determine if $f(n) = Ω(g(n))$, $f(n) = O(g(n))$ or $f (n) = Θ(g(n))$ for the following pairs. Justify your answers. You might find the following inequality useful: \\
+Read the review material from the class website on asymptotic notation and basic properties of logarithms, pages 38-44 and then determine if $f(n) = \Omega(g(n))$, $f(n) = O(g(n))$ or $f (n) = \Theta(g(n))$ for the following pairs. Justify your answers. You might find the following inequality useful: \\
 \\*
 if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$ + log$g(n)$.
 \begin{align*}
@@ -89,7 +89,7 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
   \hline
   $f(n)$ & $g(n)$ \\
   \hline
-  $\left(\log_2n\right)^2$ & $log_2\left(n^{log_2 n}\right) + 2 log_2n$ \\
+  $\left(\log_2n\right)^2$ & $log_2\left(n^{log_2{n}}\right) + 2 log_2n$ \\
   \hline
   $n^{100}$ & $2^{n/100}$ \\
   \hline
@@ -102,8 +102,23 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
 \end{tabular}
 \end{align*}
 \paragraph{Solution}
-
-
+\begin{enumerate}[label=(\alph*)]
+  \item $f(n)=\left(\log_2n\right)^2,\ g(n)=log_2\left(n^{log_2{n}}\right) + 2log_2n$
+  \begin{align*}
+  \end{align*}
+  \item $f(n)= n^{100},\ g(n)=2^{n/100}$
+  \begin{align*}
+  \end{align*}
+  \item $f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}$
+  \begin{align*}
+  \end{align*}
+  \item $f(n)=n^{1.001},\ g(n)=n log_2 n$
+  \begin{align*}
+  \end{align*}
+  \item $f(n)=n^{(1+sin(\pi n/2))/2n},\ g(n)=\sqrt{n}$
+  \begin{align*}
+  \end{align*}
+\end{enumerate}
 \paragraph{5. [20 marks, each recurrence 5 marks]}
 \label{sec:Question 5}
 Determine the asymptotic growth rate of the solutions to the following recurrences. If possible, you can use the Master Theorem, if not, find another way of solving it.
@@ -120,20 +135,21 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
   &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
   &\ And\ f(n) = n(2 + \sin{n}),\quad then\\ &\
   \qquad \sin{n} \in \left[-1, 1\right]\ \Rightarrow n\sin{n} \in \left[-n, n\right] \Rightarrow f(n) = n\left(2 + \sin{n}\right) \in \left[n,\ 3n\right]\\ &\
-  Since\quad n^{\log_b{a}} = n \quad and \quad f(n) \in \left[n,3n\right],\\ &\
+  Since\quad n^{\log_b{a}} = n \quad and \quad f(n) \in \left[n,3n\right], f(n) = n(2 + \sin{n}) = \Theta(n)\\ &\
   Condition\ of\ case\ 2\ is\ satisfed;\ and\ so:\\
   &\ \qquad T(n)=\Theta\left({n^{\log_2{2}}\log{n}}\right) =\Theta\left({n\log{n}}\right)
 \end{align*}
 \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
 \begin{align*}
-  &\ When\ n \in \left(-\infty,\ 0\right], \\ &\
-  % Since\ f(n) = \sqrt{n} + \log{n}\ is not a non-decreasing function. Master Theorem is not applicable to determine asymptotic growth rate of this recurrences.
+  &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  &\ When\ n \in \left(1, \infty\right),\ f(n) \in \left(0,\ \infty\right], f(n)\ is\ a\ non\text{-}decreasing\ function\\ &\
+  Since\quad n^{\log_b{a}} = n \quad and \quad f(n) = \sqrt{n} + \log{n}\\ &\
+  f(n) = n^{\log{n}} = O? \Theta ? \Omega ? (n^{4+-\epsilon})
 \end{align*}
 \item $T (n) = 8T (n/2) + n^{\log{n}}$
 \begin{align*}
-  Since a = 8 and b = 2, then
-  n^{\log_b{a}} = n^{\log_2{8}} = n^4
-  f(n) = n^{\log{n}} = O()
+  &\ As\ a = 8\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{8}} = n^4\\ &\
+  Since\quad n^{\log_b{a}} = n^4 \quad and \quad f(n) = n^{\log{n}}\ f(n) = n^{\log{n}} = O? \Theta ? \Omega ? (n^{4+-\epsilon})
 \end{align*}
 \item $T (n) = T (n - 1) + n$
 \begin{align*}

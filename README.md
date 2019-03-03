@@ -9,4 +9,5 @@ This repository contains all the courses work acquired in UNSW. The source code 
   * comp9315-DBMS-Implementation
   * comp3311-Database-Systems
   * comp2111-System-Modelling-and-Design
-  * COMP3141-Software-System-Design-and-Implementation
+  * comp3121-Algorithms-and-Programming-Techniques
+  * comp3141-Software-System-Design-and-Implementation
