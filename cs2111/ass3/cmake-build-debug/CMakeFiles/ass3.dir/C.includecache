@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/davidphan/Documents/2018s1/COMP2111/ass3/dict.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+dict.h
+/Users/davidphan/Documents/2018s1/COMP2111/ass3/dict.h
+
+/Users/davidphan/Documents/2018s1/COMP2111/ass3/dict.h
+
+/Users/davidphan/Documents/2018s1/COMP2111/ass3/testdict.c
+stdio.h
+-
+stdlib.h
+-
+dict.h
+/Users/davidphan/Documents/2018s1/COMP2111/ass3/dict.h
+

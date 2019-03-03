@@ -1,0 +1,68 @@
+\documentclass[headings=small,a4paper,12pt]{scrartcl}
+% sometimes it's useful to have smaller fractions
+\usepackage{nicefrac}
+% COMP2111-specific macros. See
+% http://www.cse.unsw.edu.au/~cs2111/17s1/LaTeX/primer.html
+\usepackage{2111defs2}
+\usepackage{listings}
+\lstset{frame=single,framerule=0pt,language={C},showstringspaces=false,numbers=left,columns=fullflexible}
+
+\newcommand{\mylist}[1]{\langle #1\rangle}
+\newcommand{\myfloor}[1]{\lfloor #1\rfloor}
+\newcommand{\sorted}[3]{\mathit{s'ed}(#1[#2..#3])}
+\newcommand{\sort}[3]{\mathit{sort}(#1[#2..#3])}
+\newcommand{\pre}{\mathit{pre}}
+\newcommand{\post}{\mathit{post}}
+\newcommand{\addWord}{\mathit{addWord}\xspace}
+\newcommand{\checkWord}{\mathit{checkWord}\xspace}
+\newcommand{\delWord}{\mathit{delWord}\xspace}
+
+\title{Assignment 2}
+\author{z5019338\\z5131048}
+% that one align* may not fit onto a single page
+\allowdisplaybreaks
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+
+\section{A Data Type}
+\label{sec:abstract-data-type}
+
+Consider a syntactic dictionary data type ${\color{blue}Dict}$
+\begin{align*}
+	  & \PROC~\addWord^{\color{blue}D}(\VALUE~w)\cdot{} \\
+	  & \qquad D:\left[                                 
+	\begin{array}{l}
+	True, D\Ass D_0 \cup \lbrace w \rbrace
+	\end{array}  
+	\right]\\
+& \PROC~\checkWord^{\color{blue}D}(\VALUE~w)\cdot{} \\
+& \qquad \VAR~b\cdot{}b:\left[                                 
+	\begin{array}{l}
+		True, b\Ass (w\in D)
+	\end{array}  
+\right]\\
+& \PROC~\delWord^{\color{blue}D}(\VALUE~w)\cdot{} \\
+& \qquad D:\left[                                 
+	\begin{array}{l}
+		D \neq \mylist{ } \AND w \in D, D \Ass D_0 \backslash \lbrace w \rbrace 
+	\end{array}  
+\right]\\
+\end{align*}
+
+
+\section{A Refinement}
+\label{sec:a-Refinement}
+
+
+\section{A More Realistic Data Refinement}
+\label{sec:a-more-realistic-data-refinement}
+\section{The C Code}
+\label{sec:code}
+\lstinputlisting{dict.c}
+
+\end{document}
