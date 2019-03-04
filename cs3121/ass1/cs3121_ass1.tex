@@ -55,7 +55,7 @@ Note that brute force does not work here, because it runs in $O(n^2)$ time.
 \begin{enumerate}
   \item Take a element $k$ in the array and let $j$ be the difference of sum $x$ and element $k$
   \item Then binary sort Array $S$ is $O(n\log{n})$ and binary search $j$ in Array $S$. It is ideal to skip those $j$ outside the range of Array $S$. Performing this binary search is $O(n\log{n})$
-  \item If $j$ is in Array $S$, then there exist the sum of two element exactly equal to $x$ in $S$, versa vice.
+  \item If $j$ is in Array $S$, then there exist the sum of two element exactly equal to $x$ in $S$, vice versa.
 \end{enumerate}
 \lstinputlisting[language=Python, firstline=1, lastline=30]{q2a.py}
 {\bfseries(b)}
@@ -97,26 +97,59 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
     \hline
   $n^{1.001}$ & $n log_2 n$\\
   \hline
-  $n^{(1+sin(\pi n/2))/2n}$ &  $\sqrt{n}$\\
+  $n^{(1+\sin{(\pi n/2))}/2n}$ &  $\sqrt{n}$\\
   \hline
 \end{tabular}
 \end{align*}
 \paragraph{Solution}
 \begin{enumerate}[label=(\alph*)]
-  \item $f(n)=\left(\log_2n\right)^2,\ g(n)=log_2\left(n^{log_2{n}}\right) + 2log_2n$
+  \item $f(n)=\left(\log_2n\right)^2,\ g(n)=\log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n}$
   \begin{align*}
+  &\ Since\ g(n)= \log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n} = \log_2{n}*\log_2{n} + 2*\log_2{n} = \left(\log_2{n}\right)^2 + 2*\log_2{n}\\ &\ 
+  When\ n_0\ =\ 1, f(1) = (\log_2{1})^2 = 1,\ g(1) = \left(\log_2{1}\right)^2 + 2*\log_2{1} = 0\\ &\
+  let\ c > \frac{1}{3}\ and\ n = 2,\ f(2)-c*g(2) \leq 0 \Rightarrow c \geq \frac{1}{3}\\ &\
   \end{align*}
-  \item $f(n)= n^{100},\ g(n)=2^{n/100}$
   \begin{align*}
+  &\ Therefore\ c\geq \frac{1}{3}, \ n \geq n_0 = 1,\ f(n)=\left(\log_2{n}\right)^2 < c*g(n) = c*(\left(\log_2{n}\right)^2 + 2\log_2{n})\\ &\
+  Hence,\ c\geq \frac{1}{3}, \ n \geq n_0 = 1,\ f(n) = O(g(n))
+  \end{align*}
+  \item $f(n)= n^{100},\ g(n)=2^{\frac{n}{100}}$
+  \begin{align*}
+  % solution f(n)= n^{100},\ g(n)=2^{\frac{n}{100}}
+  &\ When\ c\ >\ 0\ and\ n_0\ = \ 1\ ,\\ &\
+  \quad f(n_0) - c*g(n_0)\ =\ n_0^{100}-c*(2^\frac{n_0}{100})  = 1^{100}- c*(2^{\frac{1}{100}}) \geq 0\\ &\ 
+  \quad\Rightarrow\ c\ =\ 2^{\frac{-1}{100}} \approx 0.9930.924... > 0\\ &\
+  Therefore,\ when\ c\ >\ 0\ and\ n \geq \ n_0\ = \ 1,\ 0\ \leq\ c*g(n)\ \leq\ f(n)\\ &\ 
+  Hence, \ when\ c\ >\ 0\ and\ n \geq \ n_0\ = \ 1,\ f(n) = \Omega(g(n))
   \end{align*}
   \item $f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}$
   \begin{align*}
+  % solution f(n)=\sqrt{n},\ g(n)=2^{\sqrt{\log_2 n}}
+  &\ Since\ f(n)\ -\ g(n)=\sqrt{n}\ -\ 2^{\sqrt{\log_2 n}} \geq 0\ \Rightarrow n\ >\ 16\\ &\
+  Therefore,\ exist\ c_1=c_2=1\ and\ n\ >\ n_0\ =\ 16,\ 0\ \leq\ c_1*g(n)\ \leq\ f(n)\ \leq\ c_2*g(n)\\ &\ 
+  Hence,\ f(n)\ =\ \Theta(g(n))
   \end{align*}
-  \item $f(n)=n^{1.001},\ g(n)=n log_2 n$
+  \item $f(n)=n^{1.001},\ g(n)=n*\log_2{n}$
   \begin{align*}
+  % solution f(n)=n^{1.001},\ g(n)=n log_2 n
+  &\ When\ n\ =\ 1,\\ &\ \quad g(1)-f(1)=n*\log_2{n}-n^{1.001}=\log_2{1}-1^{1.001}=0-1=-1<0 \\&\
+  Then\ when\ n\ \geq\ 2, \\ &\ \quad
+  c*g(n)-f(n)= c*(n*\log_2{n})-n^{1.001}>0\ \Rightarrow\ c > 2^{0.001} \approx 1.00069339...\\&\
+  Therefore, when\ c=2\ and\ n \geq 2,\ c*g(n) \geq f(n)\\&\
+  Hence,\ f(n) = O(g(n)) 
   \end{align*}
-  \item $f(n)=n^{(1+sin(\pi n/2))/2n},\ g(n)=\sqrt{n}$
+  \item $f(n)=n^{\frac{1+\sin(\frac{\pi n}{2})}{2n}},\ g(n)=\sqrt{n}$
   \begin{align*}
+  % solution f(n)=n^{(1+sin(\frac{\pi n}{2}))/2n},\ g(n)=\sqrt{n}
+  &\ If\ f(n),\ g(n),\ c\ >\ 0\ then\ f(n)\ <\ c*g(n);\ if\ and\ only\ if\ \log{f(n)}\ <\ \log{c}\ +\ \log{g(n)}\\&\
+  When\ c\ =\ 1,\ \log{c} = 0,\\&\ 
+  \log{f(n)}\ =\ \log{\sqrt{n}},\\&\ \log{g(n)}=\log{\sqrt(n)}^{\frac{1+\sin{\frac{n\pi}{2}}}{n}}\\&\ 
+  Then\ we\ have\\&\
+  \log{c}+\log{g(n)}-\log{f(n)}=\log{c}+\log{\sqrt(n)}^{\frac{1+\sin{\frac{n\pi}{2}}}{n}}-\log{\sqrt{n}}=\log{c}+(\frac{n+1+\sin{\frac{n\pi}{2}}}{n})\log{\sqrt(n)}\\&\
+  We\ need\ \log{c}+\log{g(n)}-\log{f(n)}\ >\ 0,\ then\ we\ can\ solve\ n\ with:\\ &\
+  \log{c}+\log{g(n)}-\log{f(n)}=(\frac{n+1+\sin{\frac{n\pi}{2}}}{n})\log{\sqrt(n)}>0\Rightarrow\ n\ \geq\ 1 \\&\
+  Therefore,\ c=1,\ n\ >\ n_0=1,\ \log{c}+\log{g(n)}-\log{f(n)} \iff 0 \leq f(n)\ <\ c*g(n)\\&\
+  Hence, \ c=1,\ n\ >\ n_0=1, f(n)=O(n) 
   \end{align*}
 \end{enumerate}
 \paragraph{5. [20 marks, each recurrence 5 marks]}
@@ -136,7 +169,7 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
   &\ And\ f(n) = n(2 + \sin{n}),\quad then\\ &\
   \qquad \sin{n} \in \left[-1, 1\right]\ \Rightarrow n\sin{n} \in \left[-n, n\right] \Rightarrow f(n) = n\left(2 + \sin{n}\right) \in \left[n,\ 3n\right]\\ &\
   Since\quad n^{\log_b{a}} = n \quad and \quad f(n) \in \left[n,3n\right], f(n) = n(2 + \sin{n}) = \Theta(n)\\ &\
-  Condition\ of\ case\ 2\ is\ satisfed;\ and\ so:\\
+  Condition\ of\ case\ 2\ is\ satisfied;\ and\ so:\\
   &\ \qquad T(n)=\Theta\left({n^{\log_2{2}}\log{n}}\right) =\Theta\left({n\log{n}}\right)
 \end{align*}
 \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
@@ -153,7 +186,7 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
 \end{align*}
 \item $T (n) = T (n - 1) + n$
 \begin{align*}
-  &\ To\ apply\ Master\ Theorem,\ a \geq 1\ and\ b > 1\ .\\
+  To\ apply\ Master\ Theorem,\ a \geq 1\ and\ b > 1\ .\\
   &\ Since\ b = 1,\ it\ is\ not\ applicable\ to\ determine\ asymptotic\ growth\ rate\ of\ this\ recurrences.
 \end{align*}
 \end{enumerate}
