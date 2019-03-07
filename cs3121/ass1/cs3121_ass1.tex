@@ -1,6 +1,5 @@
 \documentclass[a4paper]{scrartcl}
 \usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
-
 \usepackage{listings, enumitem}
 \usepackage{amsmath,tabu}
 \usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
@@ -10,8 +9,12 @@
 \usepackage{color}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{2111defs,2111theorems}
+
 \title{COMP3121 Assignment1}
 \author{Fiona Lin z5131048}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \newcommand{\ah}{\mathsf{a}}
 \newcommand{\be}{\mathsf{b}}
@@ -73,12 +76,15 @@ You are at a party attended by $n$ people (not including yourself), and you susp
 (b) Show that your task can always be accomplished by asking no more than $3n-\floor{\log_2{n}}-2$ such questions, even in the worst case.
 \paragraph{Solution}
 {\bfseries(a)}
+Assuming the following:
 \begin{itemize}
-  \item Assuming a celebrity is someone knownby everyone, but does not know anyone except themselves and everyone are polite and answer the question honestly.
+  \item a celebrity is someone knownby everyone, but does not know anyone except themselves and everyone are polite and answer the question honestly.
   \item Additionally, there is at most one celebrity, so it might have no celebrity in the party.
   \item Ask a person $X$ if he knows another person $Y$. If the answer is yes, it concludes $X$ is not a celebrity.
   \item Ask a person $X$ if he knows another person $Y$. If the answer is no, it concludes $Y$ is not a celebrity.
 \end{itemize}
+To accomplish this task, it will take 3 phases of asking $n-1$ question. so it takes no more than $3n-3$ such questions, even in the worst case.
+The three phases as following:
 To accomplish this task, it will take 3 phases of asking $n-1$ question. so it takes no more than $3n-3$ such questions, even in the worst case.
 The three phases as following:
 \begin{enumerate}
@@ -86,14 +92,24 @@ The three phases as following:
   Select a person $c$ as a celebrity candidate from $n$ people, and go through every person $i$ in $n-1$ people and ask person $i$ the question. If he/she does not know person $c$, person $i$ replace person $c$ as the new celebrity candidate. After these $n-1$ questions,person $c$ is our potential celebrity and does not know some people in $n-1$ people.
   \item confirm every one knows celebrity candidate\\
   In order to assure person $c$ is the right celebrity and everyone knows person $c$ in the party. $n-1$ people will be asked the queston -- "if he/she knows person $c$". After these $n-1$ questions, it confirms a celebrity known by $n-1$ people in the end of this phase.
+  As I am one of the $n-1$ people, I don't need to ask myself. Only $n-2$ questions will be asked in this phase.
   \item ensure the celebrity candidate does not know anyone\\
-  In last phase, $n-1$ people knows person $c$ in the party already. It is possible there is no celebrity in the party and person $c$ still knows someone in the party. It is necessary to ask $c$ the qestion about person $i$ from $n-1$ people -- "if he know person $i$ "\\
+  In last phase, $n-1$ people knows person $c$ in the party already. It is possible there is no celebrity in the party and person $c$ still knows someone in the party. It is necessary to ask $c$ the qestion about person $i$ from $n-1$ people -- "if he know person $i$"\\
   If he answers no to everyone of $n-1$ people, he is the at most one celebrity, otherwise there is no celebrity in the party.
 \end{enumerate}
-{\bfseries(b)} As the above approach will ask everyone at least 2 question. However, it is obivious that there should be no further question to be asked for someone eliminated previously. Therefore, a full complete balanced binary tree can help achieve with this purpose.\\
-Compute the level $l =\floor{\log_2{n}}$ of tree, and then
+Therefore, it is $3n-4$ questions no more than $3n-3$ questions even in the worst case.
+\\
+\\*{\bfseries(b)}\\
+ similar to the above approach, everyone will be asked in those phases. However, it is obivious that there should be no further question to be asked for someone eliminated previously in the first phase. Therefore, a full complete balanced binary tree can help achieve with this purpose.
+\begin{enumerate}
+  \item construct a full smallest tree having no single child (only allow 0 child or 2 children)\\
+  Let $l$ be the level of tree, then compute the level $l =\floor{\log_2{n}}$ of tree. And then attach $n$ leaf nodes as there are $n$ people, following the rule of each node having no single child.
 
+  \item in a pair of nodes, ask the person $X$ on the left node if he knows another person $Y$ on the right node. If the answer is yes, it concludes $X$ is not a celebrity. Promote person $Y$ to the upper level, as person $Y$ is a celebrity candidate. Ask a person $X$ if he knows another person $Y$. If the answer is no, it concludes $Y$ is not a celebrity. Promote person $X$ to the upper lever, as person $X$ is a celebrity candidate.
 
+  \item since this phase is running in tree structure instead of running in linear, it can save up $\floor{\log_2{n}}$ questions, while the potential celebrity candidate is promoted through all the levels. Therefore, it will ask $n-\floor{\log_2{n}}$ questions.
+\end{enumerate}
+Therefore, in this approach, the task can be achieved by answering no more than $2n-2+n-\floor{\log_2{n}}=3n-\floor{\log_2{n}}-2$ questions.
 \paragraph{4. [20 marks, each pair 4 marks]}
 \label{sec:Question 4}
 Read the review material from the class website on asymptotic notation and basic properties of logarithms, pages 38-44 and then determine if $f(n) = \Omega(g(n))$, $f(n) = O(g(n))$ or $f (n) = \Theta(g(n))$ for the following pairs. Justify your answers. You might find the following inequality useful: \\
@@ -111,7 +127,7 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
     \hline
   $n^{1.001}$ & $n log_2 n$\\
   \hline
-  $n^{(1+\sin{(\pi n/2))}/2n}$ &  $\sqrt{n}$\\
+  $n^{(1+\sin{(\pi n/2))}/2}$ &  $\sqrt{n}$\\
   \hline
 \end{tabular}
 \end{align*}
@@ -123,10 +139,8 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
   &\ As\ n\geq q\ and\ \log_2{n}\geq 0 \Rightarrow f(n)=(\log_2{n})^2 \geq 0\\ &\
   Since\\ &\
   g(n)= \log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n} = \log_2{n}*\log_2{n} + 2*\log_2{n}\\ &\
-  \quad = \left(\log_2{n}\right)^2 + 2*\log_2{n}\ \geq\ 0\qquad for\ n\ \geq\ 1\\ &\
-  \end{align*}
-  \begin{align*}
-  &\ c*g(n)-f(n)\\ &\
+  \qquad = \left(\log_2{n}\right)^2 + 2*\log_2{n}\ \geq\ 0\qquad for\ n\ \geq\ 1\\ &\
+  c*g(n)-f(n)\\ &\
   =c*(\left(\log_2{n}\right)^2 + 2*\log_2{n})-(\log_2{n})^2 \qquad for\ n\ \geq\ 1 \\ &\
   =(c-1)*(\log_2{n})^2 - 2\log_2{n}\\ &\
   \Rightarrow (c-1)*(\log_2{n})^2 - 2\log_2{n}\ \geq\ 0\\ &\
@@ -137,29 +151,32 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
   \item $f(n)= n^{100},\ g(n)=2^{\frac{n}{100}}$
   \begin{align*}
    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{100}}{2^{\frac{n}{100}}}=0\\ &\
-  then\ clearly\ eventually\ f(n)<g(n)\Rightarrow 0<f(n)\leq cg(n)\ for\ some\ c\\ &\
-  Thus, f(n)=O(g(n))
+  then\ clearly\ eventually\ f(n)<g(n)\ \Rightarrow 0<f(n)\leq cg(n)\ for\ some\ c.\ Thus, f(n)=O(g(n))
   \end{align*}
   % c) f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}
   \item $f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}$
   \begin{align*}
     &\ \lim_{n\to\infty} \frac{g(n)}{f(n)}=\lim_{n\to\infty} \frac{2^{\sqrt{log_2 n}}}{\sqrt{n}}=0\\ &\
-    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\\ &\
-    Hence,\ f(n)\ =\ \Omega(g(n))
+    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\ Hence,\ f(n)\ =\ \Omega(g(n))
   \end{align*}
   % d) solution f(n)=n^{1.001},\ g(n)=n log_2 n
   \item $f(n)=n^{1.001},\ g(n)=n*\log_2{n}$
   \begin{align*}
     &\ \lim_{n\to\infty} \frac{g(n)}{f(n)}=\lim_{n\to\infty} \frac{n*\log_2{n}}{n^{1.001}}=0\\ &\
-    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\\ &\
-    Hence,\ f(n)\ =\ \Omega(g(n))
+    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\ Hence,\ f(n)\ =\ \Omega(g(n))
   \end{align*}
-  % e) solution f(n)=n^{(1+sin(\frac{\pi n}{2}))/2n},\ g(n)=\sqrt{n}
-  \item $f(n)=n^{\frac{1+\sin(\frac{\pi n}{2})}{2n}},\ g(n)=\sqrt{n}$
+  % e) solution f(n)=n^{(1+sin(\frac{\pi n}{2}))/2},\ g(n)=\sqrt{n}
+  \item $f(n)=n^{\frac{1+\sin(\frac{\pi n}{2})}{2}},\ g(n)=\sqrt{n}$
+  \begin{figure}[h!]
+    \includegraphics[width=\linewidth]{f(n)-vs-g(n).png}
+    \caption{f(n) vs. g(n).}
+    \label{fig:f(n)-vs-g(n)}
+  \end{figure}
+  Graph \ref{fig:f(n)-vs-g(n)} comparison of growth rates of f(n) vs. g(n).
   \begin{align*}
-    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{\frac{1+\sin(\frac{\pi n}{2})}{2n}}}{\sqrt{n}}=0\\ &\
-    then\ clearly\ eventually\ f(n)<g(n)\Rightarrow 0<f(n)\leq cg(n)\ for\ some\ c\\ &\
-    Thus, f(n)=O(g(n))
+    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{\frac{1+\sin(\frac{\pi n}{2})}{2}}}{\sqrt{n}}=\infty\\ &\
+    \text{Thus, this can not concludes f(n) and g(n).}\\ &\
+    \text{The above graph present to show the growth rate of two function.}
   \end{align*}
 \end{enumerate}
 \paragraph{5. [20 marks, each recurrence 5 marks]}
@@ -175,28 +192,41 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
 \begin{enumerate}[label=(\alph*)]
   \item $T (n) = 2T (n/2) + n(2 + \sin{n})$
 \begin{align*}
-  &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
-  &\ And\ f(n) = n(2 + \sin{n}),\quad then\\ &\
+  &\ As\ a = 2\ and\ b = 2,\text{ then }n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  &\ And\ f(n) = n(2 + \sin{n}),\text{ then}\\ &\
   \qquad \sin{n} \in \left[-1, 1\right]\ \Rightarrow 2+\sin{n} \in \left[1,\ 3\right] \Rightarrow f(n) = n\left(2 + \sin{n}\right) \in \left[n,\ 3n\right]\\ &\
-  Since\quad n^{\log_b{a}} = n \quad and \quad f(n) \in \left[n,\ 3n\right], f(n) = n(2 + \sin{n}) = \Theta(n)\\ &\
-  Condition\ of\ case\ 2\ is\ satisfied;\ and\ so:\\
+  \text{Since }n^{\log_b{a}} = n\text{ and }f(n) \in \left[n,\ 3n\right], f(n) = n(2 + \sin{n}) = \Theta(n)\\ &\
+  \text{Condition of case 2 is satisfied; and so:}\\
   &\ \qquad T(n)=\Theta\left({n^{\log_2{2}}\log{n}}\right) =\Theta\left({n\log{n}}\right)
 \end{align*}
 \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
 \begin{align*}
   &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
-  &\ When\ n \in \left(1, \infty\right),\ f(n) \in \left(0,\ \infty\right], f(n)\ is\ a\ non\text{-}decreasing\ function\\
-  &\ Since \log{n}\ is\ non\text{-}dominant\ term,\ f(n)\ keeps\ the\ dominant\ term\\ &\
+  &\ When\ n \in \left(1, \infty\right),\ f(n) \in \left(0,\ \infty\right], f(n)\text{ is a non-decreasing function}\\
+  &\ \text{Since }\log{n}\text{ is non-dominant term,}\ f(n)\text{ keeps the dominant term}\\ &\
   then\ f(n) = \sqrt{n}=n^{\frac{1}{2}}, f(n)=O(n^{1-\epsilon})\ for\ some\ 0< \epsilon < \frac{1}{2}\\ &\
-  Condition\ of\ case\ 1 is satisfied;\ and\ so:\\
+  \text{Condition of case 1 is satisfied; and so:}\\
   &\ \qquad T(n)=\Theta(n)
 \end{align*}
 \item $T (n) = 8T (n/2) + n^{\log{n}}$
 \begin{align*}
-  &\ As\ a = 8\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{8}} = n^4\\ &\
-  Since\quad g(n)=n^{\log_b{a}}\ =\ n^4 \quad and \quad f(n) = n^{\log{n}}\\ &\
-  =\ \Theta(n^{4-\epsilon})\ for\ any\ \epsilon < 3\\ &\
-  O? \Theta ? \Omega ? (n^{4+-\epsilon})
+  &\ As\ a = 8\geq 1\ and\ b = 2\ >\ 1,\quad then \quad n^{\log_b{a}} = n^{\log_2{8}} = n^3\ also\\ &\
+   f(n)\text{ is non-decreasing function;}\\ &\
+   Then,\ f(n)=\Omega(n^{3+\epsilon})\text{ for some }\epsilon\ >0\text{ and for some }c < 1\\ &\
+   \text{However, }f(n) \neq \Omega(n^{3+\epsilon}),\text{ no matter how big }\epsilon\text{ and }c\text{ are,}\\ &\
+   \text{Because for some }\epsilon\ >0\text{ and }0<\ c\ < 1\text{, no matter how big, }\\&\
+   8f(\frac{n}{2})\leq cf(n)\text{ for all sufficiently large }n.\\ &\
+   \text{Thus, in this case the Master Theorem does not apply.}\\ &\
+   Since,\\ &\
+   T(n) = 8T(\frac{n}{2})+n^{\log{n}}\\ &\
+   T(\frac{n}{2})=8T(\frac{n}{4})+\frac{n}{2}^{\log{\frac{n}{2}}}\\ &\
+   T(\frac{n}{2^2})=8T(\frac{n}{2^2})+\frac{n}{2^2}^{\log{\frac{n}{2^2}}}\\ &\
+   T(\frac{n}{2^3})=8T(\frac{n}{2^3})+\frac{n}{2^3}^{\log{\frac{n}{2^3}}}\\ &\
+   T(\frac{n}{2^4})=8T(\frac{n}{2^4})+\frac{n}{2^4}^{\log{\frac{n}{2^4}}}\\ &\
+   \qquad ...\\ &\
+   T(\frac{n}{2^{\floor{\log_2{n}}}}) = 8T(1)+\frac{n}{2^{\floor{\log_2{n}}}}\\ &\
+   \Rightarrow T(n)=8^{\log_2{n}}+T(1)+ n^{\log{n}} + \frac{n}{2}^{\log{\frac{n}{2}}} + \frac{n}{2^2}^{\log{\frac{n}{2^2}}}+ \frac{n}{2^3}^{\log{\frac{n}{2^3}}}++ \frac{n}{2^4}^{\log{\frac{n}{2^4}}}+..+\frac{n}{2^{\floor{\log_2{n}}}}\\ &\
+   \qquad\qquad =8^{\log_2{n}} +T(1) + n^{\log{n}}(1+\frac{n}{2}^{-\log{2}}+\frac{n}{2^2}^{-\log{2^2}}+\frac{n}{2^3}^{-\log{2^3}}+\frac{n}{2^4}^{-\log{2^4}}+..+\frac{n^{\floor{\log_2{n}}}}{2^{\floor{\log_2{n}}}})\\ &\
 \end{align*}
 \item $T (n) = T (n - 1) + n$
 \begin{align*}
@@ -209,7 +239,9 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
   T(n-2)\ =\ T(n-3)\ +\ n\ -\ 2\\ &\
   \qquad ...\\ &\
   T(2)\ =\ T(1)\ +\ 2\\ &\
-  Hence,\ T(n)\ =\ T(1)+2+3+...+(n-2)+(n-1)+n\ =\ T(1)+1/2(n^2+n-2)\\ &\
+  T(1)\ =\ T(0)\ +\ 1\\ &\
+  T(0)\ =\ 0\\ &\
+  Hence,\ T(n)\ = 1+2+3+...+(n-2)+(n-1)+n\ =\ 1/2(n^2+n)\\ &\
   As\ T(1)\ consider\ as\ constant,\ therefore\ T(n)\ =\ O(n^2)
 \end{align*}
 \end{enumerate}
