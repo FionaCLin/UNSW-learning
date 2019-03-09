@@ -5,7 +5,8 @@
 \usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
 \usepackage{fixltx2e}
 \usepackage[strict=true]{csquotes}
-
+% \usepackage[margin=1in,bottom=1in,top=1in]{geometry}
+   
 \usepackage{color}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{2111defs,2111theorems}
@@ -136,48 +137,46 @@ if $f (n), g(n), c > 0$ then $f (n) < c g(n)$; if and only if log$f(n) <$ log$c$
   % a)
   \item $f(n)=\left(\log_2n\right)^2,\ g(n)=\log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n}$
   \begin{align*}
-  &\ As\ n\geq q\ and\ \log_2{n}\geq 0 \Rightarrow f(n)=(\log_2{n})^2 \geq 0\\ &\
-  Since\\ &\
-  g(n)= \log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n} = \log_2{n}*\log_2{n} + 2*\log_2{n}\\ &\
-  \qquad = \left(\log_2{n}\right)^2 + 2*\log_2{n}\ \geq\ 0\qquad for\ n\ \geq\ 1\\ &\
-  c*g(n)-f(n)\\ &\
-  =c*(\left(\log_2{n}\right)^2 + 2*\log_2{n})-(\log_2{n})^2 \qquad for\ n\ \geq\ 1 \\ &\
-  =(c-1)*(\log_2{n})^2 - 2\log_2{n}\\ &\
-  \Rightarrow (c-1)*(\log_2{n})^2 - 2\log_2{n}\ \geq\ 0\\ &\
-  Therefore,\ c\ >\ 1\\ &\
-  Hence,\ c\ >\ 1\ and\ n\ \geq\ 1,\ 0\ \leq\ f(n)\ \leq c*g(n) \Rightarrow f(n) = O(g(n))
+  &\ \lim_{n\to\infty} \frac{g(n)}{f(n)}= \lim_{n\to\infty} \frac{\log_2\left(n^{\log_2{n}}\right) + 2*\log_2{n}}{\left(\log_2n\right)^2}\\
+  &\ =\lim_{n\to\infty} 1+\frac{2}{\log_2{n}}=1\neq0\\
+  &\ \lim_{n\to\infty}\frac{g(n)}{f(n)}=constant\neq0,\\ &\
+  \text{then clearly eventually }c_1*g(n)\leq f(n) \leq c_2*g(n)\text{ for some }c_1\text{ and }c_2.\\ &\
+  \text{Hence, }f(n)=\Theta(g(n))
   \end{align*}
   % b)
   \item $f(n)= n^{100},\ g(n)=2^{\frac{n}{100}}$
   \begin{align*}
    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{100}}{2^{\frac{n}{100}}}=0\\ &\
-  then\ clearly\ eventually\ f(n)<g(n)\ \Rightarrow 0<f(n)\leq cg(n)\ for\ some\ c.\ Thus, f(n)=O(g(n))
+  \text{then clearly eventually }f(n)<g(n) \Rightarrow 0<f(n)\leq cg(n)\text{ for some }c.\\ &\
+  \text{Thus, }f(n)=O(g(n))
   \end{align*}
   % c) f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}
   \item $f(n)=\sqrt{n},\ g(n)=2^{\sqrt{log_2 n}}$
   \begin{align*}
     &\ \lim_{n\to\infty} \frac{g(n)}{f(n)}=\lim_{n\to\infty} \frac{2^{\sqrt{log_2 n}}}{\sqrt{n}}=0\\ &\
-    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\ Hence,\ f(n)\ =\ \Omega(g(n))
+    \text{then clearly eventually }g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\text{ for some c}.\\ &\ 
+    \text{Hence, }f(n)\ =\ \Omega(g(n))
   \end{align*}
   % d) solution f(n)=n^{1.001},\ g(n)=n log_2 n
   \item $f(n)=n^{1.001},\ g(n)=n*\log_2{n}$
   \begin{align*}
     &\ \lim_{n\to\infty} \frac{g(n)}{f(n)}=\lim_{n\to\infty} \frac{n*\log_2{n}}{n^{1.001}}=0\\ &\
-    then\ clearly\ eventually\ g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\ for\ some\ c\ Hence,\ f(n)\ =\ \Omega(g(n))
+    \text{then clearly eventually }g(n)<f(n)\Rightarrow 0<cg(n)\leq f(n)\text{ for some c}.\\ &\
+    \text{Hence, }f(n)\ =\ \Omega(g(n))
   \end{align*}
   % e) solution f(n)=n^{(1+sin(\frac{\pi n}{2}))/2},\ g(n)=\sqrt{n}
-  \item $f(n)=n^{\frac{1+\sin(\frac{\pi n}{2})}{2}},\ g(n)=\sqrt{n}$
+  \item $f(n)=n^{\frac{1+\sin(\frac{\pi n}{2})}{2}},\ g(n)=\sqrt{n}$\\
+  \begin{align*}
+    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{\frac{1+\sin(\frac{\pi n}{2})}{2}}}{\sqrt{n}}=\infty\\ &\
+    \text{Thus, this can not concludes the growth rate of f(n) and g(n).}\\ &\
+    \text{The below graph shows the growth rate of two functions.}
+  \end{align*}
   \begin{figure}[h!]
     \includegraphics[width=\linewidth]{f(n)-vs-g(n).png}
     \caption{f(n) vs. g(n).}
     \label{fig:f(n)-vs-g(n)}
   \end{figure}
   Graph \ref{fig:f(n)-vs-g(n)} comparison of growth rates of f(n) vs. g(n).
-  \begin{align*}
-    &\ \lim_{n\to\infty} \frac{f(n)}{g(n)}=\lim_{n\to\infty} \frac{n^{\frac{1+\sin(\frac{\pi n}{2})}{2}}}{\sqrt{n}}=\infty\\ &\
-    \text{Thus, this can not concludes f(n) and g(n).}\\ &\
-    \text{The above graph present to show the growth rate of two function.}
-  \end{align*}
 \end{enumerate}
 \paragraph{5. [20 marks, each recurrence 5 marks]}
 \label{sec:Question 5}
@@ -192,8 +191,8 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
 \begin{enumerate}[label=(\alph*)]
   \item $T (n) = 2T (n/2) + n(2 + \sin{n})$
 \begin{align*}
-  &\ As\ a = 2\ and\ b = 2,\text{ then }n^{\log_b{a}} = n^{\log_2{2}} = n\\
-  &\ And\ f(n) = n(2 + \sin{n}),\text{ then}\\ &\
+  &\ \text{As }a = 2\text{ and }b = 2,\text{ then }n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  &\ \text{ And }f(n) = n(2 + \sin{n}),\text{ then}\\ &\
   \qquad \sin{n} \in \left[-1, 1\right]\ \Rightarrow 2+\sin{n} \in \left[1,\ 3\right] \Rightarrow f(n) = n\left(2 + \sin{n}\right) \in \left[n,\ 3n\right]\\ &\
   \text{Since }n^{\log_b{a}} = n\text{ and }f(n) \in \left[n,\ 3n\right], f(n) = n(2 + \sin{n}) = \Theta(n)\\ &\
   \text{Condition of case 2 is satisfied; and so:}\\
@@ -201,32 +200,60 @@ Determine the asymptotic growth rate of the solutions to the following recurrenc
 \end{align*}
 \item $T (n) = 2T (n/2) + \sqrt{n} + \log{n}$
 \begin{align*}
-  &\ As\ a = 2\ and\ b = 2,\quad then \quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
-  &\ When\ n \in \left(1, \infty\right),\ f(n) \in \left(0,\ \infty\right], f(n)\text{ is a non-decreasing function}\\
-  &\ \text{Since }\log{n}\text{ is non-dominant term,}\ f(n)\text{ keeps the dominant term}\\ &\
-  then\ f(n) = \sqrt{n}=n^{\frac{1}{2}}, f(n)=O(n^{1-\epsilon})\ for\ some\ 0< \epsilon < \frac{1}{2}\\ &\
+  &\ \text{ As }a = 2\text{ and }b = 2,\quad\text{ then }\quad n^{\log_b{a}} = n^{\log_2{2}} = n\\
+  &\ \text{ When }n \in \left(0, \infty\right),\ f(n) \in \left(0,\ \infty\right], f(n)\text{ is a non-decreasing function}\\
+  &\ \text{Since }\log{n}\text{ is non-dominant term,}\ f(n)=\sqrt{n} \\ &\ 
+  f(n)\text{ is determined by the dominant term, while }n^{\log_b{a}}=n\\ &\
+  \text{then }f(n) = \sqrt{n}=n^{\frac{1}{2}}=O(n^{1-\epsilon})\text{ for some } \epsilon > 0\\ &\
   \text{Condition of case 1 is satisfied; and so:}\\
   &\ \qquad T(n)=\Theta(n)
 \end{align*}
 \item $T (n) = 8T (n/2) + n^{\log{n}}$
 \begin{align*}
-  &\ As\ a = 8\geq 1\ and\ b = 2\ >\ 1,\quad then \quad n^{\log_b{a}} = n^{\log_2{8}} = n^3\ also\\ &\
+  &\ \text{ As }a = 8\geq 1\text{ and }b = 2\ >\ 1,\text{then }n^{\log_b{a}} = n^{\log_2{8}} = n^3\text{ also}\\ &\
    f(n)\text{ is non-decreasing function;}\\ &\
-   Then,\ f(n)=\Omega(n^{3+\epsilon})\text{ for some }\epsilon\ >0\text{ and for some }c < 1\\ &\
-   \text{However, }f(n) \neq \Omega(n^{3+\epsilon}),\text{ no matter how big }\epsilon\text{ and }c\text{ are,}\\ &\
-   \text{Because for some }\epsilon\ >0\text{ and }0<\ c\ < 1\text{, no matter how big, }\\&\
-   8f(\frac{n}{2})\leq cf(n)\text{ for all sufficiently large }n.\\ &\
-   \text{Thus, in this case the Master Theorem does not apply.}\\ &\
-   Since,\\ &\
+   \text{Then, }f(n)\Omega(n^{3+\epsilon})\text{ for some }\epsilon\ >0\text{ and for some }c < 1\\ &\
+   \text{However, }f(n)=n^{\log{n}}\neq \Omega(n^{3+\epsilon}),\text{ no matter how small }\epsilon\text{ and }c\text{ are,}\\ &\
+   \text{Because for some }\epsilon\ >0\text{ and }c\in (0, 1)\text{, no matter how small, }\\&\
+   (\frac{n}{2})^{\log{\frac{n}{2}}}< n^{\log{n}}\text{ for all sufficiently large }n.\\ &\
+   \text{Thus, in this case the Master Theorem does not apply. We unwind the T(n) as below:}\\ &\
    T(n) = 8T(\frac{n}{2})+n^{\log{n}}\\ &\
-   T(\frac{n}{2})=8T(\frac{n}{4})+\frac{n}{2}^{\log{\frac{n}{2}}}\\ &\
-   T(\frac{n}{2^2})=8T(\frac{n}{2^2})+\frac{n}{2^2}^{\log{\frac{n}{2^2}}}\\ &\
-   T(\frac{n}{2^3})=8T(\frac{n}{2^3})+\frac{n}{2^3}^{\log{\frac{n}{2^3}}}\\ &\
-   T(\frac{n}{2^4})=8T(\frac{n}{2^4})+\frac{n}{2^4}^{\log{\frac{n}{2^4}}}\\ &\
+   T(\frac{n}{2})
+   =8T(\frac{n}{2^2})+(\frac{n}{2})^{\log{\frac{n}{2}}}\\ &\
+   \\ &\
+   \text{Since }(\frac{n}{2})^{\log{\frac{n}{2}}}  =n^{\log{\frac{n}{2}}}(\frac{1}{2})^{\log{\frac{n}{2}}}
+   =n^{\log{\frac{n}{2}}}2^{\log{\frac{2}{n}}}
+   =n^{\log{n}}n^{-\log{2}}2^{\log{\frac{2}{n}}}\text{, then}\\ &\
+   \\ &\
+   T(\frac{n}{2})
+   =8T(\frac{n}{2^2})+(\frac{n}{2})^{\log{\frac{n}{2}}}
+   =8T(\frac{n}{2^2})+n^{\log{n}}n^{-\log{2}}2^{\log{\frac{2}{n}}}
+   \\ &\
+   T(\frac{n}{2^2})
+   =8T(\frac{n}{2^3})+(\frac{n}{2^2})^{\log{\frac{n}{2^2}}}
+   =8T(\frac{n}{2^3})+n^{\log{n}}n^{-\log{(2)^2}}2^{2\log{\frac{2^2}{n}}}
+   \\ &\
+   T(\frac{n}{2^3})
+   =8T(\frac{n}{2^4})+(\frac{n}{2^3})^{\log{\frac{n}{2^3}}}
+   =8T(\frac{n}{2^4})+n^{\log{n}}n^{-\log{(2)^3}}2^{3\log{\frac{2^3}{n}}}
+   \\ &\
    \qquad ...\\ &\
-   T(\frac{n}{2^{\floor{\log_2{n}}}}) = 8T(1)+\frac{n}{2^{\floor{\log_2{n}}}}\\ &\
-   \Rightarrow T(n)=8^{\log_2{n}}+T(1)+ n^{\log{n}} + \frac{n}{2}^{\log{\frac{n}{2}}} + \frac{n}{2^2}^{\log{\frac{n}{2^2}}}+ \frac{n}{2^3}^{\log{\frac{n}{2^3}}}++ \frac{n}{2^4}^{\log{\frac{n}{2^4}}}+..+\frac{n}{2^{\floor{\log_2{n}}}}\\ &\
-   \qquad\qquad =8^{\log_2{n}} +T(1) + n^{\log{n}}(1+\frac{n}{2}^{-\log{2}}+\frac{n}{2^2}^{-\log{2^2}}+\frac{n}{2^3}^{-\log{2^3}}+\frac{n}{2^4}^{-\log{2^4}}+..+\frac{n^{\floor{\log_2{n}}}}{2^{\floor{\log_2{n}}}})\\ &\
+   T(\frac{n}{2^{\floor{\log_2{n}}}})= 8T(1)+(\frac{n}{2^{\floor{\log_2{2}}}})^{\log{\frac{n}{2^{\floor{\log_2{n}}}}}}          
+    =8T(1)+n^{\log{n}}n^{-\log{2^{\floor{\log_2{n}}}}}(2^{\floor{\log_2{n}}})^{\log{\frac{2^{\floor{\log_2{n}}}}{n}}}
+   \\ &\
+   \\ &\
+   \text{Since, }T(1)=T(0/2)+1^{\log{1}}=1,\text{ then we have,}\\ &\
+   \\ &\
+   T(n)=
+   8^{\log_2{n}}*T(1)+ n^{\log{n}} 
+   +n^{\log{n}}n^{-\log{2}}2^{\log{\frac{2}{n}}}+n^{\log{n}}n^{-\log{(2)^3}}2^{3\log{\frac{2^3}{n}}}\\ &\
+   \qquad\quad+...+n^{\log{n}}n^{-\log{2^{\floor{\log_2{n}}}}}(2^{\floor{\log_2{n}}})^{\log{\frac{2^{\floor{\log_2{n}}}}{n}}}\\ &\
+   \qquad=
+   8^{\log_2{n}}*T(1)+ n^{\log{n}}(1 
+   +n^{-\log{2}}2^{\log{\frac{2}{n}}}+n^{-\log{(2)^3}}2^{3\log{\frac{2^3}{n}}}\\ &\ 
+   \quad\qquad+...+
+   n^{-\log{2^{\floor{\log_2{n}}}}}(2^{\floor{\log_2{n}}})^{\log{\frac{2^{\floor{\log_2{n}}}}{n}}})\\ &\
+   \text{Therefore, the most significant term determines  }T(n)=O(n^{\log{n}})
 \end{align*}
 \item $T (n) = T (n - 1) + n$
 \begin{align*}
