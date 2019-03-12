@@ -114,16 +114,16 @@ The three phases as following:
   In the last phase, $n-1$ people know person $c$ at the party already. It is possible there is zero celebrity at the party and person $c$ would know someone at the party. It is necessary to ask $c$ questions -- "if he knows person $i$" for $n-1$ people\\
   If he/she answers no to every one of $n-1$ people, he is the  celebrity, otherwise, there is no celebrity in the party.
 \end{enumerate}
-Therefore, it is $3n-3$ questions no more than $3n-3$ questions even in the worst case.
+Therefore, it is no more than $3n-3$ questions even in the worst case.
 \\
-\\*{\bfseries(b)} To accomplish this task with no more than $3n-2-\log_2{n}$ such questions is similar to the above approach, even in the worst case. Previously, $n-1$ people need to answer questions in the first phase. We can optimize this with the divide and conquer algorithms. Hence, a full complete balanced binary tree can be used to  achieve this purpose.
+\\*{\bfseries(b)} To accomplish this task with no more than $3n-2-\log_2{n}$ such questions is similar to the above approach, even in the worst case. Previously, $n-1$ people need to answer questions in order to select a celebrity candidate in the first phase. We can optimize this with the divide and conquer algorithms. Hence, a full complete balanced binary tree can be used to  achieve this purpose.
 \begin{enumerate}
   \item construct a full smallest tree having no single child (only allow 0 child or 2 children)\\
   Let $m =\floor{\log_2{n}}$ be the level of the tree. Then attach $n$ leaf nodes as there are $n$ people, following the rule of each node having no single child.
-  \item eliminate candidates in pairs\\
+  \item eliminate candidates in pairs until only final celebrity candidate remains\\
   $n$ people can split into pairs, ask $\frac{n}{2}$ questions. This can eliminate $\frac{n}{2}$ people. Then the final candidates get one confirmation. Even though we don't know who the celebrity $c$ is, the final candidate get one confirmation.\\ 
   $\frac{n}{2}$ survivors can split into pairs again, ask $\frac{n}{4}$ questions. This can eliminate $\frac{n}{4}$ people. The final candidates get another confirmation.\\
-  If you do the phase 1 in this way, you can guarantee to save one "redundant" answer per round(aka. level $m$). you can subtract these questions from phase 2 and 3.
+  If you do the phase 1 in this way, you can guarantee to save one "redundant" answer per round(aka. level). you can subtract these questions from phase 2 and 3.
   \item since we can save up $m=\floor{\log_2{n}}$ questions, the potential celebrity candidate is promoted through all the levels. Therefore, it will only ask $n-\floor{\log_2{n}}$ questions in this phase.
 \end{enumerate}
 Therefore, with this optimization, the task can be achieved by answering no more than $2n-2+n-\floor{\log_2{n}}=3n-\floor{\log_2{n}}-2$ questions.
