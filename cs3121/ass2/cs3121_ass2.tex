@@ -1,0 +1,107 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
+\usepackage{listings, enumitem}
+\usepackage{amsmath,tabu}
+\usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
+\usepackage{fixltx2e}
+\usepackage[strict=true]{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{2111defs,2111theorems}
+
+\title{COMP3121 Assignment1}
+\author{Fiona Lin z5131048}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\newcommand{\ah}{\mathsf{a}}
+\newcommand{\be}{\mathsf{b}}
+\newcommand{\assn}[1]{{\color{red}\left\{#1\right\}}}
+\newcommand{\length}[1]{\left|#1\right|}
+\newcommand{\noof}[2]{\left\|#1\right\|_{#2}}
+\newcommand{\VAR}{\pPkey{var}}
+\def\L{\mathcal{L}}
+
+\begin{document}
+\maketitle
+
+\paragraph{1. [20 marks]}
+\label{sec:Question 1}
+You are given two polynomials,
+\begin{align*}
+  P_A(x) = A_0 + A_1x^3+A_6x^6
+\end{align*}
+and
+\begin{align*}
+  P_B(x) = B_0 + B_1x^3+B_6x^6+B_9x^9
+\end{align*}
+where all $A_i'$s and $B_j'$s are large numbers. Multiply these two polynomials using only 6 large number Multiplicaitons.
+\paragraph{Solution}
+
+
+
+
+\paragraph{2.}
+\label{sec:Question 2}
+\begin{enumerate}[label=(\alph*)]
+  \item {\bfseries[5 marks]} Multiply two complex numbers $(a + ib)$ and $(c + id)$ (where $a, b, c, d$ are all real numbers) using only 3 real number multiplications.
+  \item {\bfseries[5 marks]} Find $(a + ib)^2$ using only two multiplications of real numbers.
+  \item {\bfseries[10 marks]} Find the product $(a + ib)^2(c + id)^2$ using only five real number multiplications.
+\end{enumerate}
+
+\paragraph{Solution}
+
+\paragraph{3.}
+\label{sec:Question 3}
+\begin{enumerate}[label=(\alph*)]
+\item {\bfseries[2 marks]} $Revision$: Describe how to multiply two $n$-degree polynomials together in $O(n\log{n})$ time, using the Fast Fourier Transform (FFT). You do not need to explain how FFT works – you may treat it as a black box.
+\item In this part we will use the Fast Fourier Transform (FFT) algorithm described in class to multiply multiple polynomials together (not just two). Suppose you have $K$ polynomials $P1$, ... ,$PK$ so that
+\begin{align*}
+  degree(P1 ) + ...  + degree(PK ) = S
+\end{align*}
+\begin{enumerate}[label=(\roman*)]
+  \item {\bfseries[6 marks]} Show that you can find the product of these $K$ polynomials in $O(KS\log{S})$ time.
+  Hint: How many points do you need to uniquely determine an $S$-degree polynomial?
+  \item {\bfseries[12 marks]} Show that you can find the product of these $K$ polynomials in $O(S\log{S}\log{K})$ time.
+  Hint: consider using divide-and-conquer; a tree which you used in the previous assignment might be helpful here as well. Also, remember that if $x,y,z$ are all positive, then $\log{(x + y)} < \log{(x + y + z)}$
+\end{enumerate}
+\end{enumerate}
+
+\paragraph{Solution}
+
+\paragraph{4. [20 marks, each pair 4 marks]}
+\label{sec:Question 4}
+Let us define the Fibonacci numbers as $F_0=0,\ F_1=1$ and $F_n=F_{n-1}+F_{n-2}$ for all $n\geq2$. Thus, the Fibonacci sequence looks as follows: $0, 1, 1, 2, 3, 5, 8, 13, 21, . . .$
+\begin{enumerate}[label=(\alph*)]
+  \item{\bfseries[5 marks]} Show, by induction or otherwise, that
+\begin{align*}
+  \begin{pmatrix}
+   F_{n+1} & F_n \\
+   F_n & F_{n-1} \\
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix}^{\!n}
+\end{align*}
+  for all integers $n\geq1$
+  \item {\bfseries[15 marks]} Hence or otherwise, give an algorithm that finds Fn in $O(\log{n})$ time.
+\end{enumerate}
+\paragraph{Solution}
+
+
+
+\paragraph{5.}
+\label{sec:Question 5}
+Your army consists of a line of $N$ giants, each with a certain height. You must designate precisely $L \leq N$ of them to be leaders. Leaders must be spaced out across the line; specifically, every pair of leaders must have at least $K \geq 0$ giants standing in between them. Given $N,L,K$ and the heights $H[1..N]$ of the giants in the order that they stand in the line as input, find the $maximum$ height of the $shortest$ leader among all valid choices of $L$ leaders. We call this the optimisation version of the problem.\\
+\\*
+For instance, suppose $N = 10,L = 3,K = 2$ and $H = [1,10,4,2,3,7,12,8,7,2].$ Then among the 10 giants, you must choose 3 leaders so that each pair of leaders has at least 2 giants standing in between them. The best choice of leaders has heights 10, 7 and 7, with the shortest leader having height 7. This is the best possible for this case.
+\begin{enumerate}[label=(\alph*)]
+  \item {\bfseries[8 marks]} In the $decision$ version of this problem, we are given an additional integer $T$ as input. Our task is to decide if there exists some valid choice of leaders satisfying the constraints whose shortest leader has height no less than $T$ .
+  \item {\bfseries[12 marks]} Hence, show that you can solve the optimisation version of this problem in $O(N\log{N})$ time.
+\end{enumerate}
+\paragraph{Solution}
+\end{document}
