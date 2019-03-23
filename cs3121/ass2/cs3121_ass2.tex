@@ -150,9 +150,75 @@ Let us define the Fibonacci numbers as $F_0=0,\ F_1=1$ and $F_n=F_{n-1}+F_{n-2}$
   \item {\bfseries[15 marks]} Hence or otherwise, give an algorithm that finds Fn in $O(\log{n})$ time.
 \end{enumerate}
 \paragraph{Solution}
-
-
-
+{\bfseries(a)} When $n=1$, we have \\
+\begin{align*}
+  \begin{pmatrix}
+   F_{2} & F_1 \\
+   F_1 & F_0 \\
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix}^{\!1}
+\end{align*}
+Let $n=k$, we have\\
+\begin{align*}
+  \begin{pmatrix}
+   F_{k+1} & F_k \\
+   F_k & F_{k-1} \\
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix}^{\!k}
+\end{align*}
+And when $n=k+1$,
+\begin{align*}
+  &\ LHS=
+  \begin{pmatrix}
+   F_{k+2} & F_{k+1} \\
+   F_{k+1} & F_{k} \\
+  \end{pmatrix} = 
+  \begin{pmatrix}
+    F_{k+1} + F_{k} & F_k + F_{k-1}\\
+    F_k + F_{k-1} & F_k \\
+  \end{pmatrix} \\ &\
+  \qquad\ = \begin{pmatrix}
+    F_{k+1} & F_k\\
+    F_k  & F_{k-1} \\
+  \end{pmatrix} 
+  \cdot
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix} =
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix}^{\!k}
+  \cdot
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix} =
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & 0 \\
+  \end{pmatrix}^{\!k+1} = RHS
+\end{align*}
+Hence for all integers $n \geq 1$, 
+$\begin{pmatrix}
+  F_{n+1} & F_n \\
+  F_n & F_{n-1} \\
+ \end{pmatrix}
+ =
+ \begin{pmatrix}
+   1 & 1 \\
+   1 & 0 \\
+ \end{pmatrix}^{\!n}$\\
+ {\bfseries(b)}
 \paragraph{5.}
 \label{sec:Question 5}
 Your army consists of a line of $N$ giants, each with a certain height. You must designate precisely $L \leq N$ of them to be leaders. Leaders must be spaced out across the line; specifically, every pair of leaders must have at least $K \geq 0$ giants standing in between them. Given $N,L,K$ and the heights $H[1..N]$ of the giants in the order that they stand in the line as input, find the $maximum$ height of the $shortest$ leader among all valid choices of $L$ leaders. We call this the optimisation version of the problem.\\
