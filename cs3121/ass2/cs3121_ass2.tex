@@ -117,17 +117,15 @@ Multiply these two polynomials using only these 6 large number multiplicaitons $
 \end{enumerate}
 \paragraph{Solution}
 \begin{enumerate}[label=(\alph*)]
-\item Multiply two $n$-degree polynomials actually convert the coefficients of those polynomials into 2 vectors and perform convolution on these two verctors.\\ 
-Naive convolution take $O(n^2)$ time complexity, however, 
-convolution can be optimised using the Fast Fourier Transform (FFT) algorithm:\\
+\item Multiply two $n$-degree polynomials, $P(x)$ and $Q(x)$, actually convert the coefficients of those polynomials into 2 vectors and perform convolution on these two verctors. Naive convolution take $O(n^2)$ time complexity.\\
+However, the result polynomial will have degrees at most 2n, therefore it's sufficient to uniquely determine that polynomial with $2n+1$ distinct points. So, utilising Discrete Fourier Transform(aka. DFT), we can evaluate the result polynomial for such a convolution at all complex roots of unity of order $2n$. The DFT can be optimised using divide-and-conquer algorithm called the Fast Fourier Transform (FFT) algorithm:\\
 $ \CON(a,b) = \sqrt{n}(\IFFT(\FFT(a) \cdot \FFT(b)))$\\
 each FFT takes $O(\log{n})$ time and the product of 2 FFT is elementwise product(also know as Hadamard product) and it's $O(n)$, hence the overall time complexity is $O(n\log{n})$ time.
-\item In this part we will use the Fast Fourier Transform (FFT) algorithm described in class to multiply multiple polynomials together (not just two). Suppose you have $K$ polynomials $P1$, ... ,$PK$ so that
-\begin{enumerate}[label=(\roman*)]
-  \item {\bfseries[6 marks]} Show that you can find the product of these $K$ polynomials in $O(KS\log{S})$ time.
-  Hint: How many points do you need to uniquely determine an $S$-degree polynomial?
-  \item {\bfseries[12 marks]} Show that you can find the product of these $K$ polynomials in $O(S\log{S}\log{K})$ time.
-  Hint: consider using divide-and-conquer; a tree which you used in the previous assignment might be helpful here as well. Also, remember that if $x,y,z$ are all positive, then $\log{(x + y)} < \log{(x + y + z)}$
+\item 
+\begin{enumerate}[label=(\roman*)]  
+  % TODO
+  \item Hint: How many points do you need to uniquely determine an $S$-degree polynomial?
+  \item Hint: consider using divide-and-conquer; a tree which you used in the previous assignment might be helpful here as well. Also, remember that if $x,y,z$ are all positive, then $\log{(x + y)} < \log{(x + y + z)}$
 \end{enumerate}
 \end{enumerate}
 \paragraph{4. [20 marks, each pair 4 marks]}
@@ -218,7 +216,19 @@ $\begin{pmatrix}
    1 & 1 \\
    1 & 0 \\
  \end{pmatrix}^{\!n}$\\
+ \\*
  {\bfseries(b)}
+ As previous, we know $F_n$ can obtain by computing $\begin{pmatrix}
+  1 & 1 \\
+  1 & 0 \\
+\end{pmatrix}^{\!n}$, then let $G=\begin{pmatrix}
+  1 & 1 \\
+  1 & 0 \\
+\end{pmatrix}$.\\
+Thus, $F_n=G^n$ using divide-and-conquer algorithm, $G^2$ take $O(1)$\\
+If $n$ is even, we have $G^n=G^{2^k} \Rightarrow k = \log{n}$. So it takes $O(\log{n})$\\
+If $n$ is odd, we have $G^n=G^{2^{k+1}} \Rightarrow k = \log{n} - 1$. So it still takes $O(\log{n})$
+Hence, it takes overall $O(\log{n})$ to find $F_n$ using divide-and-conquer algorithm.
 \paragraph{5.}
 \label{sec:Question 5}
 Your army consists of a line of $N$ giants, each with a certain height. You must designate precisely $L \leq N$ of them to be leaders. Leaders must be spaced out across the line; specifically, every pair of leaders must have at least $K \geq 0$ giants standing in between them. Given $N,L,K$ and the heights $H[1..N]$ of the giants in the order that they stand in the line as input, find the $maximum$ height of the $shortest$ leader among all valid choices of $L$ leaders. We call this the optimisation version of the problem.\\
@@ -229,4 +239,17 @@ For instance, suppose $N = 10,L = 3,K = 2$ and $H = [1,10,4,2,3,7,12,8,7,2].$ Th
   \item {\bfseries[12 marks]} Hence, show that you can solve the optimisation version of this problem in $O(N\log{N})$ time.
 \end{enumerate}
 \paragraph{Solution}
+\begin{enumerate}[label=(\alph*)]
+  \item In this task, we needs to works out if there are enough leaders candidate meeting the minimum required height $T$. Therefore, it needs to check if there are $L$ leaders meeting the minimum required height $T$, and $L$ leaders are seperating by at least every $K$ griants in $N$ giants.\\
+  Iterate all $N$ giants, find the first eligible leader candidate and from then on, from the last eligible leader candidate skipping $K$ giants to find the next eligible leader candidate. This takes $O(N)$ time complexity.
+  After finding out all the eligible candidates, check if the total number of the eligible candidates is at least $K$. Return \textbf{true} if the total number is greater or equal to $K$ and return \textbf{false} otherwise. This take $O(1)$ time so the overall time complexity is $O(N)$
+  \item  
+  % TODO
+  
+  
+  
+  Observe that the optimisation problem corresponds to finding the largest value of $T$ for which the answer to the decision problem is {\bfseries true}.\\
+  Suppose our decision algorithm return \textbf{true} from some $T$. Then clearly it will return true for all smaller values of $T$ as well: since every giant that is eligible for this $T$ will also be eligible for smaller $T$. Hence, we can say that our decision problem is monotonic in T.\\
+  Thus, we can use binary search to work out the maximum value of $T$ where our decision problem returns \textbf{true}. Note that it suffices to check only heights of giants as candidate answers: the answer won't change between them. Thus, we can sort our heights in $O(n\log{n})$ and binary search over these values, deciding whether to go higher or lower based on a run of our decision problem. Since there are $O(n\log{n})$ iterations in the binary search, each taking $O(N)$ to resolve, our algorithm is $O(N\log{N})$ overall.
+\end{enumerate}
 \end{document}
