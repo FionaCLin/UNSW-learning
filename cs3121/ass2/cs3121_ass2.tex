@@ -34,15 +34,15 @@ You are given two polynomials,
   P_A(x) = A_0 + A_3x^3+A_6x^6\\ &\
 \qquad\qquad\text{and}\\ &\
   P_B(x) = B_0 + B_3x^3+B_6x^6+B_9x^9
-\end{align*} 
+\end{align*}
 where all $A_i'$s and $B_j'$s are large numbers. Multiply these two polynomials using only 6 large number Multiplicaitons.
 \paragraph{Solution}
-Let $P_C(y)=P_A(y) \cdot P_B(y)$ and $y =x^3$, then we have\\ 
-$P_A(y) = A_0 + A_3 y + A_6 y^2 \quad and\quad 
+Let $P_C(y)=P_A(y) \cdot P_B(y)$ and $y =x^3$, then we have\\
+$P_A(y) = A_0 + A_3 y + A_6 y^2 \quad and\quad
 P_B(y) = B_0 + B_3 y + B_6 y^2 + B_9 y^3$\\
 Since the product polynomial $P_C(y) = P_A(y)\cdot P_B(y)$ is of degree 5, we need 6 value to uniquely determine $P_C(y)$. Let $y = -2,-1,0,1,2,3$; we have
 \begin{align*}
-&\ 
+&\
 P_A(-2) = A_0 + (-2) A_3 + (-2)^2  A_6  = A_0 - 2A_3 + 4A_6 \\ &\
 P_B(-2) = B_0 + (-2) B_3 + (-2)^2  B_6 + (-2)^3  B_9 = B_0 -2B_3 + 4B_6 - 8B_9\\ &\
 P_A(-1) = A_0 + (-1) A_3 + (-1)^2  A_6  = A_0 - 1A_3 +  A_6 \\ &\
@@ -57,7 +57,7 @@ P_A(3) = A_0 + (3) A_3 + (3)^2 A_6 = A_0 + 3A_3 +  9A_6 \\ &\
 P_B(3) = B_0 + (3) B_3 + (3)^2 B_6 + (3)^3 B_9= B_0 + 3B_3 + 9B_6 + 27B_9\\ &\
 \end{align*}
 Thus, if we present the product $P_C(y)=P_A(y)P_B(y)$ in the coefficient form as\\
-$P_C(y) = C_0 +C_1 y +C_2 y^2 +C_2 y^2 +C_3 y^3 +C_4 y^4 +C_5 y^5 
+$P_C(y) = C_0 +C_1 y +C_2 y^2 +C_2 y^2 +C_3 y^3 +C_4 y^4 +C_5 y^5
 $\\
 We get
 \begin{align*}
@@ -118,14 +118,27 @@ Multiply these two polynomials using only these 6 large number multiplicaitons $
 \paragraph{Solution}
 \begin{enumerate}[label=(\alph*)]
 \item Multiply two $n$-degree polynomials, $P(x)$ and $Q(x)$, actually convert the coefficients of those polynomials into 2 vectors and perform convolution on these two verctors. Naive convolution take $O(n^2)$ time complexity.\\
-However, the result polynomial will have degrees at most 2n, therefore it's sufficient to uniquely determine that polynomial with $2n+1$ distinct points. So, utilising Discrete Fourier Transform(aka. DFT), we can evaluate the result polynomial for such a convolution at all complex roots of unity of order $2n$. The DFT can be optimised using divide-and-conquer algorithm called the Fast Fourier Transform (FFT) algorithm:\\
+However, the result polynomial will have degrees at most 2n, therefore it's sufficient to uniquely determine by the product of those 2 polynomials at $2n+1$ distinct points. So, utilising Discrete Fourier Transform(aka. DFT), we can evaluate the result polynomial for such a convolution at all complex roots of unity of order $2n$. The DFT can be optimised using divide-and-conquer algorithm called the Fast Fourier Transform (FFT) algorithm:\\
 $ \CON(a,b) = \sqrt{n}(\IFFT(\FFT(a) \cdot \FFT(b)))$\\
-each FFT takes $O(\log{n})$ time and the product of 2 FFT is elementwise product(also know as Hadamard product) and it's $O(n)$, hence the overall time complexity is $O(n\log{n})$ time.
-\item 
-\begin{enumerate}[label=(\roman*)]  
-  % TODO
-  \item Hint: How many points do you need to uniquely determine an $S$-degree polynomial?
-  \item Hint: consider using divide-and-conquer; a tree which you used in the previous assignment might be helpful here as well. Also, remember that if $x,y,z$ are all positive, then $\log{(x + y)} < \log{(x + y + z)}$
+each FFT takes $O(n\log{n})$ time and the product of 2 FFT is elementwise product(also know as Hadamard product) and it's also $O(nlogn)$, hence the overall time complexity is $O(n\log{n})$ time.
+\pagebreak
+\item\begin{enumerate}[label=(\roman*)]
+  \item let $A$ be the product of these $K$ $S$-degree polynomials, then we have $A(k)=P_1(x) \cdot P_2(x) \cdot ... \cdot P_k(x)$ for all $1 \leq k \leq K$\\
+  When $K=1$, A(1) is the product of $S$-degree polynomial and zero-degree polynomial. Then to uniquely determine A(1), it will need the complex roots of of unity of order S to evaluate that polynomial. So $A(1)$ takes $O(S\log{S})$\\
+  When $K=2$, from previous, we know $A(2)$ takes $O(S\log{S})$\\
+  When $K=n$, $A(n)$ is the product of $n$ $S$-degree polynomial. Then to uniquely determine A(n), it will need the complex roots of of unity of order $nS$ to evaluate that polynomial. So $A(n)$ takes $O(nS\log{S})$\\
+  So $K=n+1$, we have,
+  \begin{align*}
+    A(n+1) = A(n) \cdot P_{n+1}(x) \Rightarrow nS\log{S} + S\log{S} = (n+1)\log{S}
+  \end{align*}
+  Hence, the product of these $K$ $S$-degree polynomials will take $O(KS\log{S})$.\\
+  With the base case $K=1$ takes $O(S\log{S})$, we can compute $A(k)=P_1(x) \cdot P_2(x) \cdot ... \cdot P_k(x)$ for all $1 \leq k \leq K$ recursively.
+  At each recurrence, the degree of the partial product $A(n)$ and of polynomial $P_{n+1}(x)$ are both less than $S$, so each multiplication, if performed using fast evaluation of convolution (via the FFT) is bounded by the same constant multiple of $S\log{S}$. Computing $K$ such multiplications needs the total time complexity is $O(KS\log{S})$\\
+  \item From last part, we know the product of these $K$ $S$-degree polynomials will take $O(KS\log{S})$. And it does wiht $K$ times $O(S\log{S})$, which in $K$ linearly operations.\\
+  Moreover, the product of $K$ $S$-degree polynomials follows the associative law:\\
+  $(P_{i-1}(x)*P_i(x))*P_{i+1}(x)=P_{i-1}(x)*(P_i(x)*P_{i+1}(x))$.\\
+  So we can approach this using divide-and-conquer to achieve $O(S\log{S}\log{K})$, we can split $k$ polynomials into pairs and half $K$ times $O(S\log{S})$ recursively. Therefore, we can use $\log{K}$ times $O(S\log{S})$ instead of $K$ times $O(S\log{S})$.
+  Hence, you can find the product of these $K$ $S$-degree polynomials in $O(S\log{S}\log{K})$ time.
 \end{enumerate}
 \end{enumerate}
 \paragraph{4. [20 marks, each pair 4 marks]}
@@ -178,7 +191,7 @@ And when $n=k+1$,
   \begin{pmatrix}
    F_{k+2} & F_{k+1} \\
    F_{k+1} & F_{k} \\
-  \end{pmatrix} = 
+  \end{pmatrix} =
   \begin{pmatrix}
     F_{k+1} + F_{k} & F_k + F_{k-1}\\
     F_k + F_{k-1} & F_k \\
@@ -186,7 +199,7 @@ And when $n=k+1$,
   \qquad\ = \begin{pmatrix}
     F_{k+1} & F_k\\
     F_k  & F_{k-1} \\
-  \end{pmatrix} 
+  \end{pmatrix}
   \cdot
   \begin{pmatrix}
     1 & 1 \\
@@ -206,7 +219,7 @@ And when $n=k+1$,
     1 & 0 \\
   \end{pmatrix}^{\!k+1} = RHS
 \end{align*}
-Hence for all integers $n \geq 1$, 
+Hence for all integers $n \geq 1$,
 $\begin{pmatrix}
   F_{n+1} & F_n \\
   F_n & F_{n-1} \\
@@ -237,19 +250,13 @@ For instance, suppose $N = 10,L = 3,K = 2$ and $H = [1,10,4,2,3,7,12,8,7,2].$ Th
 \begin{enumerate}[label=(\alph*)]
   \item {\bfseries[8 marks]} In the $decision$ version of this problem, we are given an additional integer $T$ as input. Our task is to decide if there exists some valid choice of leaders satisfying the constraints whose shortest leader has height no less than $T$ .
   \item {\bfseries[12 marks]} Hence, show that you can solve the optimisation version of this problem in $O(N\log{N})$ time.
-\end{enumerate}
-\paragraph{Solution}
+\end{enumerate}\paragraph{Solution}
 \begin{enumerate}[label=(\alph*)]
   \item In this task, we needs to works out if there are enough leaders candidate meeting the minimum required height $T$. Therefore, it needs to check if there are $L$ leaders meeting the minimum required height $T$, and $L$ leaders are seperating by at least every $K$ griants in $N$ giants.\\
   Iterate all $N$ giants, find the first eligible leader candidate and from then on, from the last eligible leader candidate skipping $K$ giants to find the next eligible leader candidate. This takes $O(N)$ time complexity.
   After finding out all the eligible candidates, check if the total number of the eligible candidates is at least $K$. Return \textbf{true} if the total number is greater or equal to $K$ and return \textbf{false} otherwise. This take $O(1)$ time so the overall time complexity is $O(N)$
-  \item  
-  % TODO
-  
-  
-  
-  Observe that the optimisation problem corresponds to finding the largest value of $T$ for which the answer to the decision problem is {\bfseries true}.\\
-  Suppose our decision algorithm return \textbf{true} from some $T$. Then clearly it will return true for all smaller values of $T$ as well: since every giant that is eligible for this $T$ will also be eligible for smaller $T$. Hence, we can say that our decision problem is monotonic in T.\\
-  Thus, we can use binary search to work out the maximum value of $T$ where our decision problem returns \textbf{true}. Note that it suffices to check only heights of giants as candidate answers: the answer won't change between them. Thus, we can sort our heights in $O(n\log{n})$ and binary search over these values, deciding whether to go higher or lower based on a run of our decision problem. Since there are $O(n\log{n})$ iterations in the binary search, each taking $O(N)$ to resolve, our algorithm is $O(N\log{N})$ overall.
+  \item The optimisation version of the problem is to finding the largest value of $T$ to the decision problem is {\bfseries true} with the given $N, L, K$.\\
+  With the given $N, L, K$, our decision algorithm return \textbf{true} from the shortest height $T_{l}$ to the tallest height $T_{h}$ of $L$ leaders. Hence, the decision problem will remaind true in $T$, where $T \in [T_{l}, T_{h}]$ ($ [T_{l}, T_{h}]$ is in the range of all valid leader candidates' heights).\\
+  Therefore, assuming all $N$ griants are valid candidates, merge sort the heights of $N$ griants in $O(n\log{n})$, we have $T \in [T_{l},\ T_{h}]$. As we already know that the decision problem will remaind true in $T$, where $T \in [T_{l},\ T_{h}]$. So from the largest $T_l$, use binary search to work out the maximum value of $T$ where the decision problem returns \textbf{true}. The binary search will select the direction to go over $T \in [T_{l},\ T_{h}]$ according to the result of the decision problem. Since there are $O(N\log{N})$ iterations in the binary search of $T$ the range of $N$ griants' heights, each decision taking $O(N)$. Hence, the overall complexity of the algorithm is $O(N\log{N})$.
 \end{enumerate}
 \end{document}
