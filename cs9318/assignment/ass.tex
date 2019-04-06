@@ -1,0 +1,189 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
+\usepackage{listings, enumitem}
+\usepackage{amsmath,tabu}
+\usepackage[utf8]{inputenc}
+\usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
+\usepackage{fixltx2e}
+\usepackage[strict=true]{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{2111defs,2111theorems}
+
+\title{COMP3121 Assignment1}
+\author{Fiona Lin z5131048}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\newcommand{\ah}{\mathsf{a}}
+\newcommand{\be}{\mathsf{b}}
+\newcommand{\assn}[1]{{\color{red}\left\{#1\right\}}}
+\newcommand{\length}[1]{\left|#1\right|}
+\newcommand{\noof}[2]{\left\|#1\right\|_{#2}}
+\newcommand{\VAR}{\pPkey{var}}
+\def\L{\mathcal{L}}
+
+\begin{document}
+\maketitle
+
+\paragraph{1. [40 marks]}
+\label{sec:Question 1}
+\paragraph{Solution}
+\begin{enumerate}[label=\arabic*)]
+  \item  (1) The tabular form with 4 attributes:\\
+  \begin{tabular}{c |c | c | c | c}
+    \hline
+    & Location & Time &  Item &  SUM(Quantity)  \\
+    \hline
+    (location, time, item) &    Sydney &    2005 &    PS2 &    1400\\
+    \hline
+    & Sydney    & 2006    & PS2    & 1500      \\
+    \hline
+    & Sydney  & 2006  & Wii  & 500 \\
+    \hline
+    & Melbourne  & 2005  & Xbox 360  & 1700 \\
+    \hline
+    (location,item) & Sydney  & All  & PS2  & 1400 \\
+    \hline
+    &  Sydney &  All &  PS2 &  1500\\
+    \hline
+    &  Sydney &  All &  Wii &  500\\
+    \hline
+    &  Melbourne &  All &  Xbox 360 &  1700\\
+    \hline
+    (location,time) &  Sydney &  2005 &  All &  1400\\
+    \hline
+    &  Sydney &  2006 &  All &  2000\\
+    \hline
+    &  Melbourne &  2005 &  All &  1700\\
+    \hline
+    (time, item) &  All &  2005 &  PS2 &  1400\\
+    \hline
+    &  All &  2006 &  PS2 &  1500\\
+    \hline
+    &  All &  2006 &  Wii &  500\\
+    \hline
+    &  All &  2005 &  Xbox 360 &  1700 \\
+    \hline
+    (location) &  Melbourne &  All &  All &  3400\\
+    \hline
+    &  Sydney &  All &  All &  1700 \\
+    \hline
+    (time) &  All &  2005 &  All &  3100\\
+    \hline
+    &  All &  2006 &  All &  2000 \\
+    \hline
+    (item) &  All &  All &  PS2 &  2900\\
+    \hline
+    &  All &  All &  Wii &  500\\
+    \hline
+    &  All &  All &  Xbox 360 &  1700\\
+    \hline
+    () &  All &  All &  All &  5100\\
+    \hline
+  \end{tabular}\\
+\\
+\pagebreak
+\\
+ \item equivalent sql:\\
+SELECT Location, Time, Item, SUM(Quantity)\\
+FROM sales\\
+GROUP BY\\
+\hspace*{10mm} GROUPING SETS (\\
+\hspace*{15mm} (Location, Time, Item),\\
+\hspace*{15mm} (Location, Time),\\
+\hspace*{15mm} (Location, Item),\\
+\hspace*{15mm} (Time, Item),\\
+\hspace*{15mm} (Location),\\
+\hspace*{15mm} (Time),\\
+\hspace*{15mm} (Item),\\
+\hspace*{15mm} ()\\
+\hspace*{10mm}  )\\
+ORDER BY\\
+Location, Time, Item;\\
+  \item The result of the query in tabular form:\\
+  \begin{tabular}{ c |c | c | c }
+    \hline
+    Location  & Time  & Item  & SUM(Quantity) \\
+    \hline
+    Sydney  & 2006  & All  & 2000 \\
+    \hline
+    Sydney  & All  & All  & 3400 \\
+    \hline
+    All  & All  & All  & 5100 \\
+    \hline
+    Sydney  & All  & PS2  & 2900 \\
+    \hline
+    All  & All  & PS2  & 2900 \\
+    \hline
+    All  & 2005  & All  & 3100 \\
+    \hline
+    All  & 2006  & All  & 2000 \\
+    \hline
+\end{tabular}\\
+\item the MOLAP cube (i.e., sparse multi-dimensional array) in a tabular form of  (ArrayIndex, Value). You also need to write down the function you chose to map a multi-dimensional point to a one-dimensioinal point.
+\end{enumerate}
+\paragraph{2. [30 marks]}
+\label{sec:Question 2}
+\paragraph{Solution}
+\begin{itemize}
+  \item Proof: given $d$-dimensioin column vector
+$\vec{x}= \begin{bmatrix} x_1 \\ x_2 \\ ... \\ x_d \end{bmatrix}$ as the input feature vector, and each dimensioin of $\textbf{x}$ takes only 2 values 0 or 1.\\
+The Na\"ive Bayes classifier will product the label 0 iff $P(y=0|\textbf{x}) \geq P(y=1|\textbf{x})$, which equivalent:
+\begin{align}
+  \frac{P(\textbf{x}|y=0)P(y=0)}{P(\textbf{x}|y=1)P(y=1)} \geq 1
+\end{align}
+\text{Since } ${\displaystyle P(\textbf{x}|y)=\prod_{j=0}^{d} P(x_j|y)}$, then subsitute into (1), we have
+\begin{align}
+\frac{P(y=0)}{P(y=1)} \cdot {\displaystyle \prod_{j=0}^{d}} \frac{P(x_j|y=0)}{P(x_j|y=1)} \geq 1
+\end{align}
+In order to transform the inequality $(1)$ into the linear regression representation.\\
+Let $P(y=0)=p$ and $P(x_j|y=0)=k_j$ also $P(x_j|y=1)=m_k$, because f the features are only 2 values 0 or 1, then
+\begin{align*}
+  &\ P(x_j|y=0)= k_j^{x_j}(1-k_j)^{(1-x_j)}\qquad \text{ and }\qquad P(x_j|y=1)= m_j^{x_j}(1-m_j)^{(1-x_j)}
+\end{align*}
+Hence (2) can rearrage as below:
+\begin{align*}
+ &\ \frac{p}{1-p} \cdot {\displaystyle \prod_{j=0}^{d}} \frac{k_j^{x_j}(1-k_j)^{(1-x_j)}}{m_j^{x_j}(1-m_j)^{(1-x_j)}} \geq 1\\
+ &\ \frac{p}{1-p} \cdot {\displaystyle \prod_{j=0}^{d}} \frac{k_j^{x_j}(1-k_j)(1-k_j)^{(-x_j)}}{m_j^{x_j}(1-m_j)(1-m_j)^{(-x_j)}} \geq 1\\
+ &\ \frac{p}{1-p} \cdot {\displaystyle \prod_{j=0}^{d}} \frac{k_j^{x_j}(1-k_j)(1-m_j)^{(x_j)}}{m_j^{x_j}(1-m_j)(1-k_j)^{(x_j)}} \geq 1\\
+ &\ \Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg) \cdot {\displaystyle \prod_{j=0}^{d}} \Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j} \geq 1
+\end{align*}
+Taking logarithm on both sides, this become
+\begin{align*}
+  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg) \cdot {\displaystyle \prod_{j=0}^{d}} \Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
+  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} \log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
+  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} x_j\log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)} \geq 0\\
+  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0
+\end{align*}
+As the first term does not have any $x_j$, so it is a constant for any input $\textbf{x}$.\\
+Let's denote $b=\log{\Big(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Big)}$ and $w_j=\log{\Big(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Big)}$, the inequality $(1)$ transforms into the below linear regression representation\\
+\begin{align*}
+  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0\\
+  &\ \Rightarrow \\
+  &\ b + x_0 w_0 + x_1 w_1 +...+ x_d w_d \geq 0\\
+  &\ b + {\displaystyle \sum_{j=0}^{d}} x_j w_j \geq 0
+\end{align*}
+Therefore, if the feature vectors are $d$-dimension, then a Na\"ive Bayes classifier is
+a linear classifier in a $d+1$-dimension space.
+\item Proof: Given the parameters \textbf{$w_{LR}$} and \textbf{$w_{NB}$}, we know from previous
+\begin{align*}
+w_{NB}=\log{\Big(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Big)}
+\end{align*}
+While we also know that \textbf{$w_{LR}$} is obtained by finding the minimum of the \textsl{sqared error function} $J$ with the learning rate $\lambda$, so its formular of updating rule
+\begin{align*}
+  w_{LR}= w_{LR} - \lambda \frac{\partial J(w) }{\partial w_j}
+\end{align*}
+Obviously, it can easily compute \textbf{$w_{NB}$} in only 1 operation, while \textbf{$w_{LR}$} needs to compute all the possible \textbf{$w_{LR}$} and find the minimum one.\\
+Hence, learning \textbf{$w_{NB}$} is much easier than learning \textbf{$w_{LR}$}.
+\end{itemize}
+\paragraph{3. [30 marks]}
+\label{sec:Question 3}
+\paragraph{Solution}
+\begin{itemize}
+  \item
+  \item
+\end{itemize}
+\end{document}
