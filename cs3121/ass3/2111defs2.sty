@@ -1,0 +1,64 @@
+\ProvidesPackage{2111defs2}[2016/04/18 v0.1]
+%% $Revision: 1.1 $
+%% $Date: 2016/04/18 11:42:55 $ UTC
+
+\RequirePackage{color}
+\RequirePackage{2111defs}
+
+\newcommand{\isrefinedby}{\sqsubseteq}
+\newcommand{\VAR}{\pPkey{var}}
+\newcommand{\CON}{\pPkey{con}}
+\newcommand{\PROC}{\pPkey{proc}}
+\newcommand{\FUNC}{\pPkey{func}}
+\newcommand{\VALUE}{\pPkey{value}}
+\newcommand{\RESULT}{\pPkey{result}}
+\newcommand{\RETURN}{\pPkey{return}}
+\DefineNamedColor{named}{dr}{rgb}{0.9,0.2,0.2}
+\DefineNamedColor{named}{dg}{rgb}{0.3,0.6,0.3}
+\DefineNamedColor{named}{db}{rgb}{0.2,0.2,0.8}
+\newcommand{\acolor}{\color[named]{dr}}
+\newcommand{\bcolor}{\color[named]{dg}}
+\newcommand{\ccolor}{\color[named]{db}}
+\newcommand{\assert}[1]{{\acolor\{#1\}}}
+\newcommand{\Assert}[1]{{\acolor\left\{#1\right\}}}
+\newcommand{\comment}[1]{\text{\ccolor #1}}
+
+% refinement step in a formal derivation
+% synopsis
+%
+%       \lrefstep{<label>}{<justification>}{<prog>}
+%
+% for refining the spec with <label> from above to <prog> by the
+% refinement rules and reasons given in <justification>
+%
+\newcommand{\lrefstep}[4][\acolor]{{#1 #2\isrefinedby{}} & \qquad{\bcolor\langle\text{#3}\rangle}\\& #4}
+
+% refinement step in a formal derivation
+% synopsis
+%
+%       \refstep{<justification>}{<prog>}
+%
+% for refining the spec in the preceding line to <prog> by the
+% refinement rules and reasons given in <justification>.
+\newcommand{\refstep}[3][{}]{\lrefstep[#1]{}{#2}{#3}}
+
+% tagging a spec for later refinement. 
+% synopsis
+%
+%       \nt{<spec>}{<label>}
+%
+% to allow targetting <spec> in later <label>
+%
+\newcommand{\nt}[3][\acolor]{{#1 \llcorner}{#2}{#1 \lrcorner_{#3}}}
+
+% justification of a proof step. synopsis
+% synopsis
+%
+%       \justification{<reason>}
+%
+% to link the preceding proof line by the symbol for equivalence
+% (\Equiv gives '<=>') to the following proof line and justify this
+% connection by <reason>. A different <symbol> can be given as
+% optional first argument, e.g. \justification[\Isimplied]{blah}
+%
+\newcommand{\justification}[2][\Equiv]{{}#1{} & \qquad{\bcolor\langle\text{#2}\rangle}\\}
