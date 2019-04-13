@@ -1,0 +1,32 @@
+\ProvidesPackage{2111theorems}[2011/03/03 v1.4]
+%% the version number above is not maintainted
+%% $Id: 2111theorems.sty,v 1.2 2012/03/24 03:20:21 kaie Exp kaie $
+\RequirePackage{theorem}
+\theoremheaderfont{\bfseries}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\theorembodyfont{\rmfamily}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{exsoln}{Solution to Exercise}
+\newtheorem{puzzle}[exercise]{Puzzle}
+\newtheorem{task}[exercise]{Task}
+\newtheorem{pzsoln}[exsoln]{Solution to Puzzle}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{change}
+\newenvironment{theorem*}[1]%
+{\begin{trivlist}\item[]\itshape\textbf{Theorem (#1)} }%
+  {\end{trivlist}}
+\newenvironment{proof}[1][\unskip]%
+  {\begin{trivlist}\item[]{\textbf{Proof #1:}} }%
+  {\end{trivlist}}
+\newenvironment{proofsketch}[1][\unskip]%
+  {\begin{trivlist}\item[]{\textbf{Sketch of proof #1:}} }%
+  {\end{trivlist}}
+\def\qed{{\unskip\nobreak\hfil%
+  \penalty50\hskip1em\null\nobreak\hfil\hbox{$\blacksquare$}%
+  \parfillskip=0pt\finalhyphendemerits=0\endgraf}}

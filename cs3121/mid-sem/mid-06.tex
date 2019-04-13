@@ -1,0 +1,67 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
+\usepackage{listings, enumitem}
+\usepackage{amsmath,tabu}
+\usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
+\usepackage{fixltx2e}
+\usepackage[strict=true]{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{2111defs,2111theorems}
+
+\title{COMP3121 Assignment1}
+\author{Fiona Lin z5131048}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\newcommand{\ah}{\mathsf{a}}
+\newcommand{\be}{\mathsf{b}}
+\newcommand{\assn}[1]{{\color{red}\left\{#1\right\}}}
+\newcommand{\length}[1]{\left|#1\right|}
+\newcommand{\noof}[2]{\left\|#1\right\|_{#2}}
+\newcommand{\CON}{\pPkey{convolution}}
+\newcommand{\FFT}{\pPkey{FFT}}
+\newcommand{\IFFT}{\pPkey{IFFT}}
+\def\L{\mathcal{L}}
+\begin{document}
+\maketitle
+\paragraph{Mid-06S1} 1) 
+\begin{enumerate}[label=\alph*]
+  \item $T(n) = 16T(\frac{n}{4}) + n $
+  \begin{align*}
+    n^{\log_b{a}} = n^{\log_4{16}} = n^2
+    f(n) = n = O(n^{2-\epsilon}) (case 1) \Rightarrow T(n)=\Theta(n^2)    
+  \end{align*}
+  \item $T(n) = T(\frac{3n}{8}) + n $
+  \begin{align*}
+    n^{\log_b{a}} = n^{\log_{\frac{8}{3}}{1}} = n^0
+    f(n) = n = \Omega(n^{0+\epsilon}) (case 3) \Rightarrow T(n) = \Theta(n)
+  \end{align*}
+  \item $T(n) = \sqrt{n}T(\sqrt{n}) + n\log_2{n}$
+  
+  \item $T(n) = T(n-1) + n + \log_2{n} + 1$
+\end{enumerate}
+2. a) 
+First, merge sort array A takes $O(n\log{n})$ even worst case
+Then for all element n pair up another n' from A takes $O(n^2)$
+and then compute z from $z^2 = x^2+y^2$ take O(1); then binary search 
+z in A takes $O(\log{n})$
+Hence worst case takes $O(n^2\log{n})$ 
+b) First, merge sort array A takes $O(n\log{n})$ even worst case.
+Then
+
+
+3) Multiplies 2 cubic polynomials of degree 3 will product a polynomials of degree
+6 which can be uniquely identified by 7 real numbers coefficients.
+The algorithms will split the coefficients of those polynomials into half to perform 
+FFT and then combine 2 halfs using IFFT recursively. 
+Finally we will have the 7 real number multiplications for the product polynomials
+
+4) let  $y=x^8$, so $f(x)=x^16 + 8x^8 +1\Rightarrow f(y)=y^2+8y+1$.
+Therefore $f(y)=(y+4)^2-15=(x+4-\sqrt{15})(x+4+\sqrt{15})$ will have 2 distinct values. 
+So $f(x)$ will have distinct values $16 = 8*2$ 
+
+
+\end{document}
