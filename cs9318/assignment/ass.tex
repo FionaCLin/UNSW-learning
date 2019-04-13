@@ -1,4 +1,6 @@
 \documentclass[a4paper]{scrartcl}
+% \usepackage[left=1.5cm, right=1.5cm, top=1.5cm]{geometry}
+\usepackage[bottom=2cm]{geometry}
 \usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
 \usepackage{listings, enumitem}
 \usepackage{amsmath,tabu}
@@ -9,21 +11,13 @@
 
 \usepackage{color}
 \usepackage[colorlinks=true]{hyperref}
-\usepackage{2111defs,2111theorems}
 
-\title{COMP3121 Assignment1}
+\title{COMP9318 Assignment1}
 \author{Fiona Lin z5131048}
 
 \usepackage{graphicx}
 \usepackage{subcaption}
 
-\newcommand{\ah}{\mathsf{a}}
-\newcommand{\be}{\mathsf{b}}
-\newcommand{\assn}[1]{{\color{red}\left\{#1\right\}}}
-\newcommand{\length}[1]{\left|#1\right|}
-\newcommand{\noof}[2]{\left\|#1\right\|_{#2}}
-\newcommand{\VAR}{\pPkey{var}}
-\def\L{\mathcal{L}}
 
 \begin{document}
 \maketitle
@@ -35,53 +29,51 @@
   \item  (1) The tabular form with 4 attributes:\\
   \begin{tabular}{c |c | c | c | c}
     \hline
-    & Location & Time &  Item &  SUM(Quantity)  \\
+ & Location & Time & Item & SUM(Quantity)  \\
     \hline
-    (location, time, item) &    Sydney &    2005 &    PS2 &    1400\\
+    (location, time, item) & Sydney & 2005 & PS2 & 1400\\
     \hline
-    & Sydney    & 2006    & PS2    & 1500      \\
+ & Sydney & 2006 & PS2 & 1500      \\
     \hline
-    & Sydney  & 2006  & Wii  & 500 \\
+ & Sydney & 2006 & Wii & 500 \\
     \hline
-    & Melbourne  & 2005  & Xbox 360  & 1700 \\
+ & Melbourne & 2005 & Xbox 360 & 1700 \\
     \hline
-    (location,item) & Sydney  & All  & PS2  & 1400 \\
+ (location,item) & Sydney & All & PS2 & 2900 \\
     \hline
-    &  Sydney &  All &  PS2 &  1500\\
+ & Sydney & All & Wii & 500\\
     \hline
-    &  Sydney &  All &  Wii &  500\\
+ & Melbourne & All & Xbox 360 & 1700\\
     \hline
-    &  Melbourne &  All &  Xbox 360 &  1700\\
+    (location,time) & Sydney & 2005 & All & 1400\\
     \hline
-    (location,time) &  Sydney &  2005 &  All &  1400\\
+ & Sydney & 2006 & All & 2000\\
     \hline
-    &  Sydney &  2006 &  All &  2000\\
+ & Melbourne & 2005 & All & 1700\\
     \hline
-    &  Melbourne &  2005 &  All &  1700\\
+    (time, item) & All & 2005 & PS2 & 1400\\
     \hline
-    (time, item) &  All &  2005 &  PS2 &  1400\\
+ & All & 2006 & PS2 & 1500\\
     \hline
-    &  All &  2006 &  PS2 &  1500\\
+ & All & 2006 & Wii & 500\\
     \hline
-    &  All &  2006 &  Wii &  500\\
+ & All & 2005 & Xbox 360 & 1700 \\
     \hline
-    &  All &  2005 &  Xbox 360 &  1700 \\
+    (location) & Melbourne & All & All & 3400\\
     \hline
-    (location) &  Melbourne &  All &  All &  3400\\
+ & Sydney & All & All & 1700 \\
     \hline
-    &  Sydney &  All &  All &  1700 \\
+    (time) & All & 2005 & All & 3100\\
     \hline
-    (time) &  All &  2005 &  All &  3100\\
+ & All & 2006 & All & 2000 \\
     \hline
-    &  All &  2006 &  All &  2000 \\
+    (item) & All & All & PS2 & 2900\\
     \hline
-    (item) &  All &  All &  PS2 &  2900\\
+ & All & All & Wii & 500\\
     \hline
-    &  All &  All &  Wii &  500\\
+ & All & All & Xbox 360 & 1700\\
     \hline
-    &  All &  All &  Xbox 360 &  1700\\
-    \hline
-    () &  All &  All &  All &  5100\\
+    () & All & All & All & 5100\\
     \hline
   \end{tabular}\\
 \\
@@ -106,24 +98,82 @@ Location, Time, Item;\\
   \item The result of the query in tabular form:\\
   \begin{tabular}{ c |c | c | c }
     \hline
-    Location  & Time  & Item  & SUM(Quantity) \\
+    Location & Time & Item & SUM(Quantity) \\
     \hline
-    Sydney  & 2006  & All  & 2000 \\
+    Sydney & 2006 & All & 2000 \\
     \hline
-    Sydney  & All  & All  & 3400 \\
+    Sydney & All & All & 3400 \\
     \hline
-    All  & All  & All  & 5100 \\
+    All & All & All & 5100 \\
     \hline
-    Sydney  & All  & PS2  & 2900 \\
+    Sydney & All & PS2 & 2900 \\
     \hline
-    All  & All  & PS2  & 2900 \\
+    All & All & PS2 & 2900 \\
     \hline
-    All  & 2005  & All  & 3100 \\
+    All & 2005 & All & 3100 \\
     \hline
-    All  & 2006  & All  & 2000 \\
+    All & 2006 & All & 2000 \\
     \hline
 \end{tabular}\\
-\item the MOLAP cube (i.e., sparse multi-dimensional array) in a tabular form of  (ArrayIndex, Value). You also need to write down the function you chose to map a multi-dimensional point to a one-dimensioinal point.
+\\
+\item Since the function need to map a multi-dimensional point to a one-dimensioinal point, the function need to be bijective to allow the reverse mapping. \\
+$f(Location,Time,Item) = Location*100+Time*10+Item$\\
+\pagebreak
+\\
+\begin{tabular}{c  c  c  c c c | c| c}
+  \hline Location & Time & Item & SUM(Quantity) & $f(Location,Time,Item)$  \\
+  \hline 1 & 1 & 1 & 1400 & 111\\
+  \hline 1 & 2 & 1 & 1500 & 121\\
+  \hline 1 & 2 & 3 & 500 & 123\\
+  \hline 2 & 1 & 2 & 1700 & 212\\
+  \hline 1 & 0 & 1 & 2900 & 101\\
+  \hline 1 & 0 & 3 & 500 & 103\\
+  \hline 2 & 0 & 2 & 1700 & 202\\
+  \hline 1 & 1 & 0 & 1400 & 110\\
+  \hline 1 & 2 & 0 & 2000 & 120\\
+  \hline 2 & 1 & 0 & 1700 & 210\\
+  \hline 0 & 1 & 1 & 1400 & 11\\
+  \hline 0 & 2 & 1 & 1500 & 21\\
+  \hline 0 & 2 & 3 & 500 & 23\\
+  \hline 0 & 1 & 2 & 1700 & 12\\
+  \hline 2 & 0 & 0 & 3400 & 200\\
+  \hline 1 & 0 & 0 & 1700 & 100\\
+  \hline 0 & 1 & 0 & 3100 & 10\\
+  \hline 0 & 2 & 0 & 2000 & 20\\
+  \hline 0 & 0 & 1 & 2900 & 1\\
+  \hline 0 & 0 & 3 & 500 & 3\\
+  \hline 0 & 0 & 2 & 1700 & 2\\
+  \hline 0 & 0 & 0 & 5100 & 0\\
+  \hline
+\end{tabular}\\
+\\
+The MOLAP cube (i.e., sparse multi-dimensional array) in a tabular form of  (ArrayIndex, Value).\\
+\\
+\begin{tabular}{ c | c}
+  \hline index = $f(Location,Time,Item)$ & SUM(Quantity)   \\
+  \hline 111 &1400 \\
+  \hline 121 &1500 \\
+  \hline 123 &1500 \\
+  \hline 212 &1700 \\
+  \hline 101 &2900 \\
+  \hline 103 &1500 \\
+  \hline 202 &1700 \\
+  \hline 110 &1400\\
+  \hline  120 &2000 \\
+  \hline  210 &1700 \\
+  \hline 11 &1400\\
+  \hline 21 &1500 \\
+  \hline 23 &500\\
+  \hline 12 &1700 \\
+  \hline 200 &3400 \\
+  \hline 100 &1700 \\
+  \hline 10 &3100 \\
+  \hline 20 &2000 \\
+  \hline 1 &2900 \\
+  \hline 3 &500 \\
+  \hline 2 &1700 \\
+  \hline 0 &5100 \\
+  \hline\end{tabular}\\
 \end{enumerate}
 \paragraph{2. [30 marks]}
 \label{sec:Question 2}
@@ -142,7 +192,7 @@ The Na\"ive Bayes classifier will product the label 0 iff $P(y=0|\textbf{x}) \ge
 In order to transform the inequality $(1)$ into the linear regression representation.\\
 Let $P(y=0)=p$ and $P(x_j|y=0)=k_j$ also $P(x_j|y=1)=m_k$, because f the features are only 2 values 0 or 1, then
 \begin{align*}
-  &\ P(x_j|y=0)= k_j^{x_j}(1-k_j)^{(1-x_j)}\qquad \text{ and }\qquad P(x_j|y=1)= m_j^{x_j}(1-m_j)^{(1-x_j)}
+ & \ P(x_j|y=0)= k_j^{x_j}(1-k_j)^{(1-x_j)}\qquad \text{ and }\qquad P(x_j|y=1)= m_j^{x_j}(1-m_j)^{(1-x_j)}
 \end{align*}
 Hence (2) can rearrage as below:
 \begin{align*}
@@ -153,18 +203,18 @@ Hence (2) can rearrage as below:
 \end{align*}
 Taking logarithm on both sides, this become
 \begin{align*}
-  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg) \cdot {\displaystyle \prod_{j=0}^{d}} \Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
-  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} \log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
-  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} x_j\log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)} \geq 0\\
-  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0
+ & \ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg) \cdot {\displaystyle \prod_{j=0}^{d}} \Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
+ & \ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} \log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)^{x_j}} \geq 0\\
+ & \ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + {\displaystyle \sum_{j=0}^{d}} x_j\log{\Bigg(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Bigg)} \geq 0\\
+ & \ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0
 \end{align*}
 As the first term does not have any $x_j$, so it is a constant for any input $\textbf{x}$.\\
 Let's denote $b=\log{\Big(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Big)}$ and $w_j=\log{\Big(\frac{k_j(1-m_j)}{m_j(1-k_j)}\Big)}$, the inequality $(1)$ transforms into the below linear regression representation\\
 \begin{align*}
-  &\ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0\\
-  &\ \Rightarrow \\
-  &\ b + x_0 w_0 + x_1 w_1 +...+ x_d w_d \geq 0\\
-  &\ b + {\displaystyle \sum_{j=0}^{d}} x_j w_j \geq 0
+ & \ \log{\Bigg(\frac{p}{1-p} {\displaystyle \prod_{j=0}^{d}} \frac{1-k_j}{1-m_j}\Bigg)} + x_0\log{\Bigg(\frac{k_0(1-m_0)}{m_0(1-k_0)}\Bigg)} + \\ &\ x_1\log{\Bigg(\frac{k_1(1-m_1)}{m_1(1-k_1)}\Bigg)}+...+ x_d\log{\Bigg(\frac{k_d(1-m_d)}{m_j(1-k_d)}\Bigg)}\geq 0\\
+ & \ \Rightarrow \\
+ & \ b + x_0 w_0 + x_1 w_1 +...+ x_d w_d \geq 0\\
+ & \ b + {\displaystyle \sum_{j=0}^{d}} x_j w_j \geq 0
 \end{align*}
 Therefore, if the feature vectors are $d$-dimension, then a Na\"ive Bayes classifier is
 a linear classifier in a $d+1$-dimension space.
@@ -177,13 +227,32 @@ While we also know that \textbf{$w_{LR}$} is obtained by finding the minimum of 
   w_{LR}= w_{LR} - \lambda \frac{\partial J(w) }{\partial w_j}
 \end{align*}
 Obviously, it can easily compute \textbf{$w_{NB}$} in only 1 operation, while \textbf{$w_{LR}$} needs to compute all the possible \textbf{$w_{LR}$} and find the minimum one.\\
+\\*
 Hence, learning \textbf{$w_{NB}$} is much easier than learning \textbf{$w_{LR}$}.
 \end{itemize}
 \paragraph{3. [30 marks]}
 \label{sec:Question 3}
 \paragraph{Solution}
-\begin{itemize}
+\begin{enumerate}[label=(\arabic*)]
   \item
+  Let $y_m$ denote as our model for the sample of a mixture of $S_1$ and $S_2$ , and $q_1,\ q_2$ be the parameters $\theta$. After measuring those 3 components we have obtained the percentages as ${\{u_j\}_{j=1}^{m}}$, and let  $y_o$ as the samples our observed;
+  Then we have,
+  \begin{align*}
+    &\ y_m = \sum_{j=1}^{m} (q_1* p_{1,j} + q_2* p_{2,j})\\ &\
+     y_o = \sum_{j=1}^{m} u_j = \sum_{j=1}^{m} (q_1+q_2)*u_j\\ &\
+  \end{align*}
+  Then let $p(\theta)=Pr(y_m=y_o|\theta)$ be the probability of some $y_o$ being measured from sample with the model $y_m$ and the given $\theta$, assuming all $n$ measured instances are $y_1,y_2,...,y_n$ independently. \\
+  Any $\theta$ is possible, but the best $\theta$ is more likely. In order to find the best $\theta$, we need to maximise the likelihood $p_o$ and observed more measurement $y_o$ close to $y_m$.\\Hence,
+  \begin{align*}
+   &\ L(\theta)=\prod_{o=1}^{n}P(y_o|y_m;\theta)=\prod_{o=1}^{n}p(\theta)^{y_o} \cdot (1-p(\theta))^{(1-y_o)} \\ &\
+  \end{align*}
+  The log-likelihood function will be\\
+  \begin{align*}
+   &\ l(\theta)=\sum_{o=1}^{n}\log{P(y_o|y_m;\theta)}=\sum_{o=1}^{n}\log{\bigg(p(\theta)^{y_o} \cdot (1-p(\theta))^{(1-y_o)}\bigg)}\\ 
+   &\ \qquad=\sum_{o=1}^{n}\log{\bigg(y_o\log{p(\theta)} +(1-y_o) \log{(1-p(\theta))}\bigg)}\\ &\
+   % \log{\frac{p_o}{1-p_o}}=\log{\frac{p_o}{p_m}}=\log{\Bigg( \binom{n}{n p_o} \cdot (p_m)^{np_o} \cdot (1-p_m)^{(1-p_o)n} \Bigg)}\\
+   %  &\ \log{P(y_o|\theta)} = \log{\frac{p_o}{1-p_o}} \Rightarrow P(y_0|\theta)= \frac{e^{\log{y_m}}}{1-e^{\log{y_m}} nb}\\ &\
+  \end{align*}
   \item
-\end{itemize}
+\end{enumerate}
 \end{document}
