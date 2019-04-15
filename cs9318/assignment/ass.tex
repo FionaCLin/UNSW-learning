@@ -242,18 +242,16 @@ Hence, learning \textbf{$w_{NB}$} is much easier than learning \textbf{$w_{LR}$}
      y_o = \sum_{j=1}^{m} u_j\\ &\
   \end{align*}
   Then let $Pr(y_o|\theta)$ be the probability of some $y_o$ being measured from sample with the model $y_m$ and the given $\theta$, assuming all $n$ measured instances are $y_1,y_2,...,y_n$ independently. \\
-  Any $\theta$ is possible, but the best $\theta$ is more likely. In order to find the best $\theta$, we need to maximise the likelihood  $Pr(y_o|\theta)$ which means to be observed more measurement $y_o$ close to $y_m$ for some $\theta$.\\Hence,
+  Any $\theta$ is possible, but the best $\theta$ is more likely. In order to find the best $\theta$, we need to maximise the likelihood $Pr(y_o|\theta)$ which means to be observed more measurement $y_o$ close to $y_m$ for some $\theta$.\\Hence,
   \begin{align*}
    &\ L(\theta)=\prod_{o=1}^{n}P(y_1,y_2,...,y_n|\theta)\\ 
   \end{align*}
-%   Without any other knowledge or information, we assume $P(y_o|\theta)$ follows a normal distribution $\mathcal{N}(\mu,\,\sigma^{2})$
-  \\
+  Without any other knowledge or information, we assume $P(y_o|\theta)$ follows a normal distribution $\mathcal{N}(\mu,\,\sigma^{2})$
+ \\
   The log-likelihood function:\\ 
   \begin{align*}
    &\ l(y_o|\theta)=\sum_{o=1}^{n}\log{P(y_o|\theta)}=\sum_{o=1}^{n}\log{\bigg( \frac{1}{\sigma \sqrt {2\pi}} \textbf{e}^{- \frac{(y_o-y_m)^2}{2\sigma^2}}\bigg)}\\ 
-   &\ \qquad=\sum_{o=1}^{n}\log{\bigg( \bigg)}\\ &\
-   % \log{\frac{p_o}{1-p_o}}=\log{\frac{p_o}{p_m}}=\log{\Bigg( \binom{n}{n p_o} \cdot (p_m)^{np_o} \cdot (1-p_m)^{(1-p_o)n} \Bigg)}\\
-   %  &\ \log{P(y_o|\theta)} = \log{\frac{p_o}{1-p_o}} \Rightarrow P(y_0|\theta)= \frac{e^{\log{y_m}}}{1-e^{\log{y_m}} nb}\\ &\
+   &\ \qquad=\sum_{o=1}^{n}\log{\bigg(\frac{1}{\sigma \sqrt {2\pi}} \textbf{e}^{- \frac{( \sum_{j=1}^{m} (q_1* p_{1,j} + (1-q_1)* p_{2,j}) - u_j)^2}{2\sigma^2}} \bigg)}\\ &\
   \end{align*}
   \item
 \end{enumerate}
