@@ -27,16 +27,50 @@
 \def\L{\mathcal{L}}
 \begin{document}
 \maketitle
-\paragraph{1. [20 marks]}
+\paragraph{1. Solution:}
 \label{sec:Question 1}
-
-\paragraph{2.}
+For this question it can be approached by dynamic programming techquie.\\
+Firstly, sort the proposals by their position $x_i$ plus radius $r_i$, $x_i + r_i$ in increasing order so we can denote $f_i = x_i + r_i,\ s_i = x_i - r_i$\\
+For every $i < N$ we are going to resolve the following subproblems:\\
+\textbf{subproblem $P(i)$}: find a subsequence $\sigma_i$ of the sequence of dams $D_i=\big<x_1,x_2,...x_i\big>$ such that:
+\begin{enumerate}[label=(\arabic*)]
+  \item $\sigma_i$ consist of non-overleaping dams with their position $x_i$ plus/minus radius $r_i$ are disjoint interval, which means $f_{i-1} < s_i$.
+  \item it ends with dam at $x_i$ with $f_i=x_i+r_i$
+  \item $\sigma$ has the largest number of dams amoung all subsequence of $D_i$ which satisfy 1 and 2.
+\end{enumerate}
+Let $D(i)$ be the number of dams of the optimal solution $\sigma(i)$ of the subproblem $P(i)$\\
+For $\sigma(1)$, we choose $x_1$; then $N(1)=1$\\
+Make an array with $N$ slots to represent those proposals to store the $D(i)$ \\
+\textbf{Recursion:} assuming that we have solved subproblems for all $j<i$ and obtain the solution $N(j)$ and stored them in the array
+\begin{align*}
+  D(i) =  max\{ N(j) + 1 : j < i\ \& \ x_j + r_j < x_i - r_i\}
+\end{align*}
+Time complexity: to examine $N$ proposals in the role of the last dame in an optimal sub-sequence and for each such dam, we have to find all preceeding compatible dams and their optimal solutions(to look up in an array). Thus the time complexity is $O(N^2)$.
+\paragraph{2. Solution}
 \label{sec:Question 2}
-
-\paragraph{3.}
+\begin{enumerate}[label=(\alph*)]
+  \item There are 4 rows in every column, let's denote these 4 rows as sequence $S=\big<r_1,r_2,r_3,r_4\big>$.
+  According to the question, the adjacent squares are not allowed, therefore only $(r_1), (r_2), (r_3), (r_4), (r_1, r_3), (r_1, r_4)$ and $(r_2, r_4)$ are legal pattern that can occur in any column. \\
+  \item As considering sub-problems consisting of the first $k$ columns $1\leq k \leq n$. Each sub-problem can be assigned a type, which is the pattern occuring in the last column. Then we have known that there are 7 legal pattern that can be compatible with each other; hence denote these 7 types in a set $T$. \\ 
+  For $1\leq k \leq n$\\
+  \textbf{subproblem $P(k)$}: find a type $T_k \in T$ to assigned in the column at $k$, such that: 
+  \begin{enumerate}[label=(\arabic{*})]
+    \item $T_k$ provides the maximum sum of the integers in the squares in column $k$
+    \item $T_k$ is compatible with $T_{k-1}$
+  \end{enumerate}
+  Let $V(k)$ be the maximum sum of the integers in the squares of first $k$ columns, and $sum(T_k)$ be the sum of the integers in the squares of a type $T_k$ at column $k$.
+  Make an array with $n$ slots to represent those $n$ columns to store the $V(k)$\\
+\textbf{Recursion:} assuming that we have solved subproblems for all $1\leq k \leq n$ and obtain the solution $V(k)$ and stored them in the array
+\begin{align*}
+  V(k)=  max\{ sum(T_k) : T_k \in T \} +V(k-1) 
+\end{align*}
+Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(7n)$ which is same as $O(n)$ .
+\end{enumerate}
+\paragraph{3. Solution}
 \label{sec:Question 3}
-
-\paragraph{4. [20 marks, each pair 4 marks]}
+Let $\sum_{1\leq i \leq n} |h_i - l_i|$ be $f(n)$, we know that $f(n) = \sum_{1=i}^{n} f_i -\sum_{1=i}^{n} l_i $
+Let's sort $h_1,h_2,..,h_n$ by their height in increasing order, and sort $l_1,l_2,...,l_m$ by their length in creasing order.\\
+\paragraph{4.}
 \label{sec:Question 4}
 
 \paragraph{5.}
