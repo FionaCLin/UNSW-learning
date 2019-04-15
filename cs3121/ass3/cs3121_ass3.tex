@@ -67,10 +67,26 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
 Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(8n)$ which is same as $O(n)$ .
 \end{enumerate}
 \paragraph{3. Solution}
-\label{sec:Question 3}
-Let $\sum_{1\leq i \leq n} |h_i - l_i|$ be $f(n)$, we know that $f(n) = \sum_{1=i}^{n} f_i -\sum_{1=i}^{n} l_i $
-Let's sort $h_1,h_2,..,h_n$ by their height in increasing order, and sort $l_1,l_2,...,l_m$ by their length in creasing order.\\
-\paragraph{4.}
+\label{sec:Question 3} Let's denote $\sum_{1\leq i \leq n} |h_i - l_j(i)|$ as $S$\\
+ To minimise $S$, we need to minimise the difference of between all pairs ($h_i, l_j(i)$).\\
+ To reduce some randomness, we sort $h_1,h_2,...h_n$ by their height and $l_1,l_2,...,l_m$ by their length in the increasing order.\\ 
+ Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $|h_i, l_j(i)|$ for all pairs and fill the table $n$ columns x $m$ rows first. \\
+ For all $i \leq n$,\\
+ \textbf{subproblems $P(i, S_i)$} we need to find the sequence $S_i=\big<l_1,l_2,...l_i\big>$ produce the minimum sum $S_i$.\\
+ \textbf{Recursion} assuming we have solved all subproblems for all $k \leq i \leq n$ and obtain the optimal solution $opt(k,S_{k})$
+ for $i$ column, we need to select the minimum value at row $r$ from all rows.\\
+ Row $r$ is either selected in the $opt(k,S_{k})$ or not selected.
+ If it is selected by column $p$, we do the following:\\ 
+ we pick  $r^{''}$ has the minimum difference from $r$ from column $p$ and $r'$ has the minimum difference from $r$ from column $i$
+ \begin{align*} 
+  &\ if\ r'-r <  r^{''} -r \\ 
+  &\ then \\
+  &\ \qquad\ select\ r'\ for\ column\ i\\
+  &\ else \\
+  &\ \qquad\ select\ r^{''}\ for\ column\ p
+\end{align*}
+And if $r'$ or $r^{''}$ is selected in $opt(k,S_{k})$ as well, we do the above again to work out the $opt(i,S_{i})$.
+  \paragraph{4.}
 \label{sec:Question 4}
 
 \paragraph{5.}
