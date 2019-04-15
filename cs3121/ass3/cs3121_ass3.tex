@@ -50,8 +50,8 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
 \label{sec:Question 2}
 \begin{enumerate}[label=(\alph*)]
   \item There are 4 rows in every column, let's denote these 4 rows as sequence $S=\big<r_1,r_2,r_3,r_4\big>$.
-  According to the question, the adjacent squares are not allowed, therefore only $(r_1), (r_2), (r_3), (r_4), (r_1, r_3), (r_1, r_4)$ and $(r_2, r_4)$ are legal pattern that can occur in any column. \\
-  \item As considering sub-problems consisting of the first $k$ columns $1\leq k \leq n$. Each sub-problem can be assigned a type, which is the pattern occuring in the last column. Then we have known that there are 7 legal pattern that can be compatible with each other; hence denote these 7 types in a set $T$. \\ 
+  According to the question assuming the integers in each squares could be negative, and the adjacent squares are not allowed, therefore only $()$, $(r_1)$, $(r_2)$, $(r_3)$, $(r_4)$, $(r_1, r_3)$, $(r_1, r_4)$ and $(r_2, r_4)$ are legal pattern that can occur in any column. \\
+  \item As considering sub-problems consisting of the first $k$ columns $1\leq k \leq n$. Each sub-problem can be assigned a type, which is the pattern occuring in the last column. Then we have known that there are 8 legal pattern that can be compatible with each other; hence denote these 8 types in a set $T$. \\ 
   For $1\leq k \leq n$\\
   \textbf{subproblem $P(k)$}: find a type $T_k \in T$ to assigned in the column at $k$, such that: 
   \begin{enumerate}[label=(\arabic{*})]
@@ -64,7 +64,7 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
 \begin{align*}
   V(k)=  max\{ sum(T_k) : T_k \in T \} +V(k-1) 
 \end{align*}
-Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(7n)$ which is same as $O(n)$ .
+Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(8n)$ which is same as $O(n)$ .
 \end{enumerate}
 \paragraph{3. Solution}
 \label{sec:Question 3}
