@@ -242,7 +242,7 @@ Hence, learning \textbf{$w_{NB}$} is much easier than learning \textbf{$w_{LR}$}
      y_o = \sum_{j=1}^{m} u_j = \sum_{j=1}^{m} (q_1+q_2)*u_j\\ &\
   \end{align*}
   Then let $p(\theta)=Pr(y_m=y_o|\theta)$ be the probability of some $y_o$ being measured from sample with the model $y_m$ and the given $\theta$, assuming all $n$ measured instances are $y_1,y_2,...,y_n$ independently. \\
-  Any $\theta$ is possible, but the best $\theta$ is more likely. In order to find the best $\theta$, we need to maximise the likelihood $p_o$ and observed more measurement $y_o$ close to $y_m$.\\Hence,
+  Any $\theta$ is possible, but the best $\theta$ is more likely. In order to find the best $\theta$, we need to maximise the likelihood $p(\theta)$ and observed more measurement $y_o$ close to $y_m$.\\Hence,
   \begin{align*}
    &\ L(\theta)=\prod_{o=1}^{n}P(y_o|y_m;\theta)=\prod_{o=1}^{n}p(\theta)^{y_o} \cdot (1-p(\theta))^{(1-y_o)} \\ &\
   \end{align*}
