@@ -1,6 +1,6 @@
 CFLAGS=-O -Wall -Werror
 
-TARGETS	:= cs3121_ass3  __latexindent_temp.tex
+TARGETS	:= cs3121_ass3  __latexindent_temp.tex cs3121_ass3.synctex.gz
 
 .PHONY: all clean
 
