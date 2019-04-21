@@ -32,7 +32,7 @@
 For this question it can be approached by dynamic programming techquie.\\
 Firstly, sort the proposals by their position $x_i$ plus radius $r_i$, $x_i + r_i$ in increasing order so we can denote $f_i = x_i + r_i,\ s_i = x_i - r_i$\\
 For every $i < N$ we are going to resolve the following subproblems:\\
-\textbf{subproblem $P(i)$}: find a subsequence $\sigma_i$ of the sequence of dams $D_i=\big<x_1,x_2,...x_i\big>$ such that:
+\textbf{subproblem $P(i)$}: find a subsequence $\sigma_i$ of the sequence of dams $D_i=\big<x_1, x_2,..., x_i\big>$ such that:
 \begin{enumerate}[label=(\arabic*)]
   \item $\sigma_i$ consist of non-overleaping dams with their position $x_i$ plus/minus radius $r_i$ are disjoint interval, which means $f_{i-1} < s_i$.
   \item it ends with dam at $x_i$ with $f_i=x_i+r_i$
@@ -51,9 +51,9 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
 \begin{enumerate}[label=(\alph*)]
   \item There are 4 rows in every column, let's denote these 4 rows as sequence $S=\big<r_1,r_2,r_3,r_4\big>$.
   According to the question assuming the integers in each squares could be negative, and the adjacent squares are not allowed, therefore only $()$, $(r_1)$, $(r_2)$, $(r_3)$, $(r_4)$, $(r_1, r_3)$, $(r_1, r_4)$ and $(r_2, r_4)$ are legal pattern that can occur in any column. \\
-  \item As considering sub-problems consisting of the first $k$ columns $1\leq k \leq n$. Each sub-problem can be assigned a type, which is the pattern occuring in the last column. Then we have known that there are 8 legal pattern that can be compatible with each other; hence denote these 8 types in a set $T$. \\ 
+  \item As considering sub-problems consisting of the first $k$ columns $1\leq k \leq n$. Each sub-problem can be assigned a type, which is the pattern occuring in the last column. Then we have known that there are 8 legal pattern that can be compatible with each other; hence denote these 8 types in a set $T$. \\
   For $1\leq k \leq n$\\
-  \textbf{subproblem $P(k)$}: find a type $T_k \in T$ to assigned in the column at $k$, such that: 
+  \textbf{subproblem $P(k)$}: find a type $T_k \in T$ to assigned in the column at $k$, such that:
   \begin{enumerate}[label=(\arabic{*})]
     \item $T_k$ provides the maximum sum of the integers in the squares in column $k$
     \item $T_k$ is compatible with $T_{k-1}$
@@ -62,34 +62,70 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
   Make an array with $n$ slots to represent those $n$ columns to store the $V(k)$\\
 \textbf{Recursion:} assuming that we have solved subproblems for all $1\leq k \leq n$ and obtain the solution $V(k)$ and stored them in the array
 \begin{align*}
-  V(k)=  max\{ sum(T_k) : T_k \in T \} +V(k-1) 
+  V(k)=  max\{ sum(T_k) : T_k \in T \} +V(k-1)
 \end{align*}
-Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(8n)$ which is same as $O(n)$ .
-\end{enumerate}
-\paragraph{3. Solution}
-\label{sec:Question 3} Let's denote $\sum_{1\leq i \leq n} |h_i - l_j(i)|$ as $S$\\
- To minimise $S$, we need to minimise the difference of between all pairs ($h_i, l_j(i)$).\\
- To reduce some randomness, we sort $h_1,h_2,...h_n$ by their height and $l_1,l_2,...,l_m$ by their length in the increasing order.\\ 
- Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $|h_i, l_j(i)|$ for all pairs and fill the table $n$ columns x $m$ rows first. \\
- For all $i \leq n$,\\
- \textbf{subproblems $P(i, S_i)$} we need to find the sequence $S_i=\big<l_1,l_2,...l_i\big>$ produce the minimum sum $S_i$.\\
- \textbf{Recursion} assuming we have solved all subproblems for all $k \leq i \leq n$ and obtain the optimal solution $opt(k,S_{k})$
- for $i$ column, we need to select the minimum value at row $r$ from all rows.\\
- Row $r$ is either selected in the $opt(k,S_{k})$ or not selected.
- If it is selected by column $p$, we do the following:\\ 
- we pick  $r^{''}$ has the minimum difference from $r$ from column $p$ and $r'$ has the minimum difference from $r$ from column $i$
- \begin{align*} 
-  &\ if\ r'-r <  r^{''} -r \\ 
-  &\ then \\
-  &\ \qquad\ select\ r'\ for\ column\ i\\
-  &\ else \\
-  &\ \qquad\ select\ r^{''}\ for\ column\ p
+Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every \\*
+\\*
+Let's denote $\sum_{1\leq i \leq n} |h_i - l_j(i)|$ as $S$\\
+To minimise $S$, we need to minimise the difference of between all pairs ($h_i, l_j(i)$).\\
+To reduce some randomness, we sort $h_1,h_2,...h_n$ by their height and $l_1,l_2,...,l_m$ by their length in the increasing order.\\
+Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $|h_i, l_j(i)|$ for all pairs and fill the table $n$ columns x $m$ rows first. \\
+For all $i \leq n$,\\
+\textbf{subproblems $P(i, S_i)$} we need to find the sequence $S_i=\big<l_1,l_2,...l_i\big>$ produce the minimum sum $S_i$.\\
+\textbf{Recursion} assuming we have solved all subproblems for all $k \leq i \leq n$ and obtain the optimal solution $opt(k,S_{k})$
+for $i$ column, we need to select the minimum value at row $r$ from all rows.\\
+Row $r$ is either selected in the $opt(k,S_{k})$ or not selected.
+If it is selected by column $p$, we do the following:\\
+we pick  $r^{''}$ has the minimum difference from $r$ from column $p$ and $r'$ has the minimum difference from $r$ from column $i$
+\begin{align*}
+ &\ if\ r'-r <  r^{''} -r \\
+ &\ then \\
+ &\ \qquad\ select\ r'\ for\ column\ i\\
+ &\ else \\
+ &\ \qquad\ select\ r^{''}\ for\ column\ p
 \end{align*}
 And if $r'$ or $r^{''}$ is selected in $opt(k,S_{k})$ as well, we do the above again to work out the $opt(i,S_{i})$.
-  \paragraph{4.}
+column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(8n)$ which is same as $O(n)$ .
+\end{enumerate}
+\paragraph{3. Solution}
+\label{sec:Question3}
+As given $\sum_{1\leq i \leq n} | h_i - l_j(i) | $ as $S$.\\
+To minimise $S$, we need to minimise the difference of between all pairs ($h_i, l_j(i)$).\\
+Now, let's order all skiers $S_i\ 1\leq i \leq n$, by increasing height $h(S_i)$ and all skis $s_j, 1\leq j \leq m$, by increasing length $l(s_j)$. \\
+Because if an assignment is optimal and $h(S_i) < h(S_j)$ then the skis assigned to skier $S_i$ are shorter than the skis assigned to skier $S_j$, otherwise you could swap their skis without increasing the sum of the absolute values of the differences between the heights of skiers and length of skis.\\
+Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $|h_i-l_j(i)|$ for all pairs and fill the table $n$ columns x $m$ rows first. \\
+Thereforem, for all $k \leq n$,\\
+\textbf{subproblems $P(k)$} we need to find the sequence of assignment of skis $S=\big<l_1,l_2,...l_k\big>$ produce the minimum sum $S$.\\
+Let $opt(i,S_{i})$ be the optimal solution of subproblems $P(i, j)$ for all $i$ and $j$ satisfying $1 \leq i \leq n$ and $i \leq j \leq m$: “Find optimal assignment of the first $i$ skiers to chose from the first $j$ skis.” If $j = i$ then there is only one assignment that assigns skis according to the skier’s height. If $j > i$ then there are two choices: either you assign to the $i$ th skier skis $j$ or you do not. It should now be easy now to do a recursion.\\
+\textbf{Recursion} assuming we have solved all subproblems for all $ n = i < j \leq m$ and obtain the optimal solution $opt(i,S_{i})$\\
+For $j$ row, we find the minimum value $v_j$ at column $r$($v_j$ is the difference the absolute values of the differences between the height of skier at column $r$ and length of skis at row $j$). In order to decide if row $j$ replaces the assigned value $v_r$ in column $r$, which is selected in the $opt(k,S_{i})$; we need to compare $v_j$ and $v_r$. If $v_j < v_r$, we update the assignments in $opt(k,S_{i})$.
+\paragraph{4. Solution}
 \label{sec:Question 4}
-
-\paragraph{5.}
+\begin{enumerate}[label=(\alph{*})]
+  \item Given $ n + 2 $ spies i.e. $ S, s_1, s_2, ... , s_n, T$, and they are communicating through certain number of communications channels. We can consider the spies as vertices and the communication channels as edges in a graph.\\
+  In order to cut the communications flow with the fewest number of channels, we can apply the Edmonds-Karp improved max flow algorithm. The algorithm to cut the communications flow with the fewest number of channels as following:
+  \begin{enumerate}[label=\arabic{*})]
+    \item First form $n+2$ vertices $V$ the graph and connect $E$ pairs vertex $i$ and vertex $j$ if there is a communication between them. Then assign one as the unit weight to each communication channels(aka edges) and preform breadth-first search to find the shortest path.
+    \item Knowing the flow through the cut $f(S,T)=\sum_{(u,v) \in E} \{ f(u,v): u \in S\ \&\ v \in T \} - \sum_{(u,v) \in E} \{ f(u,v): u \in T\ \&\ v \in S\}$.\\
+    Thus, Divide $n$ intermediary spies(vertices) into one set contains vertex $S$, another set contains vertex $T$. We repeat the following steps 3) and 4).
+    \item For each $s \in S$ and each $t \in T$ preform breadth-first search to find the shorstest path between $s$ and $t$.
+    \item Start from the shorstest path as the argumenting path, we keep adding $f(S,T)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.
+  \end{enumerate}
+  As each edge has one as the unit weight, therefore, the min cut equals to the number of edges crossing the cut.
+  Time complexity: for each $s \in S$ and each $t \in T$, each BFS takes $O(E)$ time and each max flow finding takes $O((n+2)E)$ time. So the overall complexity is $O((n+2)E^2)$ time
+  \item Since we bribe the spies instead of compromising the communication channels, we can model the question in another way which similar the above approach. We can consider the spies as edges and the communication channels as vertices in a graph.\\
+  In order to cut the communications flow with the smallest number of spies, we can apply the Edmonds-Karp improved max flow algorithm. The algorithm to cut the communications flow with
+  the smallest number of spies as following:
+  \begin{enumerate}[label=\arabic{*})]
+    \item First transform the above $n+2$ vertices $V$ the graph and connect $E$ pairs vertex $i$ and vertex $j$ if there is a communication between them into a new graph with $E+2$ vertices(including $S$ and $T$) and $n$ edges. We need to exclude $S$ and $T$, because we can't bribe them. Then assign one as the unit weight to those $n$ spies(aka edges).
+    \item Divide $E$ intermediary spies(vertices) into one set contains vertex $S$, another set contains $T$. We repeat the following steps 3) and 4).
+    \item For each $s \in S$ and each $t \in T$ preform breadth-first search to find the shorstest path between $s$ and $t$.
+    \item Start from the shorstest path as the argumenting path, we keep adding $f(S,T)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.
+  \end{enumerate}
+  As each edge has one as the unit weight, therefore, the min cut equals to the number of edges crossing the cut.
+   Time complexity: for each $s \in S$ and each $t \in T$, each BFS takes $O(n)$ time and each max flow finding takes $O((E+2)n)$ time. So the overall complexity is $O((E+2)n^2  )$ time
+  \end{enumerate}
+\paragraph{5. Solution}
 \label{sec:Question 5}
 
 \end{document}
