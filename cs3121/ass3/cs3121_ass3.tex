@@ -114,5 +114,17 @@ Then Divide $V$ vertices into two Sets $s, s',u \in S$ and $t, t',v \in T$. We r
   \item For each $s \in S$ and each $t \in T$ preform breadth-first search to find the shorstest path between $s$ and $t$ vertices.
   \item Start from the shorstest path as the argumenting path, we keep adding the flow $f(S,T)$ of the cut $(s,t)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.    
 \end{enumerate}
-Time complexity: for each $s \in S$ and each $t \in T$, each BFS takes $O(V)$ time worst case and each max flow finding takes $O(VE)$ time. So the overall complexity is $O(VE^2)$ time
+Time complexity:\\
+In worst case for each $s \in S$ and each $t \in T$, each BFS takes
+\begin{align*}
+  O(E)=O(\frac{n(n-1)}{2}+2)=O(n^2)
+\end{align*}
+each max flow finding takes
+\begin{align*}
+O(VE)=O(\frac{n(n-1)(n+2)}{2}+2)=O(n^3)
+\end{align*}
+So the overall complexity is
+\begin{align*}
+O(VE^2)=O((n+2)\big(\frac{n(n-1)}{2}+2\big)^2) = O(n^5)
+\end{align*}
 \end{document}
