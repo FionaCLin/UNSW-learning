@@ -64,7 +64,7 @@ Time complexity: to examine $N$ proposals in the role of the last dame in an opt
 \begin{align*}
   V(k)=  max\{ sum(T_k) : T_k \in T \} +V(k-1)
 \end{align*}
-Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every 
+Time complexity: to examine $n$ columns in the row of the last column with maximum sum for every
 column, we have to find all preceeding compatible type and their maximum sum (look up in an array). Thus the overall time complexity is $O(8n)$ which is same as $O(n)$ .
 \end{enumerate}
 \paragraph{3. [20 marks] Solution:}
@@ -73,25 +73,27 @@ As given $\sum_{1\leq i \leq n} | h_i - l_j(i) | $ as $S$.\\
 To minimise $S$, we need to minimise the difference of between all pairs ($h_i, l_j(i)$).\\
 Now, let's order all skiers $S_i\ 1\leq i \leq n$, by increasing height $h(S_i)$ and all skis $s_j, 1\leq j \leq m$, by increasing length $l(s_j)$. \\
 Because if an assignment is optimal and $h(S_i) < h(S_j)$ then the skis assigned to skier $S_i$ are shorter than the skis assigned to skier $S_j$, otherwise you could swap their skis without increasing the sum of the absolute values of the differences between the heights of skiers and length of skis.\\
-Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $|h_i-l_j(i)|$ for all pairs and fill the table $n$ columns x $m$ rows first. \\
-Thereforem, for all $k \leq n$,\\
-\textbf{subproblems $P(k)$} we need to find the sequence of assignment of skis $S=\big<l_1,l_2,...l_k\big>$ produce the minimum sum $S$.\\
+Since there are $n$ skiers and $m$ skis and $n\leq m$, we need to work out $d_{i,j}=|h_i-l_j(i)|$ for each assignment for $n$ skiers and $m$ skis and fill each $d_{i,j}$ in the $n$ columns x $m$ rows table. This takes $O(nm) time$\\
+Therefore, for all $i$ and $j$ satisfying $1 \leq i \leq n$ and $i \leq j \leq m$,\\
+\textbf{subproblems $P(i, j)$} we need to find the sequence of assignment of skis $S=\big<l_1(1) ,l_2(2) ,...,l_j(i)\big>$ produce the minimum sum $S$.\\
 Let $opt(i,S_{i})$ be the optimal solution of subproblems $P(i, j)$ for all $i$ and $j$ satisfying $1 \leq i \leq n$ and $i \leq j \leq m$: “Find optimal assignment of the first $i$ skiers to chose from the first $j$ skis.” If $j = i$ then there is only one assignment that assigns skis according to the skier’s height. If $j > i$ then there are two choices: either you assign to the $i$ th skier skis $j$ or you do not. It should now be easy now to do a recursion.\\
-\textbf{Recursion} assuming we have solved all subproblems for all $ n = i < j \leq m$ and obtain the optimal solution $opt(i,S_{i})$\\
-For $j$ row, we find the minimum value $v_j$ at column $r$($v_j$ is the difference the absolute values of the differences between the height of skier at column $r$ and length of skis at row $j$). In order to decide if row $j$ replaces the assigned value $v_r$ in column $r$, which is selected in the $opt(k,S_{i})$; we need to compare $v_j$ and $v_r$. If $v_j < v_r$, we update the assignments in $opt(k,S_{i})$.
+\textbf{Recursion} assuming we have solved all subproblems for all $ i < j \leq m$ and obtain the optimal solution $opt(i,S_{i})$ and store the sequence of assignment of skis in an Array $S$ of $n$ elements.\\
+For ski at $j$ row, we find the minimum value $v_{r,j}$ at column $r$, which is corresponding to skier ($v_{r,j}$ is the difference the absolute values of the differences between the height of skier at column $r$ and length of skis at row $j$). Then we can assign $j$ at position $r$ in the Array $S$ if the elements at position $r$ in the Array $S$ is not assigned before. When the element has been assigned value $k$ before, in order to decide whether to replaces $k$ with $j$ at $r$ position in Array $S$; we need to look up $v_{r,k}$ and compare $v_{r,k}$ and $v_{r,j}$. If $v_{r,k}>v_{r,j}$, we replaces $k$ with $j$ at $r$ position in Array $S$.\\
+The \textbf{Recursion} will go $m$ times for all skis, which are $O(m)$ time. Hence the overall complexity would be $O((n+1)m)$ for this algorithm.
 \paragraph{4. Solution:}
 \label{sec:Question 4}
+According to the question a), we know S and T spies do not send message via direct communication channels, otherwise the question become trivial.
 \begin{enumerate}[label=(\alph{*})]
   \item {\bfseries[10 marks]} Given $ n + 2 $ spies i.e. $ S, s_1, s_2, ... , s_n, T$, and they are communicating through certain number of communications channels. We can consider the spies as vertices and the communication channels as edges in a graph.\\
   In order to cut the communications flow with the fewest number of channels, we can apply the Edmonds-Karp Max Flow Algorithm. Therefore, the proposed algorithm to cut the communications flow with the fewest number of channels as following:
   \begin{enumerate}[label=\arabic{*})]
-    \item First form $n+2$ vertices $V$ the graph and connect $E$ pairs vertex $i$ and vertex $j$ with a edge of a unit capacity if there is a communication between them. 
+    \item First form $n+2$ vertices $V$ the graph and connect $E$ pairs vertex $i$ and vertex $j$ with a edge of a unit capacity if there is a communication between them.
     \item Knowing the flow through the cut $f(S,T)=\sum_{(u,v) \in E} \{ f(u,v): u \in S\ \&\ v \in T \} - \sum_{(u,v) \in E} \{ f(u,v): u \in T\ \&\ v \in S\}$.\\
     Thus, Divide $n$ intermediary spies(vertices) into one set contains vertex $S$, another set contains vertex $T$. We repeat the following steps 3) and 4).
     \item For each $s \in S$ and each $t \in T$ preform breadth-first search to find the shorstest path between $s$ and $t$ vertices.
     \item Start from the shorstest path as the argumenting path, we keep adding the flow $f(S,T)$ of the cut $(s,t)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.
   \end{enumerate}
-  As each edge has one as the unit capacity, therefore, the min cut equals to the number of edges crossing the cut.
+  As each edge has one as the unit capacity, therefore, the min cut equals to the number of edges crossing the cut.\\
   Time complexity: for each $s \in S$ and each $t \in T$, each BFS takes $O(E)$ time and each max flow finding takes $O((n+2)E)$ time. So the overall complexity is $O((n+2)E^2)$ time
   \item {\bfseries[10 marks]} Since we bribe the spies instead of compromising the communication channels, we can model the question in another way which similar the above approach. We can consider the spies as edges and the communication channels as vertices in a graph.\\
   In order to cut the communications flow with the smallest number of spies, we can apply the Edmonds-Karp Max Flow Algorithm. Therefore, the proposed algorithm to cut the communications flow with the fewest number of channels as following:
@@ -106,25 +108,19 @@ For $j$ row, we find the minimum value $v_j$ at column $r$($v_j$ is the differen
   \end{enumerate}
 \paragraph{5. [20 marks] Solution:}
 \label{sec:Question 5}
-In order to find a cut of the smallest possible capacity among all cuts in which vertex $u$ is at the same side of the cut as the source $s$ and vertex $v$ is at the same side as sink t, we can apply the Edmonds-Karp Max Flow Algorithm to find the minimum cut again.\\
-Firstly, add the dummy super source $s'$ and the dummy super sink $t'$ to the flow network G, then connect $(s', s)$ and $(s', u)$ and $(t,t')$ and $(v, t')$ as edge and assign the infinity capacity to these edges. It can ensure $\{s,u\}$ and $\{v, t\}$ are at the same side after the cut.\\
-Hence, we have a group $G=(V,E)$, where $V=n + 2 > 6\ \&\ E\in [4, \frac{n(n-1)}{2}+2]$\\
+In order to find a cut of the smallest possible capacity among all cuts in which vertex $u$ is at the same side as the source $s$ and vertex $v$ is at the same side as sink t, we can apply the Edmonds-Karp Max Flow Algorithm to find the minimum cut again.\\
+Firstly, add the dummy super source $s'$ and the dummy super sink $t'$ to the flow network G, then connect $(s', s)$ and $(s', u)$ and $(t,t')$ and $(v, t')$ as edge and assign the infinity capacity to these edges. It can ensure $\{s,u\}$ and $\{v, t\}$ are always at the same side after the cut, because the flow is not block/cut on the infinity capacity edges.\\
+\\
+Hence, we have a graph $G=(V,E)$, where $V=n + 2 > 6\ \&\ E\in [4, \frac{n(n-1)}{2}+2]$\\
 Then Divide $V$ vertices into two Sets $s, s',u \in S$ and $t, t',v \in T$. We repeat the following steps 1) and 2).
 \begin{enumerate}[label=\arabic{*})]
   \item For each $s \in S$ and each $t \in T$ preform breadth-first search to find the shorstest path between $s$ and $t$ vertices.
-  \item Start from the shorstest path as the argumenting path, we keep adding the flow $f(S,T)$ of the cut $(s,t)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.    
+  \item Start from the shorstest path as the argumenting path, we keep adding the flow $f(S,T)$ of the cut $(s,t)$ to the argumenting path until there is no more argumenting path when the flow through the cut equal to the minimum capacity of the cut.
 \end{enumerate}
-Time complexity:\\
-In worst case for each $s \in S$ and each $t \in T$, each BFS takes
+Time complexity in worst case each BFS each max flow finding for each $s \in S$ and each $t \in T$ take
 \begin{align*}
-  O(E)=O(\frac{n(n-1)}{2}+2)=O(n^2)
-\end{align*}
-each max flow finding takes
-\begin{align*}
-O(VE)=O(\frac{n(n-1)(n+2)}{2}+2)=O(n^3)
-\end{align*}
-So the overall complexity is
-\begin{align*}
-O(VE^2)=O((n+2)\big(\frac{n(n-1)}{2}+2\big)^2) = O(n^5)
+  &\ O(E)=O(\frac{n(n-1)}{2}+2)=O(n^2)\text{ and }O(VE)=O(\frac{n(n-1)(n+2)}{2}+2)=O(n^3)\\ &\
+  \text{So the overall complexity is}\\ &\
+  O(VE^2)=O((n+2)\big(\frac{n(n-1)}{2}+2\big)^2) = O(n^5)
 \end{align*}
 \end{document}
