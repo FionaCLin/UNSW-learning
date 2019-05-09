@@ -1,0 +1,94 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[l2tabu,orthodox]{nag}% Old habits die hard. All the same, there are commands, classes and packages which are outdated and superseded. nag provides routines to warn the user about the use of those.
+\usepackage{listings, enumitem}
+\usepackage{amsmath,tabu}
+\usepackage[all,error]{onlyamsmath}% Error on deprecated math commands like $$ $$.
+\usepackage{fixltx2e}
+\usepackage[strict=true]{csquotes}
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{2111defs,2111theorems}
+
+\title{COMP3121 Assignment1}
+\author{Fiona Lin z5131048}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\begin{document}
+\maketitle
+% \section{Solution:}
+%  \subsection{Stepup/Preprocessing:}
+%  \subsection{Subproblem}
+%  \subsection{Solution of Subproblem}
+%  \subsection{Base Case:}
+%  \subsection{Recursion:}
+%  \subsection{Solution to the original problem:}
+% \section{Solution:}
+%   \subsection{Stepup/Preprocessing:}
+%   \subsection{Subproblem}
+%   \subsection{Solution of Subproblem}
+%   \subsection{Base Case:}
+%   \subsection{Recursion:}
+%   \subsection{Solution to the original problem:}
+
+%   \section{Solution:}
+%   \subsection{Stepup/Preprocessing:}
+%   Let the length of a sequence of letters $S$ be $n$ and let $s(i)$ denote the left end symbol of sequence $S$ and $s(j)$ denote the right end symbol of sequence $S$.
+%   \subsection{Subproblem} for every $i <j \leq n$, find the maximum number of palidrome words between symbol $s(i)$ and symbol $s(j)$
+%   \subsection{Solution of Subproblem}
+%   \subsection{Base Case:}
+%   \subsection{Recursion:}
+%   let $num(i,j)$ be the optimal solution of the Subproblem, for $i\leq j \leq n $
+%   \begin{align*}
+%   &\ 
+%   if\ s(i) \neq s(j) \\ &\
+%    num(i,j) = num(i+1, j) + num(i,j-1) - num(i+1, j-1) \\ &\
+%   else \ s(i) = s(j) \\ &\
+%     num(i,j) = num(i+1,j-1)*2 +1
+%   \end{align*}
+%   \begin{enumerate}[label=\arabic*)]
+%     \item palindroms which contains $s(i)$ but do not contain $s(j)$\\
+%     $num(i, j-1) - num(i+1, j-1)$
+%     \item palidroms which contain $s(j)$ but do not contain $s(i)$
+%     $num(i+1, j) - num(i+1, j-1)$
+%     \item palidroms which do not contain $s(i)$ and do not contain $s(j)$
+%     $num(i+1, j-1)$
+%     \item palidroms which contain $s(i)$ and $s(j)$
+%     \qquad - those that extend a palidroms from $i+1$ to $j-1$ 
+%     $num(i+1, j-1)$
+%     \qquad - those that do not extend a palidroms from $i+1$ to $j-1$ 
+%     $1+j-1-(i+1)+1$
+%   \end{enumerate}
+%      \subsection{Solution to the original problem:}
+ 
+% \section{Solution:}
+%   \subsection{Stepup/Preprocessing:}
+%   \subsection{Subproblem}
+%   \subsection{Solution of Subproblem}
+%   \subsection{Base Case:}
+%   \subsection{Recursion:}
+%   \subsection{Solution to the original problem:}
+
+\section{Find the longest increasing  Solution:}
+  \subsection{Stepup/Preprocessing:}
+  Let's index the sequence of numbers $S$ by 0 to n. and $L(i)$ be the length of the longest increasing sequence ending at index i such that $S_i$ is the last element of the longest increasing sequence.
+  For $0 \leq i \leq n$,
+  \subsection{Subproblem(i)} Find the length of longest increasing sequence of ending at index i  such that $S_i$ is the last element of the longest increasing sequence.
+  \subsection{Solution of Subproblem} For all $ 0 \leq i \leq n$, count the length of increasing sequence end at index $i$.\\
+   Let's $L(i)$ be the solution of the subproblem(i) and make an array $MaxLen$ of size $n$ to record all $L(i)$ and make an array of size $n$ to record all $L(i)$, denote it as $MaxSequence(i)$ be equal to $m$ for which such a longest sequence is achieved.
+  \subsection{Base Case: ??}
+  \subsection{Recursion:}
+  L(i) can be recursively written as:
+  \begin{align*}
+   &\ L(i) = 
+   \begin{cases} 
+    1 + max(L(j))  &\mbox{ if } 0 < j < i\ and\ S_j < S_j
+    \\
+    1 &\mbox{ otherwise}
+  \end{cases}. \\
+  \end{align*}
+  \subsection{Solution to the original problem:}
+  To find the longest increasing sequence for a given sequence of numbers, we need to return maximum of $MaxLen(i)$ where $0 < i < n$.
+ \end{document}
