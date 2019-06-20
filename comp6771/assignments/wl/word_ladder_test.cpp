@@ -1,5 +1,14 @@
 /*
+Approach and rational:
+* Getting the expected output from reference solution with various sample inputs as my test cases, the below tests are developed for each functions in world_ladder.cpp.
 
+* It covers the most general test cases include the expected path and unexpected path such as get adjecent word of empty string and DFS find paths with empty routes etc.
+
+* Providing the sample input, get the actual output(aka res variable in test) from the tested function.
+
+* Then compare and assert the expected output with the output.
+
+* By doing this way, we can ensure the function behave the way as described in test. No matter how the actual implementation change, we can ensure the function correctness.
 
 */
 #include "assignments/wl/lexicon.h"
