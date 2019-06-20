@@ -1,24 +1,21 @@
 /*
 
-  == Explanation and rational of testing ==
-
-  Explain and justify how you approached testing, the degree
-   to which you're certain yo"u hav",e" covered", "all", "possibilitie",s",
-   ",a"nd wh",y" you",  hink "},{yr tests are that thorough.
 
 */
-#include "assignments/wl/lexicon.h"
+ #include "assignments/wl/lexicon.h"
 #include "assignments/wl/word_ladder.h"
 #include "catch.h"
 
 auto lexicon = GetLexicon("assignments/wl/words.txt");
 std::vector<std::vector<std::string>> expect;
 
-TEST_CASE("No ladder found for airplane to tricycle") {
+// Tests for WordLadder function
+
+TEST_CASE("WordLadder not found for airplane to tricycle") {
   REQUIRE((WordLadder("airplane", "tricycle", lexicon)).size() == 0);
 }
 
-TEST_CASE("Ladder found for con to cat") {
+TEST_CASE("WordLadder found for con to cat") {
   auto res = WordLadder("con", "cat", lexicon);
 
   expect = {{"con", "can", "cat"}, {"con", "cot", "cat"}};
@@ -32,7 +29,7 @@ TEST_CASE("Ladder found for con to cat") {
   }
 }
 
-TEST_CASE("Ladder found for awake to sleep") {
+TEST_CASE("WordLadder found for awake to sleep") {
   auto res = WordLadder("awake", "sleep", lexicon);
 
   expect = {
@@ -48,7 +45,7 @@ TEST_CASE("Ladder found for awake to sleep") {
   }
 }
 
-TEST_CASE("Ladder found for work to play") {
+TEST_CASE("WordLadder found for work to play") {
   auto res = WordLadder("work", "play", lexicon);
 
   expect = {{"work", "fork", "form", "foam", "flam", "flay", "play"},
@@ -73,7 +70,7 @@ TEST_CASE("Ladder found for work to play") {
   }
 }
 
-TEST_CASE("Ladder found for knows to think") {
+TEST_CASE("WordLadder found for knows to think") {
   auto res = WordLadder("knows", "think", lexicon);
 
   expect = {{"knows", "knots", "knits", "snits", "shits", "shins", "thins", "think"},
@@ -95,8 +92,98 @@ TEST_CASE("Ladder found for knows to think") {
   }
 }
 
-TEST_CASE("Ladder found for atlases to cabaret") {
+TEST_CASE("840 result found from WordLadder for atlases to cabaret") {
   auto res = WordLadder("atlases", "cabaret", lexicon);
 
   REQUIRE(res.size() == 840);
+}
+
+
+
+// Tests for BfsCheckLadder function
+TEST_CASE("Return true from BfsCheckLadder cog to hot") {
+  std::unordered_map<std::string, std::vector<std::string>>
+      expect_res({{"cot", {"hot"}},
+                  {"cog", {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod", "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
+                  {"hog", {"hot"}},
+                  {"bot", {"hot"}}});
+
+  std::unordered_map<std::string, std::vector<std::string>> res;
+  REQUIRE(BfsCheckLadder("cog", "hot", lexicon, res) == true);
+  for(auto& list : res){
+    std::unordered_map<std::string, std::vector<std::string>>::const_iterator found = expect_res.find(list.first);
+    REQUIRE(found != expect_res.end());
+    std::vector<std::string> expect_list = found->second;
+    for (auto const& word: list.second) {
+      REQUIRE(std::find(expect_list.begin(),expect_list.end(), word) != expect_list.end());
+    }
+  }
+}
+
+
+TEST_CASE("Return false from BfsCheckLadder a to bb") {
+
+  std::unordered_map<std::string, std::vector<std::string>> res;
+  REQUIRE(BfsCheckLadder("a", "bb", lexicon, res) == false);
+
+}
+
+
+// Tests for DfsCollectPaths function
+TEST_CASE("Return Paths from DfsCollectPaths cog to hot") {
+  std::unordered_map<std::string, std::vector<std::string>>
+      kids({{"cot", {"hot"}},
+            {"cog",
+             {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod",
+              "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
+            {"hog", {"hot"}},
+            {"bot", {"hot"}}});
+
+
+  expect = {
+      {"cog", "hog", "hot"},
+      {"cog", "cot", "hot"}
+  };
+  std::vector<std::string> path{"cog"};
+  std::vector<std::vector<std::string>> res;
+  DfsCollectPaths("cog", "hot", kids, path, res);
+
+  for (unsigned int i = 0; i < res.size(); i++) {
+    for (unsigned int j = 0; j < res[i].size(); j++) {
+      REQUIRE(res[i][j] == expect[i][j]);
+    }
+  }
+}
+
+TEST_CASE("Return empty Paths from DfsCollectPaths") {
+  std::unordered_map<std::string, std::vector<std::string>>
+      kids({});
+  expect = {};
+  std::vector<std::string> path{"cog"};
+  std::vector<std::vector<std::string>> res;
+  DfsCollectPaths("cog", "hot", kids, path, res);
+  REQUIRE(res.size() == 0);
+}
+
+// tests for GetAdjWord
+TEST_CASE("Found all adjacent words of hot") {
+
+  std::vector<std::string> expect_neighbor =
+      {"aot", "bot", "cot", "dot", "eot", "fot", "got", "iot", "jot", "kot", "lot", "mot", "not",
+       "oot", "pot", "qot", "rot", "sot", "tot", "uot", "vot", "wot", "xot", "yot", "zot", "hat",
+       "hbt", "hct", "hdt", "het", "hft", "hgt", "hht", "hit", "hjt", "hkt", "hlt", "hmt", "hnt",
+       "hpt", "hqt", "hrt", "hst", "htt", "hut", "hvt", "hwt", "hxt", "hyt", "hzt", "hoa", "hob",
+       "hoc", "hod", "hoe", "hof", "hog", "hoh", "hoi", "hoj", "hok", "hol", "hom", "hon", "hoo",
+       "hop", "hoq", "hor", "hos", "hou", "hov", "how", "hox", "hoy", "hoz"
+      };
+  std::vector<std::string> res = GetAdjWord("hot");
+  REQUIRE(res.size() == expect_neighbor.size());
+  for (unsigned int i = 0; i < res.size(); i++) {
+    REQUIRE(res[i] == expect_neighbor[i]);
+  }
+}
+
+TEST_CASE("Found no adjacent word of empty string") {
+  std::vector<std::string> res = GetAdjWord("");
+  REQUIRE(res.size() == 0);
 }
