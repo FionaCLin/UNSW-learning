@@ -1,6 +1,4 @@
-#include <iostream>
 #include "assignments/wl/word_ladder.h"
-
 
 void DfsCollectPaths(const std::string& word,
                      const std::string& end_word,
@@ -24,27 +22,24 @@ void DfsCollectPaths(const std::string& word,
 }
 
 std::vector<std::string> GetAdjWord(std::string word) {
-  std::cout << word << ":\n";
   std::vector<std::string> res;
   for (unsigned int i = 0; i < word.size(); i++) {
     std::string curr = word;
     char c = word[i];
     for (int j = 'a'; j <= 'z'; j++) {
-      if (j == c) continue;
+      if (j == c)
+        continue;
       curr[i] = j;
       res.emplace_back(curr);
-      std::cout <<"\t, \""<< curr << '"';
     }
   }
-  std::cout << "\n";
   return res;
 }
 
-
 bool BfsCheckLadder(std::string src,
-                   std::string des,
-                   std::unordered_set<std::string>& dict,
-                   std::unordered_map<std::string, std::vector<std::string>>& kids) {
+                    std::string des,
+                    std::unordered_set<std::string>& dict,
+                    std::unordered_map<std::string, std::vector<std::string>>& kids) {
   bool found = false;
   std::unordered_set<std::string> forward_queue{src};
   std::unordered_set<std::string> backward_queue{des};
@@ -73,8 +68,9 @@ bool BfsCheckLadder(std::string src,
           swap(parent, kid);
         }
 
-        if (!backward_queue.count(curr) && !(dict.count(curr) && !found)) continue;
-        else if (backward_queue.count(curr)) {
+        if (!backward_queue.count(curr) && !(dict.count(curr) && !found)) {
+          continue;
+        } else if (backward_queue.count(curr)) {
           found = true;
         } else if (dict.count(curr) && !found) {
           q.insert(curr);
@@ -99,7 +95,7 @@ WordLadder(std::string src, std::string des, std::unordered_set<std::string> dic
 
   unsigned int l = src.size();
   // filter words that has the same length as src word
-  for (auto curr = dic.begin(); curr != dic.end(); ++curr) {
+  for (auto curr = dic.begin(); curr != dic.end(); curr++) {
     if ((*curr).size() != l) {
       dic.erase(dic.find(*curr));
     }
@@ -111,17 +107,6 @@ WordLadder(std::string src, std::string des, std::unordered_set<std::string> dic
   if (BfsCheckLadder(src, des, dic, kids)) {
     std::vector<std::string> path{src};
     DfsCollectPaths(src, des, kids, path, result);
-//    for (const auto& r : result) {
-//      for(const auto& w : r) {
-//        if (w == r.back() && w == r.front()) {
-//          std::cout <<"\""<< w << "\"\n";
-//        } else if (w == r.back()) {
-//          std::cout <<"\""<< w << "\"\n";
-//        } else  {
-//          std::cout <<"\""<< w << "\",\t";
-//        }
-//      }
-//    }
     sort(result.begin(), result.end());
   }
 

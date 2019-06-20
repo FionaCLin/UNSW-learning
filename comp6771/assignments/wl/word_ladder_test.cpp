@@ -2,7 +2,7 @@
 
 
 */
- #include "assignments/wl/lexicon.h"
+#include "assignments/wl/lexicon.h"
 #include "assignments/wl/word_ladder.h"
 #include "catch.h"
 
@@ -98,52 +98,43 @@ TEST_CASE("840 result found from WordLadder for atlases to cabaret") {
   REQUIRE(res.size() == 840);
 }
 
-
-
 // Tests for BfsCheckLadder function
 TEST_CASE("Return true from BfsCheckLadder cog to hot") {
-  std::unordered_map<std::string, std::vector<std::string>>
-      expect_res({{"cot", {"hot"}},
-                  {"cog", {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod", "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
-                  {"hog", {"hot"}},
-                  {"bot", {"hot"}}});
+  std::unordered_map<std::string, std::vector<std::string>> expect_res(
+      {{"cot", {"hot"}},
+       {"cog", {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod",
+                "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
+       {"hog", {"hot"}},
+       {"bot", {"hot"}}});
 
   std::unordered_map<std::string, std::vector<std::string>> res;
   REQUIRE(BfsCheckLadder("cog", "hot", lexicon, res) == true);
-  for(auto& list : res){
-    std::unordered_map<std::string, std::vector<std::string>>::const_iterator found = expect_res.find(list.first);
+  for (auto& list : res) {
+    std::unordered_map<std::string, std::vector<std::string>>::const_iterator found =
+        expect_res.find(list.first);
     REQUIRE(found != expect_res.end());
     std::vector<std::string> expect_list = found->second;
-    for (auto const& word: list.second) {
-      REQUIRE(std::find(expect_list.begin(),expect_list.end(), word) != expect_list.end());
+    for (auto const& word : list.second) {
+      REQUIRE(std::find(expect_list.begin(), expect_list.end(), word) != expect_list.end());
     }
   }
 }
 
-
 TEST_CASE("Return false from BfsCheckLadder a to bb") {
-
   std::unordered_map<std::string, std::vector<std::string>> res;
   REQUIRE(BfsCheckLadder("a", "bb", lexicon, res) == false);
-
 }
-
 
 // Tests for DfsCollectPaths function
 TEST_CASE("Return Paths from DfsCollectPaths cog to hot") {
-  std::unordered_map<std::string, std::vector<std::string>>
-      kids({{"cot", {"hot"}},
-            {"cog",
-             {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod",
-              "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
-            {"hog", {"hot"}},
-            {"bot", {"hot"}}});
+  std::unordered_map<std::string, std::vector<std::string>> kids(
+      {{"cot", {"hot"}},
+       {"cog", {"bog", "dog", "fog", "hog", "jog", "log", "mog", "nog", "tog", "wog", "cob", "cod",
+                "col", "con", "coo", "cop", "cor", "cos", "cot", "cow", "cox", "coy", "coz"}},
+       {"hog", {"hot"}},
+       {"bot", {"hot"}}});
 
-
-  expect = {
-      {"cog", "hog", "hot"},
-      {"cog", "cot", "hot"}
-  };
+  expect = {{"cog", "hog", "hot"}, {"cog", "cot", "hot"}};
   std::vector<std::string> path{"cog"};
   std::vector<std::vector<std::string>> res;
   DfsCollectPaths("cog", "hot", kids, path, res);
@@ -156,8 +147,7 @@ TEST_CASE("Return Paths from DfsCollectPaths cog to hot") {
 }
 
 TEST_CASE("Return empty Paths from DfsCollectPaths") {
-  std::unordered_map<std::string, std::vector<std::string>>
-      kids({});
+  std::unordered_map<std::string, std::vector<std::string>> kids({});
   expect = {};
   std::vector<std::string> path{"cog"};
   std::vector<std::vector<std::string>> res;
@@ -167,15 +157,13 @@ TEST_CASE("Return empty Paths from DfsCollectPaths") {
 
 // tests for GetAdjWord
 TEST_CASE("Found all adjacent words of hot") {
-
-  std::vector<std::string> expect_neighbor =
-      {"aot", "bot", "cot", "dot", "eot", "fot", "got", "iot", "jot", "kot", "lot", "mot", "not",
-       "oot", "pot", "qot", "rot", "sot", "tot", "uot", "vot", "wot", "xot", "yot", "zot", "hat",
-       "hbt", "hct", "hdt", "het", "hft", "hgt", "hht", "hit", "hjt", "hkt", "hlt", "hmt", "hnt",
-       "hpt", "hqt", "hrt", "hst", "htt", "hut", "hvt", "hwt", "hxt", "hyt", "hzt", "hoa", "hob",
-       "hoc", "hod", "hoe", "hof", "hog", "hoh", "hoi", "hoj", "hok", "hol", "hom", "hon", "hoo",
-       "hop", "hoq", "hor", "hos", "hou", "hov", "how", "hox", "hoy", "hoz"
-      };
+  std::vector<std::string> expect_neighbor = {
+      "aot", "bot", "cot", "dot", "eot", "fot", "got", "iot", "jot", "kot", "lot", "mot", "not",
+      "oot", "pot", "qot", "rot", "sot", "tot", "uot", "vot", "wot", "xot", "yot", "zot", "hat",
+      "hbt", "hct", "hdt", "het", "hft", "hgt", "hht", "hit", "hjt", "hkt", "hlt", "hmt", "hnt",
+      "hpt", "hqt", "hrt", "hst", "htt", "hut", "hvt", "hwt", "hxt", "hyt", "hzt", "hoa", "hob",
+      "hoc", "hod", "hoe", "hof", "hog", "hoh", "hoi", "hoj", "hok", "hol", "hom", "hon", "hoo",
+      "hop", "hoq", "hor", "hos", "hou", "hov", "how", "hox", "hoy", "hoz"};
   std::vector<std::string> res = GetAdjWord("hot");
   REQUIRE(res.size() == expect_neighbor.size());
   for (unsigned int i = 0; i < res.size(); i++) {
