@@ -9,9 +9,9 @@ art :: Picture
 art = fracTree 15 100 10 10 -- replace with something else
 
 fracTree :: Float -> Float -> Float -> Int -> Picture
-fracTree width height r n
+fracTree width height rotation n
   = fTree (Point  (400 - width / 2) 500) r (Vector 0 (-height))
-                  (Vector width 0) red n
+                  (Vector width 0) yellow n
   where
     
     toBlue :: Colour -> Colour
@@ -19,14 +19,14 @@ fracTree width height r n
       Colour (max 0 (r - 15)) g (min 255 (b + 15)) o
     angle = pi/4
     fTree :: Point -> Float -> Vector -> Vector -> Colour -> Int -> Picture
-    fTree pos r vec1 vec2 col n
+    fTree pos rotation vec1 vec2 col n
       | n <= 1 = [Circle  (movePoint vec1 pos)
-                          r
+                          rotation
                           col
                           Solid
                           SolidFill]
                           
-      | otherwise = fTree pos r vec1 vec2 col (n - 1) ++
+      | otherwise = fTree pos rotation vec1 vec2 col (n - 1) ++
                     fTree (movePoint vec1 pos) r
                           (scaleVector 0.8 $ rotateVector (- angle) vec1)
                           (scaleVector 0.8 $ rotateVector (- angle) vec2) 
