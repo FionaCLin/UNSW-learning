@@ -1,5 +1,4 @@
 *.stack-work/
-ass1/
 cs2041/
 cs2111/
 cs3121/
@@ -8,4 +7,4 @@ cs4336/
 cs6733/
 cs9315/
 sg2021/
-*.DS_Store
+*.DS_Store*
