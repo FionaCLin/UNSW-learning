@@ -1,163 +1,202 @@
 #include "assignments/ev/euclidean_vector.h"
 
-#include <algorithm>  // Look at these - they are helpful https://en.cppreference.com/w/cpp/algorithm
-#include <iostream>
-#include <cmath>
-
-//
-//// TODO(you): Include header guards
-//
-//class EuclideanVectorError : public std::exception {
-// public:
-//  explicit EuclideanVectorError(const std::string& what) : what_(what) {}
-//  const char* what() const noexcept{ return what_.c_str(); }
-// private:
-//  std::string what_;
-//};
-
+EuclideanVector::~EuclideanVector() noexcept {}
 
 // ++++++++++++++++++++++++++++++++++++constructors++++++++++++++++++++++++++++++++++++++
-EuclideanVector::EuclideanVector(int i): magnitudes_{new double[i]}, size_{i}  {
+EuclideanVector::EuclideanVector(int i)
+    : magnitudes_{std::make_unique<double[]>(i)}, numOfDimension_{i} {
+  //  magnitudes_ = std::make_unique()
   for (auto j = 0; j < i; ++j) {
     magnitudes_[j] = 0;
   }
-
 }
 
-EuclideanVector::EuclideanVector(int i, double m) : magnitudes_{new double[i]}, size_{i}  {
+EuclideanVector::EuclideanVector(int i, double m)
+    : magnitudes_{std::make_unique<double[]>(i)}, numOfDimension_{i} {
   for (auto j = 0; j < i; ++j) {
     magnitudes_[j] = m;
-    std::cout << j << "->" << magnitudes_[j] << std::endl;
   }
 }
 
-EuclideanVector::EuclideanVector(std::vector<double>::const_iterator start, std::vector<double>::const_iterator end)  : magnitudes_{new double[end-start]}, size_{((int)(end-start))}  {
+EuclideanVector::EuclideanVector(std::vector<double>::const_iterator start,
+                                 std::vector<double>::const_iterator end)
+    : magnitudes_{std::make_unique<double[]>(end - start)}, numOfDimension_{
+    (static_cast<int>(end - start))} {
   int i = 0;
   for (auto& it = start; it != end; ++it) {
     magnitudes_[i++] = *it;
   }
 }
+// copy
+EuclideanVector::EuclideanVector(const EuclideanVector& a)
+    : magnitudes_{std::make_unique<double[]>(a.numOfDimension_)},
+      numOfDimension_{a.numOfDimension_} {
+  for (auto j = 0; j < a.numOfDimension_; ++j) {
+    this->magnitudes_[j] = a.magnitudes_[j];
+  }
+}
+
+//EuclideanVector::EuclideanVector(const EuclideanVector&& a) {
+//  this->magnitudes_.reset();
+//  this->magnitudes_ = a.magnitudes_;
+//  std::exchange(a.numOfDimension_, numOfDimension_);
+//}
 
 // +++++++++++++++++++++++++++++++Operations++++++++++++++++++++++++++++++++++
-// Copy Assignment	operator=(const EuclideanVector&)	A copy assignment operator overload
-//a = b;
-//N/A
 
-// Move Assignment	operator=(EuclideanVector&&)	A move assignment operator
-//    a = std::move(b);
-//N/A
+// copy assignment operator
+EuclideanVector& EuclideanVector::operator=(const EuclideanVector& a) {
+  if (this == &a) {
+    return *this;
+  }
+  this->magnitudes_ = std::make_unique<double[]>(a.numOfDimension_);
+  for (auto j = 0; j < a.numOfDimension_; ++j) {
+    this->magnitudes_[j] = a.magnitudes_[j];
+  }
+  this->numOfDimension_ = a.numOfDimension_;
+  return *this;
+}
+// move assignment operator
+EuclideanVector& EuclideanVector::operator=(EuclideanVector&& a) {
+  this->numOfDimension_ = a.numOfDimension_;
+  for (auto j = 0; j < a.numOfDimension_; ++j) {
+    this->magnitudes_[j] = std::move(a.magnitudes_[j]);
+  }
+  this->numOfDimension_ = a.numOfDimension_;
+  return *this;
+}
+// setting via []
+double& EuclideanVector::operator[](int i){
+  return this->magnitudes_[i];
+}
 
-// Subscript	operator[]	Allows to get and set the value in a given dimension of the Euclidean Vector. Hint: you may need two overloaded functions to achieve this requirement.
-//Note: It's a requirement you use asserts to ensure the index passed is valid.
-//double a {b[1]};
-//b[2] = 3.0;
-//N/A
+// getting via []
+double EuclideanVector::operator[](int i) const {
+  return this->magnitudes_[i];
+}
 
-// Addition	operator+=
-//    For adding vectors of the same dimension.
-//a += b;
-//Given: X = a.GetNumDimensions(), Y = b.GetNumDimensions() When: X != Y
-//0: "Dimensions of LHS(X) and RHS(Y) do not match"
+EuclideanVector& EuclideanVector::operator+=(const EuclideanVector& ev) {
+  // assert the dimensions
+  for (auto j = 0; j < numOfDimension_; j++) {
+    this->magnitudes_[j] += ev.magnitudes_[j];
+  }
+  return *this;
+}
+EuclideanVector& EuclideanVector::operator-=(const EuclideanVector& ev) {
+  // assert the dimensions
+  for (auto j = 0; j < numOfDimension_; j++) {
+    this->magnitudes_[j] -= ev.magnitudes_[j];
+  }
+  return *this;
+}
+EuclideanVector& EuclideanVector::operator*=(const double& val) {
+  // assert the dimensions
+  for (auto j = 0; j < numOfDimension_; j++) {
+    this->magnitudes_[j] *= val;
+  }
+  return *this;
+}
+EuclideanVector& EuclideanVector::operator/=(const double& val) {
+  // assert the dimensions
+  for (auto j = 0; j < numOfDimension_; j++) {
+    this->magnitudes_[j] /= val;
+  }
+  return *this;
+}
 
-//Subtraction	operator-=
-//For subtracting vectors of the same dimension.
-//a -= b;
-//Given: X = a.GetNumDimensions(), Y = b.GetNumDimensions() When: X != Y
-//    Throw: "Dimensions of LHS(X) and RHS(Y) do not match"
-
-
-//Multiplication	operator*=
-//For scalar multiplication, e.g. [1 2] * 3 = [3 6]
-//a *= 3;
-//N/A
-
-//    Division	operator/=
-//    For scalar division, e.g. [3 6] / 2 = [1.5 3]
-//a /= 4;
-//When: b == 0
-//Throw: "Invalid vector division by 0"
-
-//Vector Type Conversion
-//explicit operator std::vector<double>()	Operators for type casting to a std::vector
-//    EucilideanVector a;
-//std::vector<double> vf = a;
-//N/A
-
-// +++++++++++++++++++++++++++++++++++++methods++++++++++++++++++++++++++++++++++++++
+EuclideanVector::operator std::vector<double>() {
+  std::vector<double> vec;
+  for (auto j = 0; j < numOfDimension_; j++) {
+    vec.push_back(this->magnitudes_[j]);
+  }
+  return vec;
+}
+EuclideanVector::operator std::list<double>() {
+  std::list<double> res;
+  for (auto j = 0; j < numOfDimension_; j++) {
+    res.push_back(this->magnitudes_[j]);
+  }
+  return res;
+}
+// +++++++++++++++++++++++++++++++++++++methods+++++++++++++++++++++++++++++++
 double EuclideanVector::at(int i) {
   return magnitudes_[i];
 }
 int EuclideanVector::GetNumDimensions() {
-  return size_;
+  return numOfDimension_;
 }
 double EuclideanVector::GetEuclideanNorm() {
   double sum = 0;
-  for (auto j = 0; j < size_; ++j) {
-    sum += (magnitudes_[j]*magnitudes_[j]);
+  for (auto j = 0; j < numOfDimension_; ++j) {
+    sum += (magnitudes_[j] * magnitudes_[j]);
   }
   return std::sqrt(sum);
 }
 
 EuclideanVector EuclideanVector::CreateUnitVector() {
-  if(this->size_==0){
-    throw "EuclideanVector with no dimensions does not have a unit vector";
+  if (this->numOfDimension_ == 0) {
+    throw EuclideanVectorError("EuclideanVector with no dimensions does not have a unit vector");
   }
   std::vector<double> l;
-  for (auto j = 0; j < size_; ++j) {
-    l.push_back(magnitudes_[j]/this->GetEuclideanNorm());
+  for (auto j = 0; j < numOfDimension_; ++j) {
+    l.push_back(magnitudes_[j] / this->GetEuclideanNorm());
   }
   return EuclideanVector{l.begin(), l.end()};
 }
 
-
 // +++++++++++++++++++++++++++++++++++++friends++++++++++++++++++++++++++++++++++++++
+bool operator==(const EuclideanVector& v1, const EuclideanVector& v2) {
+  if (v1.numOfDimension_ != v2.numOfDimension_) {
+    return false;
+  }
+  for (auto j = 0; j < v1.numOfDimension_; ++j) {
+    if (v1.magnitudes_[j] != v2.magnitudes_[j] ) {
+      return false;
+    }
+  }
+  return true;
+}
+bool operator!=(const EuclideanVector& v1, const EuclideanVector& v2) {
+  return !(v1 == v2);
+}
 
-//Equal	operator==	True if the two vectors are equal in the number of dimensions and the magnitude in each dimension is equal.
-//a == b;
-//N/A
-
-// Not Equal	operator!=	True if the two vectors are not equal in the number of dimensions or the magnitude in each dimension is not equal.
-//a != b;
-//N/A
-
-
-// Addition	operator+
-//    For adding vectors of the same dimension.
-//a = b + c;
-//Given: X = a.GetNumDimensions(), Y = b.GetNumDimensions() When: X != Y
-//    Throw: "Dimensions of LHS(X) and RHS(Y) do not match"
-
-//Subtraction	operator-
-//For substracting vectors of the same dimension.
-//a = b - c;
-//Given: X = a.GetNumDimensions(), Y = b.GetNumDimensions() When: X != Y
-//    Throw: "Dimensions of LHS(X) and RHS(Y) do not match"
-
-
-//Multiplication	operator*	For dot-product multiplication, returns a double. E.g., [1 2] * [3 4] = 1 * 3 + 2 * 4 = 11
-//double c {a * b};
-//Given: X = a.GetNumDimensions(), Y = b.GetNumDimensions() When: X != Y
-//    Throw: "Dimensions of LHS(X) and RHS(Y) do not match"
-
-//Multiply	operator*	For scalar multiplication, e.g. [1 2] * 3 = 3 * [1 2] = [3 6]. Hint: you'll obviously need two methods, as the scalar can be either side of the vector.
-//(1) a = b * 3;
-//(2) a = 3 * b;
-//N/A
-//    Divide	operator/	For scalar division, e.g. [3 6] / 2 = [1.5 3]
-//a = b / 4;
-//When: b == 0
-//Throw: "Invalid vector division by 0"
-
-//Output Stream	operator<<	Prints out the magnitude in each dimension of the Euclidean Vector (surrounded by [ and ]), e.g. for a 3-dimensional vector: [1 2 3]
-//std::cout << a;
-//N/A
-
+EuclideanVector operator+(const EuclideanVector& v1, const EuclideanVector& v2) {
+  EuclideanVector res = v1;
+  res += v2;
+  return res;
+}
+EuclideanVector operator-(const EuclideanVector& v1, const EuclideanVector& v2) {
+  EuclideanVector res = v1;
+  res -= v2;
+  return res;
+}
+// dot product
+double operator*(const EuclideanVector& v1, const EuclideanVector& v2) {
+  //  if (v1.numOfDimension_ != v2.numOfDimension_) {
+  ////    return new EuclideanVectorError("Dimensions of LHS(X) and RHS(Y) do not match");
+  //  }
+  double res = 0;
+  for (auto j = 0; j < v1.numOfDimension_; ++j) {
+    res += v1.magnitudes_[j] * v2.magnitudes_[j];
+  }
+  return res;
+}
+EuclideanVector operator*(const EuclideanVector& v1, const double& num) {
+  EuclideanVector res = v1;
+  res *= num;
+  return res;
+}
+EuclideanVector operator/(const EuclideanVector& v1, const double& num) {
+  EuclideanVector res = v1;
+  res /= num;
+  return res;
+}
 
 std::ostream& operator<<(std::ostream& os, const EuclideanVector& v) {
   os << "[ ";
-  for (auto j = 0; j < v.size_; ++j) {
+  for (auto j = 0; j < v.numOfDimension_; ++j) {
     os << v.magnitudes_[j] << ' ';
   }
-  os << ']'<< std::endl;
+  os << ']' << std::endl;
   return os;
 }
