@@ -195,6 +195,6 @@ std::ostream& operator<<(std::ostream& os, const EuclideanVector& v) {
   for (auto j = 0; j < v.numOfDimension_; ++j) {
     os << v.magnitudes_[j] << ' ';
   }
-  os << ']' << std::endl;
+  os << ']';
   return os;
 }

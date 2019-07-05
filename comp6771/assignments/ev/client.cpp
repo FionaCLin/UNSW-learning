@@ -24,7 +24,7 @@ int main() {
 
   std::cout << a.GetNumDimensions() << ": " << a << '\n';
   std::cout << "D1:" << b.at(1) << " " << b << '\n';
-  std::cout << b << " Euclidean Norm = " << b.GetEuclideanNorm() << '\n';
+//  std::cout << b << " Euclidean Norm = " << b.GetEuclideanNorm() << '\n';
   std::cout << c << " Euclidean Norm = " << c.GetEuclideanNorm() << '\n';
   std::cout << d << " Unit Vector: " << d.CreateUnitVector()
             << " L = " << d.CreateUnitVector().GetEuclideanNorm() << '\n';
@@ -32,13 +32,11 @@ int main() {
   std::cout << f << '\n';
 
   // test the move constructor
-  std::cout << "test the move constructor" << '\n';
   EuclideanVector g = std::move(f);
   std::cout << g << '\n';
   std::cout << f << '\n';
 
   // try operator overloading
-  std::cout << "try operator overloading" << '\n';
 
   e += d;
   std::cout << e << '\n';
@@ -55,7 +53,6 @@ int main() {
 
   std::cout << "dot product = " << j * b << '\n';
 
-  std::cout << "j: "<< j << '\n';
   if (g == (e - d)) {
     std::cout << "true" << '\n';
   }
@@ -64,7 +61,7 @@ int main() {
   }
 
   j[0] = 1;
-  std::cout << "j: " << j << '\n';
+  std::cout << j << '\n';
 
   // type cast from EuclideanVector to a std::vector
   auto lj = std::vector<double>{j};
