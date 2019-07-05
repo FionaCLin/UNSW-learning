@@ -36,11 +36,7 @@ EuclideanVector::EuclideanVector(const EuclideanVector& a)
   }
 }
 
-//EuclideanVector::EuclideanVector(const EuclideanVector&& a) {
-//  this->magnitudes_.reset();
-//  this->magnitudes_ = a.magnitudes_;
-//  std::exchange(a.numOfDimension_, numOfDimension_);
-//}
+EuclideanVector::EuclideanVector(EuclideanVector&& a) : magnitudes_(std::move(a.magnitudes_)), numOfDimension_(a.numOfDimension_){}
 
 // +++++++++++++++++++++++++++++++Operations++++++++++++++++++++++++++++++++++
 
