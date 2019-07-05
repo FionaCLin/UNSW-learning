@@ -36,7 +36,9 @@ EuclideanVector::EuclideanVector(const EuclideanVector& a)
   }
 }
 
-EuclideanVector::EuclideanVector(EuclideanVector&& a) : magnitudes_(std::move(a.magnitudes_)), numOfDimension_(a.numOfDimension_){}
+EuclideanVector::EuclideanVector(EuclideanVector&& a) noexcept
+    : magnitudes_(std::move(a.magnitudes_)), numOfDimension_(std::exchange(a.numOfDimension_, 0)) {
+}
 
 // +++++++++++++++++++++++++++++++Operations++++++++++++++++++++++++++++++++++
 
@@ -62,7 +64,7 @@ EuclideanVector& EuclideanVector::operator=(EuclideanVector&& a) {
   return *this;
 }
 // setting via []
-double& EuclideanVector::operator[](int i){
+double& EuclideanVector::operator[](int i) {
   return this->magnitudes_[i];
 }
 
@@ -146,7 +148,7 @@ bool operator==(const EuclideanVector& v1, const EuclideanVector& v2) {
     return false;
   }
   for (auto j = 0; j < v1.numOfDimension_; ++j) {
-    if (v1.magnitudes_[j] != v2.magnitudes_[j] ) {
+    if (v1.magnitudes_[j] != v2.magnitudes_[j]) {
       return false;
     }
   }

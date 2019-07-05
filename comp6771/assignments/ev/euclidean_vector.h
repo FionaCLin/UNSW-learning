@@ -27,7 +27,7 @@ class EuclideanVector {
   EuclideanVector(int, double);
   EuclideanVector(std::vector<double>::const_iterator, std::vector<double>::const_iterator);
   EuclideanVector(const EuclideanVector&);
-  EuclideanVector(EuclideanVector&&);
+  EuclideanVector(EuclideanVector&&)noexcept;
 
   ~EuclideanVector() noexcept;
 
