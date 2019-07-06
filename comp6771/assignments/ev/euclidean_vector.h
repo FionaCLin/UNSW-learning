@@ -27,7 +27,7 @@ class EuclideanVector {
   EuclideanVector(int, double);
   EuclideanVector(std::vector<double>::const_iterator, std::vector<double>::const_iterator);
   EuclideanVector(const EuclideanVector&);
-  EuclideanVector(EuclideanVector&&)noexcept;
+  EuclideanVector(EuclideanVector&&) noexcept;
 
   ~EuclideanVector() noexcept;
 
@@ -42,7 +42,8 @@ class EuclideanVector {
   operator std::vector<double>();
   operator std::list<double>();
 
-  double at(int);
+  double at(int) const;
+  double& at(int);
   int GetNumDimensions();
   double GetEuclideanNorm();
   EuclideanVector CreateUnitVector();
