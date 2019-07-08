@@ -23,7 +23,7 @@ class EuclideanVectorError : public std::exception {
 
 class EuclideanVector {
  public:
-  explicit EuclideanVector(int i);
+  explicit EuclideanVector(int numOfDimension = 1);
   EuclideanVector(int, double);
   EuclideanVector(std::vector<double>::const_iterator, std::vector<double>::const_iterator);
   EuclideanVector(const EuclideanVector&);
@@ -33,32 +33,36 @@ class EuclideanVector {
 
   EuclideanVector& operator=(const EuclideanVector&);
   EuclideanVector& operator=(EuclideanVector&&);
-  double& operator[](int i);  // setting via []
-  double operator[](int i) const; // getting via []
+  double& operator[](int index);  // setting via []
+  double operator[](int index) const; // getting via []
   EuclideanVector& operator+=(const EuclideanVector& ev);
   EuclideanVector& operator-=(const EuclideanVector& ev);
-  EuclideanVector& operator*=(const double& val);
-  EuclideanVector& operator/=(const double& val);
-  operator std::vector<double>();
-  operator std::list<double>();
+  EuclideanVector& operator*=(double val);
+  EuclideanVector& operator/=(double val);
+  operator std::vector<double>() const;
+  operator std::list<double>() const;
 
   double at(int) const;
   double& at(int);
-  int GetNumDimensions();
-  double GetEuclideanNorm();
-  EuclideanVector CreateUnitVector();
+  int GetNumDimensions() const;
+  double GetEuclideanNorm() const;
+  // Usually this method called normalize
+  EuclideanVector CreateUnitVector() const;
 
   friend bool operator==(const EuclideanVector& v1, const EuclideanVector& v2);
   friend bool operator!=(const EuclideanVector& v1, const EuclideanVector& v2);
   friend EuclideanVector operator+(const EuclideanVector& v1, const EuclideanVector& v2);
   friend EuclideanVector operator-(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend EuclideanVector operator*(const EuclideanVector& v1, const double& num);  // scalar product
-  friend EuclideanVector operator/(const EuclideanVector& v1, const double& num);  // scalar product
+  friend EuclideanVector operator*(const EuclideanVector& v1,double num);  // scalar product
+  friend EuclideanVector operator/(const EuclideanVector& v1,double num);  // scalar product
   friend double operator*(const EuclideanVector& v1, const EuclideanVector& v2);   // dot product
   friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& v);
 
  private:
   std::unique_ptr<double[]> magnitudes_;
   int numOfDimension_;
+  void checkDimension(const EuclideanVector v) const;
+  void checkIndex(int index) const;
+  void checkZeroDimension(const std::string vectorType) const;
 };
 #endif  // COMP6771_ASSIGNMENTS_EV_EUCLIDEAN_VECTOR_H_
