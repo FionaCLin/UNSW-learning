@@ -15,5 +15,4 @@ SpaceBeforeParens: ControlStatements
 SpacesBeforeTrailingComments: '2'
 Standard: Cpp11
 TabWidth: '2'
-
 ...
