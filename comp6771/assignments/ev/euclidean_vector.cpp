@@ -131,7 +131,7 @@ double EuclideanVector::GetEuclideanNorm() const {
 
 EuclideanVector EuclideanVector::CreateUnitVector() const {
   checkZeroDimension("unit vector");
-  this->checkIsZeroNorm();
+  checkIsZeroNorm();
   return *this / GetEuclideanNorm();
 }
 
