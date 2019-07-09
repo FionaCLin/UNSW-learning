@@ -3,6 +3,7 @@
 #define COMP6771_ASSIGNMENTS_EV_EUCLIDEAN_VECTOR_H_
 
 #include <algorithm>  // Look at these - they are helpful https://en.cppreference.com/w/cpp/algorithm
+#include <cassert>
 #include <cmath>
 #include <exception>
 #include <iostream>
@@ -10,6 +11,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 class EuclideanVectorError : public std::exception {
@@ -33,13 +35,13 @@ class EuclideanVector {
 
   EuclideanVector& operator=(const EuclideanVector&);
   EuclideanVector& operator=(EuclideanVector&&);
-  double& operator[](int index);  // setting via []
-  double operator[](int index) const; // getting via []
+  double& operator[](int index);       // setting via []
+  double operator[](int index) const;  // getting via []
   EuclideanVector& operator+=(const EuclideanVector& ev);
   EuclideanVector& operator-=(const EuclideanVector& ev);
   EuclideanVector& operator*=(double val);
   EuclideanVector& operator/=(double val);
-  operator std::vector<double>() const;
+  explicit operator std::vector<double>() const;
   operator std::list<double>() const;
 
   double at(int) const;
@@ -53,9 +55,9 @@ class EuclideanVector {
   friend bool operator!=(const EuclideanVector& v1, const EuclideanVector& v2);
   friend EuclideanVector operator+(const EuclideanVector& v1, const EuclideanVector& v2);
   friend EuclideanVector operator-(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend EuclideanVector operator*(const EuclideanVector& v1,double num);  // scalar product
-  friend EuclideanVector operator/(const EuclideanVector& v1,double num);  // scalar product
-  friend double operator*(const EuclideanVector& v1, const EuclideanVector& v2);   // dot product
+  friend EuclideanVector operator*(const EuclideanVector& v1, double num);        // scalar product
+  friend EuclideanVector operator/(const EuclideanVector& v1, double num);        // scalar product
+  friend double operator*(const EuclideanVector& v1, const EuclideanVector& v2);  // dot product
   friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& v);
 
  private:
@@ -64,5 +66,7 @@ class EuclideanVector {
   void checkDimension(const EuclideanVector v) const;
   void checkIndex(int index) const;
   void checkZeroDimension(const std::string vectorType) const;
+  void checkInvalidDivision(double num) const;
+  void checkIsZeroNorm() const;
 };
 #endif  // COMP6771_ASSIGNMENTS_EV_EUCLIDEAN_VECTOR_H_

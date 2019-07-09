@@ -53,11 +53,13 @@ EuclideanVector& EuclideanVector::operator=(EuclideanVector&& a) {
 
 // setting via []
 double& EuclideanVector::operator[](int i) {
+  assert(i >= 0 || i < numOfDimension_);
   return magnitudes_[i];
 }
 
 // getting via []
 double EuclideanVector::operator[](int i) const {
+  assert(i >= 0 || i < numOfDimension_);
   return magnitudes_[i];
 }
 
@@ -84,9 +86,7 @@ EuclideanVector& EuclideanVector::operator*=(double val) {
   return *this;
 }
 EuclideanVector& EuclideanVector::operator/=(double val) {
-  if (val == 0) {
-    throw EuclideanVectorError("Invalid vector division by 0");
-  }
+  checkInvalidDivision(val);
   double inverse = 1 / val;
   for (auto j = 0; j < numOfDimension_; j++) {
     magnitudes_[j] *= inverse;
@@ -97,12 +97,12 @@ EuclideanVector& EuclideanVector::operator/=(double val) {
 EuclideanVector::operator std::vector<double>() const {
   std::vector<double> vec(numOfDimension_);
   for (auto j = 0; j < numOfDimension_; j++) {
-    vec.push_back(magnitudes_[j]);
+    vec[j] = magnitudes_[j];
   }
   return vec;
 }
 EuclideanVector::operator std::list<double>() const {
-  std::list<double> res(numOfDimension_);
+  std::list<double> res(0);
   for (auto j = 0; j < numOfDimension_; j++) {
     res.push_back(magnitudes_[j]);
   }
@@ -124,13 +124,14 @@ double EuclideanVector::GetEuclideanNorm() const {
   checkZeroDimension("norm");
   double sum = 0;
   for (auto j = 0; j < numOfDimension_; ++j) {
-    sum += (magnitudes_[j] * magnitudes_[j]);
+    sum = std::hypot(sum, magnitudes_[j]);
   }
-  return std::sqrt(sum);
+  return sum;
 }
 
 EuclideanVector EuclideanVector::CreateUnitVector() const {
   checkZeroDimension("unit vector");
+  this->checkIsZeroNorm();
   return *this / GetEuclideanNorm();
 }
 
@@ -177,21 +178,27 @@ EuclideanVector operator*(const EuclideanVector& v1, double num) {
   return res;
 }
 EuclideanVector operator/(const EuclideanVector& v1, double num) {
-  if (num == 0) {
-    throw EuclideanVectorError("Invalid vector division by 0");
-  }
+  v1.checkInvalidDivision(num);
   EuclideanVector res = v1;
   res /= num;
   return res;
 }
 
 std::ostream& operator<<(std::ostream& os, const EuclideanVector& v) {
-  os << "[ ";
+  os << "[";
   for (auto j = 0; j < v.numOfDimension_; ++j) {
-    os << v.magnitudes_[j] << ' ';
+    os << v.magnitudes_[j];
+    if (j + 1 != v.numOfDimension_) {
+      os << ' ';
+    }
   }
   os << ']';
   return os;
+}
+void EuclideanVector::checkInvalidDivision(double num) const {
+  if (num == 0) {
+    throw EuclideanVectorError("Invalid vector division by 0");
+  }
 }
 void EuclideanVector::checkZeroDimension(const std::string vectorType) const {
   if (numOfDimension_ == 0) {
@@ -207,6 +214,12 @@ void EuclideanVector::checkDimension(EuclideanVector v) const {
 void EuclideanVector::checkIndex(int index) const {
   if (index >= numOfDimension_ || index < 0) {
     throw EuclideanVectorError("Index " + std::to_string(index) +
-        " is not valid for this EuclideanVector object");
+                               " is not valid for this EuclideanVector object");
+  }
+}
+void EuclideanVector::checkIsZeroNorm() const {
+  if (GetEuclideanNorm() == 0) {
+    throw EuclideanVectorError(
+        "EuclideanVector with euclidean normal of 0 does not have a unit vector");
   }
 }

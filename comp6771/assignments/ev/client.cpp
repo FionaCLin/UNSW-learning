@@ -19,12 +19,11 @@ int main() {
   std::vector<double> a2{9, 0, 8, 6, 7};
   EuclideanVector e{a2.begin(), a2.end()};
 
-  //   use the copy constructor
+  // use the copy constructor
   EuclideanVector f{e};
 
   std::cout << a.GetNumDimensions() << ": " << a << '\n';
   std::cout << "D1:" << b.at(1) << " " << b << '\n';
-//  std::cout << b << " Euclidean Norm = " << b.GetEuclideanNorm() << '\n';
   std::cout << c << " Euclidean Norm = " << c.GetEuclideanNorm() << '\n';
   std::cout << d << " Unit Vector: " << d.CreateUnitVector()
             << " L = " << d.CreateUnitVector().GetEuclideanNorm() << '\n';
@@ -37,7 +36,6 @@ int main() {
   std::cout << f << '\n';
 
   // try operator overloading
-
   e += d;
   std::cout << e << '\n';
 
@@ -53,12 +51,10 @@ int main() {
 
   std::cout << "dot product = " << j * b << '\n';
 
-  if (g == (e - d)) {
+  if (g == (e - d))
     std::cout << "true" << '\n';
-  }
-  if (j != b) {
+  if (j != b)
     std::cout << "false" << '\n';
-  }
 
   j[0] = 1;
   std::cout << j << '\n';
@@ -66,8 +62,7 @@ int main() {
   // type cast from EuclideanVector to a std::vector
   auto lj = std::vector<double>{j};
 
-  for (auto p : lj) {
-    std::cout << p << '\n';
+  for (auto d : lj) {
+    std::cout << d << '\n';
   }
-  return 0;
 }
