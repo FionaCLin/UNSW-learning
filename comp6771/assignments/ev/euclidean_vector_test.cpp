@@ -11,9 +11,6 @@
 #include "assignments/ev/euclidean_vector.h"
 #include "catch.h"
 
-#include "catch.h"
-#include "lectures/week2/string_view.h"
-//
 //// Function definitions can have auto return types in C++17
 // auto EqualsString([[maybe_unused]] const std::vector<std::string>& strings) {
 //  return Catch::Predicate<RopeView>([] ([[maybe_unused]] const RopeView expected) {
@@ -27,12 +24,35 @@ SCENARIO() {
     GIVEN("Only number of dimension")
     //    std::string emptyString;
     //    const RopeView& result = Split(emptyString, ' ');
-    THEN("Get EuclideanVector with the given number of dimension") {
+    THEN("Create EuclideanVector with the given number of dimension") {
+      int numOfDim = 1;
+      EuclideanVector v1(numOfDim);
+      CHECK(v1.GetNumDimensions() == numOfDim);
+      REQUIRE(v1[0] == 0);
+      //      REQUIRE(std::distance(result[0].first, result[0].second) == 0);
+      //      // Alternatively, we can use predicates.
+
+      //      REQUIRE_THAT(result, EqualsString({""}));
+      //    }
+
+    }
+    GIVEN("Number of dimension and magnitude")
+    //    std::string emptyString;
+    //    const RopeView& result = Split(emptyString, ' ');
+    THEN("Create EuclideanVector with the given number of dimension, magnitude for each dimemsion") {
+      int numOfDim = 1;
+      double magnitude = 2.5;
+      EuclideanVector v2{numOfDim, magnitude};
+      CHECK(v2.GetNumDimensions() == numOfDim);
+      REQUIRE(v2[0] == magnitude);
+    }
       //      CHECK(result.size() == 1);
       //      REQUIRE(std::distance(result[0].first, result[0].second) == 0);
       //      // Alternatively, we can use predicates.
+
       //      REQUIRE_THAT(result, EqualsString({""}));
       //    }
+
     }
   }
 
