@@ -20,14 +20,16 @@ EuclideanVector::EuclideanVector(std::vector<double>::const_iterator start,
 }
 // copy
 EuclideanVector::EuclideanVector(const EuclideanVector& vector)
-  : magnitudes_(std::make_unique<double[]>(vector.numOfDimension_)), numOfDimension_(vector.numOfDimension_) {
+  : magnitudes_(std::make_unique<double[]>(vector.numOfDimension_)),
+    numOfDimension_(vector.numOfDimension_) {
   for (auto j = 0; j < vector.numOfDimension_; ++j) {
     magnitudes_[j] = vector.magnitudes_[j];
   }
 }
 
 EuclideanVector::EuclideanVector(EuclideanVector&& vector) noexcept
-  : magnitudes_(std::move(vector.magnitudes_)), numOfDimension_(std::exchange(vector.numOfDimension_, 0)) {}
+  : magnitudes_(std::move(vector.magnitudes_)),
+    numOfDimension_(std::exchange(vector.numOfDimension_, 0)) {}
 
 // +++++++++++++++++++++++++++++++Operations++++++++++++++++++++++++++++++++++
 
@@ -128,7 +130,6 @@ double EuclideanVector::GetEuclideanNorm() const {
   }
   return sum;
 }
-
 EuclideanVector EuclideanVector::CreateUnitVector() const {
   checkZeroDimension("unit vector");
   checkIsZeroNorm();
@@ -208,12 +209,13 @@ void EuclideanVector::checkZeroDimension(const std::string vectorType) const {
 
 void EuclideanVector::checkDimension(EuclideanVector vector) const {
   if (numOfDimension_ != vector.numOfDimension_) {
-    throw EuclideanVectorError("Dimensions of LHS(X) and RHS(Y) do not match");
+    throw EuclideanVectorError("Dimensions of LHS(" + std::to_string(numOfDimension_) +
+                               ") and RHS(" + std::to_string(vector.numOfDimension_) +
+                               ") do not match");
   }
 }
 void EuclideanVector::checkIndex(int index) const {
   if (index >= numOfDimension_ || index < 0) {
-    // ?? std::to_string(index)  would this cause trouble???
     throw EuclideanVectorError("Index " + std::to_string(index) +
                                " is not valid for this EuclideanVector object");
   }
