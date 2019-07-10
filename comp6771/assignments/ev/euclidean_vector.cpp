@@ -1,10 +1,6 @@
 #include "assignments/ev/euclidean_vector.h"
-//?? Spec said
-//2.2. Destructor
-//You must explicitly declare the destructor as default.
-//
-//I am not sure if I do the right thing here.
-EuclideanVector::~EuclideanVector() noexcept {}
+
+EuclideanVector::~EuclideanVector() noexcept = default;
 
 // ++++++++++++++++++++++++++++++++++++constructors++++++++++++++++++++++++++++++++++++++
 EuclideanVector::EuclideanVector(int numOfDimension) : EuclideanVector(numOfDimension, 0) {}
