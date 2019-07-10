@@ -26,44 +26,46 @@ class EuclideanVectorError : public std::exception {
 class EuclideanVector {
  public:
   explicit EuclideanVector(int numOfDimension = 1);
-  EuclideanVector(int, double);
-  EuclideanVector(std::vector<double>::const_iterator, std::vector<double>::const_iterator);
-  EuclideanVector(const EuclideanVector&);
-  EuclideanVector(EuclideanVector&&) noexcept;
+  EuclideanVector(int numOfDimension, double magnitudes);
+  EuclideanVector(std::vector<double>::const_iterator start,
+                  std::vector<double>::const_iterator end);
+  EuclideanVector(const EuclideanVector& vector);
+  EuclideanVector(EuclideanVector&& vector) noexcept;
 
   ~EuclideanVector() noexcept;
 
-  EuclideanVector& operator=(const EuclideanVector&);
-  EuclideanVector& operator=(EuclideanVector&&);
+  EuclideanVector& operator=(const EuclideanVector& vector);
+  EuclideanVector& operator=(EuclideanVector&& vector);
   double& operator[](int index);       // setting via []
   double operator[](int index) const;  // getting via []
-  EuclideanVector& operator+=(const EuclideanVector& ev);
-  EuclideanVector& operator-=(const EuclideanVector& ev);
-  EuclideanVector& operator*=(double val);
-  EuclideanVector& operator/=(double val);
+  EuclideanVector& operator+=(const EuclideanVector& vector);
+  EuclideanVector& operator-=(const EuclideanVector& vector);
+  EuclideanVector& operator*=(double num);
+  EuclideanVector& operator/=(double num);
   explicit operator std::vector<double>() const;
   operator std::list<double>() const;
 
-  double at(int) const;
-  double& at(int);
+  double at(int index) const;
+  double& at(int index);
   int GetNumDimensions() const;
   double GetEuclideanNorm() const;
   // Usually this method called normalize
   EuclideanVector CreateUnitVector() const;
 
-  friend bool operator==(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend bool operator!=(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend EuclideanVector operator+(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend EuclideanVector operator-(const EuclideanVector& v1, const EuclideanVector& v2);
-  friend EuclideanVector operator*(const EuclideanVector& v1, double num);        // scalar product
-  friend EuclideanVector operator/(const EuclideanVector& v1, double num);        // scalar product
-  friend double operator*(const EuclideanVector& v1, const EuclideanVector& v2);  // dot product
-  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& v);
+  friend bool operator==(const EuclideanVector& vector1, const EuclideanVector& vector2);
+  friend bool operator!=(const EuclideanVector& vector1, const EuclideanVector& vector2);
+  friend EuclideanVector operator+(const EuclideanVector& vector1, const EuclideanVector& vector2);
+  friend EuclideanVector operator-(const EuclideanVector& vector1, const EuclideanVector& vector2);
+  friend EuclideanVector operator*(const EuclideanVector& vector1, double num);  // scalar product
+  friend EuclideanVector operator/(const EuclideanVector& vector1, double num);  // scalar product
+  friend double operator*(const EuclideanVector& vector1,
+                          const EuclideanVector& vector2);  // dot product
+  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& vector);
 
  private:
   std::unique_ptr<double[]> magnitudes_;
   int numOfDimension_;
-  void checkDimension(const EuclideanVector v) const;
+  void checkDimension(const EuclideanVector vector) const;
   void checkIndex(int index) const;
   void checkZeroDimension(const std::string vectorType) const;
   void checkInvalidDivision(double num) const;

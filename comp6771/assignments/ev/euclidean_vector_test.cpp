@@ -1,10 +1,18 @@
 /*
 
   == Explanation and rational of testing ==
+  I am writing the test according to assignment specification.
+  And using catch as required to do BDD in the Unit testing.
+  In those keywords of the testing system:
+  ...
+    SCENARIO("Test Create EuclideanVector") {
+    WHEN("Create EuclideanVector Class") {
+    GIVEN("Only the number of dimension")
+    THEN("Get EuclideanVector with the given number of dimension") {
+  ...
+  it states the pre and post condition and expected input and output
+  for each test.
 
-  Explain and justify how you approached testing, the degree
-   to which you're certain you have covered all possibilities,
-   and why you think your tests are that thorough.
 
 */
 
@@ -13,7 +21,7 @@
 
 SCENARIO("Test Create EuclideanVector") {
   WHEN("Create EuclideanVector Class") {
-    GIVEN("Only number of dimension")
+    GIVEN("Only the number of dimension")
     THEN("Get EuclideanVector with the given number of dimension") {
       EuclideanVector a{1};
       CHECK(a.GetNumDimensions() == 1);
@@ -25,7 +33,7 @@ SCENARIO("Test Create EuclideanVector") {
       REQUIRE(b[1] == 0);
       REQUIRE(b[2] == 0);
     }
-    GIVEN("Number of dimension and magnitude")
+    GIVEN("The number of dimension and magnitude")
     THEN("Get EuclideanVector with the given number of dimension, magnitude for each dimemsion") {
       EuclideanVector a{2, 4.0};
 
@@ -42,8 +50,7 @@ SCENARIO("Test Create EuclideanVector") {
       REQUIRE(b[2] == y);
     }
     GIVEN("The start and end of an iterator to a std:vector")
-    THEN(
-        "Get EuclideanVector with magnitudes in each dimension according to the iterated values.") {
+    THEN("Get EuclideanVector has magnitudes in each dimension according to the iterated values.") {
       std::vector<double> v{3, 4, 5};
       EuclideanVector a{v.begin(), v.end()};
       CHECK(a.GetNumDimensions() == 3);
@@ -51,15 +58,15 @@ SCENARIO("Test Create EuclideanVector") {
       REQUIRE(a[1] == 4.0);
       REQUIRE(a[2] == 5.0);
     }
-    GIVEN("EuclideanVector a")
-    THEN("Get EuclideanVector aCopy with Copy Constructor") {
+    GIVEN("An EuclideanVector a")
+    THEN("Get EuclideanVector aCopy creaded by Copy Constructor") {
       EuclideanVector a{2, 4.0};
       EuclideanVector aCopy{a};
       CHECK(a.GetNumDimensions() == aCopy.GetNumDimensions());
       REQUIRE(a == aCopy);
     }
     GIVEN("EuclideanVector a")
-    THEN("Get EuclideanVector aMove with Move Constructor") {
+    THEN("Get EuclideanVector aMove creaded by Move Constructor") {
       EuclideanVector a{2, 4.0};
       EuclideanVector aMove{std::move(a)};
       CHECK(a.GetNumDimensions() == 0);
