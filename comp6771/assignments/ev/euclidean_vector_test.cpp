@@ -350,21 +350,22 @@ SCENARIO("Test EuclideanVector Class friend functions") {
     }
     WHEN("EuclideanVector a and b have different number of dimension")
     THEN("Throw EuclideanVectorError Exception: Dimensions of LHS(X) and RHS(Y) do not match") {
-      REQUIRE_THROWS_WITH(b - c, std::string{"Dimensions of LHS(X) and RHS(Y) do not match"});
+      REQUIRE_THROWS_WITH(b - d, std::string{"Dimensions of LHS(X) and RHS(Y) do not match"});
     }
   }
 
   GIVEN("Multiplication friend function for dot-product multiplication") {
+    EuclideanVector a{1};
     EuclideanVector b{2, 1};
     EuclideanVector c{2, 4};
     AND_GIVEN("A non-zero dimension of the Euclidean Vector.")
     THEN("Returns a double value for dot-product multiplication") {
-      double a{b * c};
-      REQUIRE(a == 8);
+      double d{b * c};
+      REQUIRE(d == 8);
     }
     WHEN("EuclideanVector a and b have different number of dimension")
     THEN("Throw EuclideanVectorError Exception: Dimensions of LHS(X) and RHS(Y) do not match") {
-      REQUIRE_THROWS_WITH(b * c, std::string{"Dimensions of LHS(X) and RHS(Y) do not match"});
+      REQUIRE_THROWS_WITH(a * b, std::string{"Dimensions of LHS(X) and RHS(Y) do not match"});
     }
   }
 
@@ -392,7 +393,7 @@ SCENARIO("Test EuclideanVector Class friend functions") {
     }
     WHEN("Scalar value b is zero.")
     THEN("Throw EuclideanVectorError Exception: Dimensions of LHS(X) and RHS(Y) do not match") {
-      REQUIRE_THROWS_WITH(b / c, std::string{"Invalid vector division by 0"});
+      REQUIRE_THROWS_WITH(b / 0, std::string{"Invalid vector division by 0"});
     }
   }
 
