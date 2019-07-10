@@ -6,7 +6,7 @@ EuclideanVector::~EuclideanVector() noexcept = default;
 EuclideanVector::EuclideanVector(int numOfDimension) : EuclideanVector(numOfDimension, 0) {}
 
 EuclideanVector::EuclideanVector(int numOfDimension, double magnitudes)
-    : magnitudes_(std::make_unique<double[]>(numOfDimension)), numOfDimensions_(numOfDimension) {
+  : magnitudes_(std::make_unique<double[]>(numOfDimension)), numOfDimensions_(numOfDimension) {
   for (auto j = 0; j < numOfDimension; ++j) {
     magnitudes_[j] = magnitudes;
   }
@@ -14,22 +14,22 @@ EuclideanVector::EuclideanVector(int numOfDimension, double magnitudes)
 
 EuclideanVector::EuclideanVector(std::vector<double>::const_iterator start,
                                  std::vector<double>::const_iterator end)
-    : magnitudes_(std::make_unique<double[]>(end - start)),
-      numOfDimensions_(static_cast<int>(end - start)) {
+  : magnitudes_(std::make_unique<double[]>(end - start)),
+    numOfDimensions_(static_cast<int>(end - start)) {
   std::copy(start, end, &magnitudes_[0]);
 }
 // copy constructor
 EuclideanVector::EuclideanVector(const EuclideanVector& vector)
-    : magnitudes_(std::make_unique<double[]>(vector.numOfDimensions_)),
-      numOfDimensions_(vector.numOfDimensions_) {
+  : magnitudes_(std::make_unique<double[]>(vector.numOfDimensions_)),
+    numOfDimensions_(vector.numOfDimensions_) {
   for (auto j = 0; j < vector.numOfDimensions_; ++j) {
     magnitudes_[j] = vector.magnitudes_[j];
   }
 }
 
 EuclideanVector::EuclideanVector(EuclideanVector&& vector) noexcept
-    : magnitudes_(std::move(vector.magnitudes_)),
-      numOfDimensions_(std::exchange(vector.numOfDimensions_, 0)) {}
+  : magnitudes_(std::move(vector.magnitudes_)),
+    numOfDimensions_(std::exchange(vector.numOfDimensions_, 0)) {}
 
 // +++++++++++++++++++++++++++++++Operations++++++++++++++++++++++++++++++++++
 
@@ -131,7 +131,7 @@ double EuclideanVector::GetEuclideanNorm() const {
   checkZeroDimension("norm");
   double sum = 0;
   for (auto j = 0; j < numOfDimensions_; ++j) {
-    sum += (magnitudes_[j]*magnitudes_[j]);
+    sum += (magnitudes_[j] * magnitudes_[j]);
   }
   return std::sqrt(sum);
 }
@@ -212,14 +212,14 @@ void EuclideanVector::checkZeroDimension(const std::string& vectorType) const {
 void EuclideanVector::checkDimension(const EuclideanVector& vector) const {
   if (numOfDimensions_ != vector.numOfDimensions_) {
     throw EuclideanVectorError("Dimensions of LHS(" + std::to_string(numOfDimensions_) +
-        ") and RHS(" + std::to_string(vector.numOfDimensions_) +
-        ") do not match");
+                               ") and RHS(" + std::to_string(vector.numOfDimensions_) +
+                               ") do not match");
   }
 }
 void EuclideanVector::checkIndex(int index) const {
   if (index >= numOfDimensions_ || index < 0) {
     throw EuclideanVectorError("Index " + std::to_string(index) +
-        " is not valid for this EuclideanVector object");
+                               " is not valid for this EuclideanVector object");
   }
 }
 void EuclideanVector::checkIsZeroNorm() const {

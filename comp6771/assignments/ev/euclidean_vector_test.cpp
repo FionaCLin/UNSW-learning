@@ -104,7 +104,6 @@ SCENARIO("Test EuclideanVector Class Move Assignment operator overload") {
 }
 
 SCENARIO("Test EuclideanVector Class Subscript operator overload") {
-
   WHEN("Subscript operator allows to get and set the value in a given dimension of the Euclidean "
        "Vector.") {
     EuclideanVector a{2, 3.5};

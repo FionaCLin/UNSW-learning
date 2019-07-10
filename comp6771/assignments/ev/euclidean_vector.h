@@ -41,8 +41,8 @@ class EuclideanVector {
   EuclideanVector& operator-=(const EuclideanVector& vector);
   EuclideanVector& operator*=(double num);
   EuclideanVector& operator/=(double num);
-  explicit operator std::vector<double>() ;
-  explicit operator std::list<double>() ;
+  explicit operator std::vector<double>();
+  explicit operator std::list<double>();
   explicit operator std::vector<double>() const;
   explicit operator std::list<double>() const;
 
@@ -52,7 +52,8 @@ class EuclideanVector {
   double GetEuclideanNorm() const;
 
   // Usually this method called normalize
-  // Returns a new vector which is a normalized (i.e. unit length) vector with the same direction as the current vector.
+  // Returns a new vector which is a normalized (i.e. unit length) vector with the same direction as
+  // the current vector.
 
   EuclideanVector CreateUnitVector() const;
 
@@ -60,11 +61,12 @@ class EuclideanVector {
   friend bool operator!=(const EuclideanVector& vector1, const EuclideanVector& vector2);
   friend EuclideanVector operator+(const EuclideanVector& vector1, const EuclideanVector& vector2);
   friend EuclideanVector operator-(const EuclideanVector& vector1, const EuclideanVector& vector2);
-  friend EuclideanVector operator*(const EuclideanVector& vector1, double num) noexcept ;  // scalar product
+  friend EuclideanVector operator*(const EuclideanVector& vector1,
+                                   double num) noexcept;                         // scalar product
   friend EuclideanVector operator/(const EuclideanVector& vector1, double num);  // scalar product
   friend double operator*(const EuclideanVector& vector1,
                           const EuclideanVector& vector2);  // dot product
-  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& vector) noexcept ;
+  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& vector) noexcept;
 
  private:
   std::unique_ptr<double[]> magnitudes_;
