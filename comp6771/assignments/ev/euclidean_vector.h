@@ -24,8 +24,8 @@ class EuclideanVectorError : public std::exception {
 
 class EuclideanVector {
  public:
-  explicit EuclideanVector(int numOfDimension = 1);
-  EuclideanVector(int numOfDimension, double magnitudes);
+  explicit EuclideanVector(int numOfDimensions = 1);
+  EuclideanVector(int numOfDimensions, double magnitudes);
   EuclideanVector(std::vector<double>::const_iterator start,
                   std::vector<double>::const_iterator end);
   EuclideanVector(const EuclideanVector& vector);
@@ -41,32 +41,37 @@ class EuclideanVector {
   EuclideanVector& operator-=(const EuclideanVector& vector);
   EuclideanVector& operator*=(double num);
   EuclideanVector& operator/=(double num);
+  explicit operator std::vector<double>() ;
+  explicit operator std::list<double>() ;
   explicit operator std::vector<double>() const;
-  operator std::list<double>() const;
+  explicit operator std::list<double>() const;
 
   double at(int index) const;
   double& at(int index);
-  int GetNumDimensions() const;
+  int GetNumDimensions() const noexcept;
   double GetEuclideanNorm() const;
+
   // Usually this method called normalize
+  // Returns a new vector which is a normalized (i.e. unit length) vector with the same direction as the current vector.
+
   EuclideanVector CreateUnitVector() const;
 
   friend bool operator==(const EuclideanVector& vector1, const EuclideanVector& vector2);
   friend bool operator!=(const EuclideanVector& vector1, const EuclideanVector& vector2);
   friend EuclideanVector operator+(const EuclideanVector& vector1, const EuclideanVector& vector2);
   friend EuclideanVector operator-(const EuclideanVector& vector1, const EuclideanVector& vector2);
-  friend EuclideanVector operator*(const EuclideanVector& vector1, double num);  // scalar product
+  friend EuclideanVector operator*(const EuclideanVector& vector1, double num) noexcept ;  // scalar product
   friend EuclideanVector operator/(const EuclideanVector& vector1, double num);  // scalar product
   friend double operator*(const EuclideanVector& vector1,
                           const EuclideanVector& vector2);  // dot product
-  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& vector);
+  friend std::ostream& operator<<(std::ostream& os, const EuclideanVector& vector) noexcept ;
 
  private:
   std::unique_ptr<double[]> magnitudes_;
-  int numOfDimension_;
-  void checkDimension(const EuclideanVector vector) const;
+  int numOfDimensions_;
+  void checkDimension(const EuclideanVector& vector) const;
   void checkIndex(int index) const;
-  void checkZeroDimension(const std::string vectorType) const;
+  void checkZeroDimension(const std::string& vectorType) const;
   void checkInvalidDivision(double num) const;
   void checkIsZeroNorm() const;
 };

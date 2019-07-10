@@ -77,7 +77,7 @@ SCENARIO("Test Create EuclideanVector") {
   }
 }
 
-SCENARIO("Test EuclideanVector Class operator overload") {
+SCENARIO("Test EuclideanVector Class Copy Assignment operator overload") {
   WHEN("Copy EuclideanVector with Copy Assignment operator") {
     GIVEN("EuclideanVector a assigning the dimension and magnitudes to EuclideanVector b")
     THEN("Get EuclideanVector b with same dimension and magnitudes as a") {
@@ -87,7 +87,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE(a == b);
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class Move Assignment operator overload") {
   WHEN("Move EuclideanVector with Move Assignment operator") {
     GIVEN("EuclideanVector a moving the content to EuclideanVector b")
     THEN("Get EuclideanVector b take procession of a's dimension and magnitudes") {
@@ -99,6 +101,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE(b[1] == 3.5);
     }
   }
+}
+
+SCENARIO("Test EuclideanVector Class Subscript operator overload") {
 
   WHEN("Subscript operator allows to get and set the value in a given dimension of the Euclidean "
        "Vector.") {
@@ -114,7 +119,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE(a[0] == x);
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class Addition operator overload") {
   GIVEN("Addition operater for adding vectors of the same dimension.") {
     EuclideanVector a{2, 3.5};
     EuclideanVector b{2, 4.5};
@@ -130,7 +137,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE_THROWS_WITH(a += c, std::string{"Dimensions of LHS(2) and RHS(1) do not match"});
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class Subtraction operator overload") {
   GIVEN("Subtraction operater for subtracting vectors of the same dimension.") {
     EuclideanVector a{2, 8};
     EuclideanVector b{2, 4.5};
@@ -146,7 +155,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE_THROWS_WITH(a -= c, std::string{"Dimensions of LHS(2) and RHS(1) do not match"});
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class Multiplication operator overload") {
   GIVEN("Multiplication operater for scalar multiplication.") {
     EuclideanVector a{2, 8};
     double b = .5;
@@ -157,7 +168,9 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE(a[1] == 4);
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class Division operator overload") {
   GIVEN("Division operater for For scalar division.") {
     EuclideanVector a{2, 8};
     double b{0.5};
@@ -172,8 +185,10 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE_THROWS_WITH(a /= 0, std::string{"Invalid vector division by 0"});
     }
   }
+}
 
-  GIVEN("Vector Type Conversion Operators for type casting to a std::vector") {
+SCENARIO("Test EuclideanVector Class Vector Type Conversion operator overload") {
+  GIVEN("Vector Type Conversion Operator for type casting to a std::vector") {
     std::vector<double> v(4, 5);
     EuclideanVector a(v.begin(), v.end());
     AND_GIVEN("EuclideanVector a created from a std::vector v")
@@ -182,8 +197,10 @@ SCENARIO("Test EuclideanVector Class operator overload") {
       REQUIRE(std::vector<double>{a} == v);
     }
   }
+}
 
-  GIVEN("List Type Conversion Operators for type casting to a std::list") {
+SCENARIO("Test EuclideanVector Class List Type Conversion operator overload") {
+  GIVEN("List Type Conversion Operator for type casting to a std::list") {
     std::vector<double> v(4, 5);
     std::list<double> l(v.begin(), v.end());
     EuclideanVector a(v.begin(), v.end());
@@ -194,10 +211,11 @@ SCENARIO("Test EuclideanVector Class operator overload") {
     }
   }
 }
-SCENARIO("Test EuclideanVector Class Methods") {
+
+SCENARIO("Test EuclideanVector Class Method double at(int index)") {
   EuclideanVector a{2, 3.5};
 
-  WHEN("Calling EuclideanVector Class Methods double at(int index)")
+  WHEN("Calling double at(int index)")
   GIVEN("The index of the dimension of the EuclideanVector a") {
     THEN("Returns the value of the magnitude in the dimension given as the function parameter") {
       REQUIRE(a.at(0) == a[0]);
@@ -211,7 +229,11 @@ SCENARIO("Test EuclideanVector Class Methods") {
                           std::string{"Index -1 is not valid for this EuclideanVector object"});
     }
   }
-  WHEN("Calling EuclideanVector Class Methods double& at(int index)")
+}
+
+SCENARIO("Test EuclideanVector Class Method double& at(int index)") {
+  const EuclideanVector a{2, 3.5};
+  WHEN("Calling double& at(int index)")
   GIVEN("The index of the dimension of the EuclideanVector a") {
     THEN(
         "Returns the reference of the magnitude in the dimension given as the function parameter") {
@@ -222,18 +244,22 @@ SCENARIO("Test EuclideanVector Class Methods") {
   GIVEN("The index X is out of the range of the dimension of the EuclideanVector a") {
     THEN("Throw EuclideanVectorError Exception: Index X is not valid for this EuclideanVector "
          "object") {
-      const EuclideanVector b{5};
-      REQUIRE_THROWS_WITH((b.at(-1)),
+      REQUIRE_THROWS_WITH(a.at(-1),
                           std::string{"Index -1 is not valid for this EuclideanVector object"});
     }
   }
+}
 
-  WHEN("Calling EuclideanVector Class Methods int GetNumDimensions()")
+SCENARIO("Test EuclideanVector Class Method int GetNumDimensions()") {
+  EuclideanVector a{2, 3.5};
+  WHEN("Calling int GetNumDimensions()")
   THEN("Return the number of dimensions in a particular EuclideanVector") {
     REQUIRE(a.GetNumDimensions() == 2);
   }
+}
 
-  WHEN("Calling EuclideanVector Class Methods double GetEuclideanNorm()") {
+SCENARIO("Test EuclideanVector Class Method double GetEuclideanNorm()") {
+  WHEN("Calling double GetEuclideanNorm()") {
     GIVEN("A non-zero dimension of the Euclidean Vector.") {
       THEN("Returns the Euclidean norm of the vector as a double.") {
         std::vector<double> v{1, 2, 3};
@@ -250,8 +276,10 @@ SCENARIO("Test EuclideanVector Class Methods") {
       }
     }
   }
+}
 
-  WHEN("Calling EuclideanVector Class Methods EuclideanVector CreateUnitVector()") {
+SCENARIO("Test EuclideanVector Class Method  EuclideanVector CreateUnitVector()") {
+  WHEN("Calling EuclideanVector CreateUnitVector()") {
     GIVEN("A non-zero dimension of the Euclidean Vector v.") {
       THEN("Returns a Euclidean vector that is the unit vector of the given Euclidean Vector v") {
         std::vector<double> v{1, 2, 3};
@@ -279,7 +307,8 @@ SCENARIO("Test EuclideanVector Class Methods") {
     }
   }
 }
-SCENARIO("Test EuclideanVector Class friend functions") {
+
+SCENARIO("Test EuclideanVector Class friend Compare function") {
   WHEN("Compare two vectors if they are equal in the number of dimensions and the magnitude in "
        "each dimension is equal") {
     GIVEN("EuclideanVector a and b")
@@ -319,7 +348,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE_FALSE(a != b);
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class friend function Addition") {
   WHEN("Addition friend function for adding vectors of the same dimension.") {
     EuclideanVector a;
     EuclideanVector c{2, 3.5};
@@ -336,6 +367,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE_THROWS_WITH(b + d, std::string{"Dimensions of LHS(2) and RHS(1) do not match"});
     }
   }
+}
+
+SCENARIO("Test EuclideanVector Class friend function Subtraction") {
   GIVEN("Subtraction friend function for subtracting vectors of the same dimension.") {
     EuclideanVector a;
     EuclideanVector b{2, 3.5};
@@ -353,7 +387,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE_THROWS_WITH(b - d, std::string{"Dimensions of LHS(2) and RHS(1) do not match"});
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class friend function dot-product Multiplication") {
   GIVEN("Multiplication friend function for dot-product multiplication") {
     EuclideanVector a{1};
     EuclideanVector b{2, 1};
@@ -368,7 +404,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE_THROWS_WITH(a * b, std::string{"Dimensions of LHS(1) and RHS(2) do not match"});
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class friend function scalar Multiplication") {
   GIVEN("Multiplication friend function for scalar multiplication.") {
     EuclideanVector a;
     EuclideanVector b{2, 8};
@@ -380,7 +418,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE(a[1] == 4);
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class friend function Division") {
   GIVEN("Division friend function for scalar division.") {
     EuclideanVector a;
     EuclideanVector b{2, 8};
@@ -396,7 +436,9 @@ SCENARIO("Test EuclideanVector Class friend functions") {
       REQUIRE_THROWS_WITH(b / 0, std::string{"Invalid vector division by 0"});
     }
   }
+}
 
+SCENARIO("Test EuclideanVector Class friend function Output Stream") {
   GIVEN("Output Stream friend function for output the content of EuclideanVector.") {
     WHEN("Pass EuclideanVector to an output stream object.")
     THEN("Output stream will print out the magnitude in each dimension of the Euclidean Vector "
