@@ -107,15 +107,18 @@ SCENARIO("Test EuclideanVector Class Subscript operator overload") {
   WHEN("Subscript operator allows to get and set the value in a given dimension of the Euclidean "
        "Vector.") {
     EuclideanVector a{2, 3.5};
+    const EuclideanVector b{2, 3.5};
     GIVEN("A dimension of the Euclidean Vector.")
     THEN("Allows to get the value in a given dimension of EuclideanVector a") {
       CHECK(a[0] == 3.5);
+      CHECK(b[0] == 3.5);
     }
     GIVEN("A dimension of the Euclidean Vector.")
     THEN("Allows to set the value in a given dimension of EuclideanVector a") {
       double x{10.5};
       a[0] = x;
       REQUIRE(a[0] == x);
+      REQUIRE(b[0] == x);
     }
   }
 }
@@ -190,10 +193,11 @@ SCENARIO("Test EuclideanVector Class Vector Type Conversion operator overload") 
   GIVEN("Vector Type Conversion Operator for type casting to a std::vector") {
     std::vector<double> v(4, 5);
     EuclideanVector a(v.begin(), v.end());
+    const EuclideanVector b = a;
     AND_GIVEN("EuclideanVector a created from a std::vector v")
     THEN("type casting a will return a equal to std::vector v") {
-      CHECK(a.GetNumDimensions() == 4);
       REQUIRE(std::vector<double>{a} == v);
+      REQUIRE(std::vector<double>{b} == v);
     }
   }
 }
@@ -203,10 +207,11 @@ SCENARIO("Test EuclideanVector Class List Type Conversion operator overload") {
     std::vector<double> v(4, 5);
     std::list<double> l(v.begin(), v.end());
     EuclideanVector a(v.begin(), v.end());
+    const EuclideanVector b = a;
     AND_GIVEN("EuclideanVector a created from a std::list")
     THEN("type casting a will return a equal to std::list") {
-      CHECK(a.GetNumDimensions() == 4);
       REQUIRE(std::list<double>{a} == l);
+      REQUIRE(std::list<double>{b} == l);
     }
   }
 }
@@ -251,9 +256,11 @@ SCENARIO("Test EuclideanVector Class Method double& at(int index)") {
 
 SCENARIO("Test EuclideanVector Class Method int GetNumDimensions()") {
   EuclideanVector a{2, 3.5};
+  const EuclideanVector b = a;
   WHEN("Calling int GetNumDimensions()")
   THEN("Return the number of dimensions in a particular EuclideanVector") {
     REQUIRE(a.GetNumDimensions() == 2);
+    REQUIRE(b.GetNumDimensions() == 2);
   }
 }
 
@@ -261,9 +268,11 @@ SCENARIO("Test EuclideanVector Class Method double GetEuclideanNorm()") {
   WHEN("Calling double GetEuclideanNorm()") {
     GIVEN("A non-zero dimension of the Euclidean Vector.") {
       THEN("Returns the Euclidean norm of the vector as a double.") {
-        std::vector<double> v{1, 2, 3};
+        std::vector<double> v{3, 4, 5};
         EuclideanVector b{v.begin(), v.end()};
-        REQUIRE(b.GetEuclideanNorm() == std::hypot(std::hypot(1, 2), 3));
+        REQUIRE(b.GetEuclideanNorm() == std::hypot(std::hypot(3, 4), 5));
+        const EuclideanVector a = b;
+        REQUIRE(a.GetEuclideanNorm() == std::hypot(std::hypot(3, 4), 5));
       }
     }
     GIVEN("A zero dimension of the Euclidean Vector.") {
@@ -284,6 +293,8 @@ SCENARIO("Test EuclideanVector Class Method  EuclideanVector CreateUnitVector()"
         std::vector<double> v{1, 2, 3};
         EuclideanVector b{v.begin(), v.end()};
         REQUIRE(b.CreateUnitVector() == b / b.GetEuclideanNorm());
+        const EuclideanVector a = b;
+        REQUIRE(a.CreateUnitVector() == a / a.GetEuclideanNorm());
       }
     }
     GIVEN("A zero dimension of the Euclidean Vector.") {
@@ -315,7 +326,6 @@ SCENARIO("Test EuclideanVector Class friend Compare function") {
          "dimension is equal") {
       EuclideanVector a{2, 3.5};
       EuclideanVector b = a;
-      CHECK(a.GetNumDimensions() == b.GetNumDimensions());
       REQUIRE(a == b);
     }
     AND_THEN(
@@ -323,7 +333,6 @@ SCENARIO("Test EuclideanVector Class friend Compare function") {
         "dimension is equal") {
       EuclideanVector a{2, 3.5};
       EuclideanVector b{2};
-      REQUIRE_FALSE(a.GetNumDimensions() != b.GetNumDimensions());
       REQUIRE_FALSE(a == b);
     }
   }
@@ -335,7 +344,6 @@ SCENARIO("Test EuclideanVector Class friend Compare function") {
          "dimension is not equal") {
       EuclideanVector a{2, 3.5};
       EuclideanVector b{3};
-      REQUIRE(a.GetNumDimensions() != b.GetNumDimensions());
       REQUIRE(a != b);
     }
     AND_THEN(
@@ -343,7 +351,6 @@ SCENARIO("Test EuclideanVector Class friend Compare function") {
         "dimension is not equal") {
       EuclideanVector a{2, 3.5};
       EuclideanVector b = a;
-      REQUIRE_FALSE(a.GetNumDimensions() != b.GetNumDimensions());
       REQUIRE_FALSE(a != b);
     }
   }
@@ -444,9 +451,15 @@ SCENARIO("Test EuclideanVector Class friend function Output Stream") {
          "(surrounded by [ and ])") {
       std::vector<double> vector{4, 5, 6, 7};
       EuclideanVector b{vector.begin(), vector.end()};
-      std::ostringstream output;
-      output << b;
-      REQUIRE(output.str() == "[4 5 6 7]");
+
+      std::ostringstream outputb;
+      outputb << b;
+      REQUIRE(outputb.str() == "[4 5 6 7]");
+
+      const EuclideanVector a = b;
+      std::ostringstream outputa;
+      outputa << a;
+      REQUIRE(outputa.str() == "[4 5 6 7]");
     }
   }
 }

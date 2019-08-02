@@ -41,8 +41,6 @@ class EuclideanVector {
   EuclideanVector& operator-=(const EuclideanVector& vector);
   EuclideanVector& operator*=(double num);
   EuclideanVector& operator/=(double num);
-  explicit operator std::vector<double>();
-  explicit operator std::list<double>();
   explicit operator std::vector<double>() const;
   explicit operator std::list<double>() const;
 
