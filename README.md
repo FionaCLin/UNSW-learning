@@ -10,3 +10,6 @@ This repository contains all the courses work acquired in UNSW. The source code 
   * [comp6733-Internet-of-Things-Design-Studio](https://github.com/FionaCLin/UNSW-learning/tree/comp6733-Internet-of-Things-Design-Studio)
   * [comp9315-DBMS-Implementation](https://github.com/FionaCLin/UNSW-learning/tree/comp9315-DBMS-Implementation)
   * [seng2021-Software-Engineering-Workshop-2B](https://github.com/FionaCLin/UNSW-learning/tree/seng2021-Software-Engineering-Workshop-2B)
+  * [comp9318-Data-Warehousing-and-Data-Mining](https://github.com/FionaCLin/UNSW-learning/tree/comp9318-Data-Warehousing-and-Data-Miningn)
+  * [comp6771-Advanced-C++-Programming](https://github.com/FionaCLin/UNSW-learning/tree/comp6771-Advanced-C++-Programming)
+  * [comp3141-Software-System-Design-and-Implementation](https://github.com/FionaCLin/UNSW-learning/tree/comp3141-Software-System-Design-and-Implementation)
